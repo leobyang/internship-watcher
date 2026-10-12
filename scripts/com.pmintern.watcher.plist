@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.internship.watcher</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Library/Frameworks/Python.framework/Versions/3.13/bin/python3</string>
+    <string>/Users/leoyang/.gemini/antigravity-ide/scratch/internship-watcher/cli.py</string>
+    <string>scan</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/leoyang/.gemini/antigravity-ide/scratch/internship-watcher</string>
+
+  <!-- Run once every hour (3600 seconds) -->
+  <key>StartInterval</key>
+  <integer>3600</integer>
+
+  <key>RunAtLoad</key>
+  <false/>
+
+  <key>StandardOutPath</key>
+  <string>/Users/leoyang/.gemini/antigravity-ide/scratch/internship-watcher/logs/watcher.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/leoyang/.gemini/antigravity-ide/scratch/internship-watcher/logs/watcher.err.log</string>
+</dict>
+</plist>

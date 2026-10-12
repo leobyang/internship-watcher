@@ -1,0 +1,85 @@
+# Cloud watcher: runs whether or not your Mac is on.
+#
+# Setup:
+#   1. Push to a PRIVATE GitHub repo.
+#   2. Settings > Secrets and variables > Actions:
+#        TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+#   3. Turn off the Mac job so alerts do not arrive twice:
+#        launchctl bootout gui/$(id -u)/com.pmintern.watcher
+#
+# Budget: GitHub bills each job rounded UP to the nearest minute, so run
+# COUNT is the cost. This asks for ~3,875 runs/month, but GitHub has been
+# delivering ~12% of what is requested, which lands around 460 minutes of the
+# 3,000 GitHub Pro includes. Check real usage with `gh run list` before
+# assuming the requested number is what you are paying for.
+name: Internship Watcher
+
+on:
+  schedule:
+    # Runs hourly
+    - cron: "0 * * * *"
+  workflow_dispatch:
+    inputs:
+      digest:
+        description: "Send new postings as one summary message (for backfills)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: internship-watch
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write     # the tracker commit needs push access
+    timeout-minutes: 10    # ~560 boards take ~2.5 min; still capped so a hang can't run away
+    steps:
+      - uses: actions/checkout@v4
+
+      # No setup-python step: ubuntu-latest ships python3 and this project is
+      # standard-library only. Skipping it saves ~15s of billed time per run.
+
+      # jobs.db is the dedupe ledger -- without it every run re-alerts
+      # everything. .cache holds the ETag for the 11MB community feed, which
+      # turns a full download into a 304 and keeps runs under the 1-minute
+      # billing boundary.
+      - name: Restore state
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            jobs.db
+            .cache
+          key: internship-state-${{ github.run_id }}
+          restore-keys: internship-state-
+
+      - name: Scan
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python3 cli.py scan ${{ inputs.digest && '--digest' || '' }}
+
+      # Commit any tracker updates so application history survives cache evictions
+      - name: Persist tracker decisions
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain tracker.json)" ]; then
+            git config user.name "internship-watcher"
+            git config user.email "actions@users.noreply.github.com"
+            git add tracker.json
+            git commit -m "Update tracker state [skip ci]"
+            git push
+          fi
+
+      - name: Save state
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: |
+            jobs.db
+            .cache
+          key: internship-state-${{ github.run_id }}

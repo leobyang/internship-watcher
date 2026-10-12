@@ -1,0 +1,44 @@
+"""The Job record shared across sources, matching, storage, and alerting."""
+from __future__ import annotations
+
+import hashlib
+import re
+from dataclasses import dataclass, field
+
+
+@dataclass
+class Job:
+    source: str           # "greenhouse" | "lever" | "ashby"
+    company: str          # display name
+    board: str            # board token used to fetch it
+    external_id: str      # id as given by the ATS
+    title: str
+    location: str
+    url: str
+    posted_at: str = ""   # ISO8601 if the board tells us, else ""
+    department: str = ""
+    track: str = "pm"     # "pm" | "swe"
+    region: str = ""      # "us" | "ca" | "uk" | "apac" | "remote" | "na" | "unknown"
+    extra: dict = field(default_factory=dict)
+
+    @property
+    def key(self) -> str:
+        """Stable dedupe key. Survives title edits and URL tracking params."""
+        raw = f"{self.source}:{self.board}:{self.external_id}"
+        return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]
+
+    @property
+    def dupe_key(self) -> str:
+        """Cross-source identity: the same role listed on two feeds collapses here.
+
+        Company + title only -- a company posting one internship across several
+        cities is one opportunity, not five alerts.
+        """
+        norm = re.sub(r"[^a-z0-9]+", "", f"{self.company}{self.title}".lower())
+        return hashlib.sha1(norm.encode("utf-8")).hexdigest()[:16]
+
+    def __str__(self) -> str:
+        flags = {"us": "🇺🇸", "ca": "🇨🇦", "na": "🇨🇦/🇺🇸", "uk": "🇬🇧", "apac": "🌏", "remote": "🌐"}
+        flag = flags.get(self.region, "📍")
+        tag = f"[{self.track.upper()}] " if self.track else ""
+        return f"{flag} {tag}{self.company} — {self.title} ({self.location})"

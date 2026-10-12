@@ -231,15 +231,17 @@ def cmd_list(args) -> None:
         return
 
     flags = {"us": "🇺🇸", "ca": "🇨🇦", "uk": "🇬🇧", "apac": "🌏", "remote": "🌐", "na": "🇨🇦/🇺🇸"}
-    print(f"{'id':<8} {'track':<6} {'reg':<5} {'status':<10} {'company':<22} {'title':<40} location")
-    print("-" * 115)
+    print(f"{'id':<8} {'posted':<11} {'track':<6} {'reg':<5} {'status':<10} {'company':<22} {'title':<38} location")
+    print("-" * 125)
     for row in rows:
         closed = " (closed)" if row["closed_at"] else ""
         track = row["track"].upper() if "track" in row.keys() and row["track"] else "PM"
         reg = row["region"] if "region" in row.keys() and row["region"] else "us"
         flag = flags.get(reg, "📍")
-        print(f"{row['key'][:8]:<8} {track:<6} {flag:<5} {row['status']:<10} {row['company'][:21]:<22} "
-              f"{row['title'][:39]:<40} {row['location'][:20]}{closed}")
+        raw_dt = row["posted_at"] or row["first_seen"] or ""
+        dt = raw_dt[:10] if len(raw_dt) >= 10 else raw_dt
+        print(f"{row['key'][:8]:<8} {dt:<11} {track:<6} {flag:<5} {row['status']:<10} {row['company'][:21]:<22} "
+              f"{row['title'][:37]:<38} {row['location'][:20]}{closed}")
     print(f"\n{len(rows)} shown. Mark one: python3 cli.py status <id> applied")
 
 

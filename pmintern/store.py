@@ -192,7 +192,7 @@ def find_jobs(conn, status=None, company=None, track=None, region=None,
         args += [r.lower() for r in regions]
     if not include_closed:
         sql += " AND closed_at = ''"
-    sql += " ORDER BY first_seen DESC LIMIT ?"
+    sql += " ORDER BY COALESCE(NULLIF(posted_at, ''), first_seen) DESC, first_seen DESC LIMIT ?"
     args.append(limit)
     return conn.execute(sql, args).fetchall()
 

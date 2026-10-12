@@ -89,10 +89,19 @@ python3 cli.py scan --dry-run
 
 ---
 
-## Application Tracker
+## 📁 Live Directory: `JOBS.md`
+
+All live internship openings are automatically exported to **[`JOBS.md`](JOBS.md)**.
+- Organized by track (**PM** vs **SWE**) and region (🇺🇸 US, 🇨🇦 Canada, 🇬🇧 UK, 🌏 APAC, 🌐 Remote).
+- Searchable directly in your browser (`Cmd + F` or `Ctrl + F`) with direct "Apply Now" links.
+- Automatically updated on GitHub by GitHub Actions after every hourly scan.
+
+---
+
+## Application Tracker (CLI)
 
 ```bash
-# View open tracked internships
+# View open tracked internships in your terminal
 python3 cli.py list
 
 # Filter list by role track or region

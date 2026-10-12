@@ -150,11 +150,13 @@ def build_digest_embed(jobs: list, header: str = "") -> dict:
         lines.append(f"• {flag} {tag} {link_str}{loc_str}")
 
     if len(jobs) > 25:
-        lines.append(f"\n*...and {len(jobs) - 25} more postings! Run `python3 cli.py list` to inspect all.*")
+        lines.append(f"\n*...and {len(jobs) - 25} more postings!*")
+        lines.append("📁 **Full Directory:** [Browse JOBS.md on GitHub](https://github.com/leobyang/internship-watcher/blob/main/JOBS.md)")
+        lines.append("💻 *Or inspect locally:* `python3 cli.py list`")
 
     desc = "\n".join(lines)
     if len(desc) > 4000:
-        desc = desc[:3950] + "\n\n*(Truncated for Discord embed limit. View all with `python3 cli.py list`)*"
+        desc = desc[:3850] + "\n\n*(Truncated for Discord limit. View all: [JOBS.md](https://github.com/leobyang/internship-watcher/blob/main/JOBS.md) or run `python3 cli.py list`)*"
 
     return {
         "title": title,

@@ -16,7 +16,7 @@ import sys
 import time
 import webbrowser
 
-from pmintern import config, discord, store, telegram, urlwatch
+from pmintern import config, discord, export, store, telegram, urlwatch
 from pmintern.config import COMPANIES_PATH
 from pmintern.http import FetchError
 from pmintern.match import location_region
@@ -241,6 +241,18 @@ def cmd_list(args) -> None:
         print(f"{row['key'][:8]:<8} {track:<6} {flag:<5} {row['status']:<10} {row['company'][:21]:<22} "
               f"{row['title'][:39]:<40} {row['location'][:20]}{closed}")
     print(f"\n{len(rows)} shown. Mark one: python3 cli.py status <id> applied")
+
+
+def cmd_export_md(args) -> None:
+    conn = store.connect()
+    path = getattr(args, "output", None) or "JOBS.md"
+    written = export.export_markdown(conn, path)
+    print(f"exported active postings to {written}")
+
+
+def cmd_summary(args) -> None:
+    conn = store.connect()
+    print(export.generate_summary_markdown(conn))
 
 
 def cmd_status(args) -> None:
@@ -569,6 +581,11 @@ def build_parser() -> argparse.ArgumentParser:
     p.set_defaults(func=cmd_show)
 
     sub.add_parser("stats", help="application funnel & regional summary").set_defaults(func=cmd_stats)
+    p = sub.add_parser("export-md", help="generate browsable JOBS.md markdown directory")
+    p.add_argument("output", nargs="?", default="JOBS.md", help="output file path (default: JOBS.md)")
+    p.set_defaults(func=cmd_export_md)
+
+    sub.add_parser("summary", help="output markdown run summary for GitHub Actions or CLI").set_defaults(func=cmd_summary)
     sub.add_parser("health", help="which boards are failing").set_defaults(func=cmd_health)
 
     p = sub.add_parser("verify", help="check every board still responds")

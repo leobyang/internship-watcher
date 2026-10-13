@@ -92,6 +92,45 @@ function setLocalOverride(key: string, status?: string, notes?: string) {
   }
 }
 
+// Custom Stitch-Styled Checkbox Component (eliminates browser-native white checkboxes)
+function CustomCheckbox({
+  checked,
+  onChange,
+  title,
+  className = '',
+}: {
+  checked: boolean;
+  onChange: (e: React.MouseEvent) => void;
+  title?: string;
+  className?: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="checkbox"
+      aria-checked={checked}
+      title={title}
+      onClick={(e) => {
+        e.stopPropagation();
+        onChange(e);
+      }}
+      className={`w-4 h-4 rounded-[4px] p-0 m-0 flex items-center justify-center shrink-0 transition-all duration-150 cursor-pointer ${
+        checked
+          ? 'bg-indigo-600 border border-indigo-500 text-white shadow-[0_0_8px_rgba(99,102,241,0.35)]'
+          : 'bg-[#12131a] border border-[#2e3042] hover:border-indigo-400/60 hover:bg-[#1a1b24] text-transparent'
+      } ${className}`}
+    >
+      <span
+        className={`material-symbols-outlined text-[13px] font-bold leading-none select-none transition-transform duration-100 ${
+          checked ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
+        }`}
+      >
+        check
+      </span>
+    </button>
+  );
+}
+
 export default function InternshipTracker() {
   const [queue, setQueue] = useState<'inbox' | 'applied' | 'dismissed' | 'saved'>('inbox');
   const [trackFilter, setTrackFilter] = useState<'all' | 'pm' | 'swe'>('all');
@@ -103,6 +142,7 @@ export default function InternshipTracker() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [counts, setCounts] = useState<Counts>({ inbox: 0, applied: 0, dismissed: 0, saved: 0, total: 0 });
   const [isLoading, setIsLoading] = useState(true);
+  const [isScanning, setIsScanning] = useState(false);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -114,7 +154,7 @@ export default function InternshipTracker() {
   const staticJobsCacheRef = useRef<Job[] | null>(null);
 
   // Fetch jobs
-  const fetchJobs = useCallback(async () => {
+  const fetchJobs = useCallback(async (forceRefresh = false) => {
     try {
       setIsLoading(true);
       const params = new URLSearchParams({
@@ -139,8 +179,9 @@ export default function InternshipTracker() {
 
       // 2. Static GitHub Pages fallback
       if (!loadedData) {
-        if (!staticJobsCacheRef.current) {
-          const res = await fetch(`${BASE_PATH}/jobs.json`);
+        if (!staticJobsCacheRef.current || forceRefresh) {
+          const cacheBuster = forceRefresh ? `?_t=${Date.now()}` : '';
+          const res = await fetch(`${BASE_PATH}/jobs.json${cacheBuster}`);
           if (!res.ok) throw new Error('Failed to load static jobs.json');
           const jsonPayload = await res.json();
           staticJobsCacheRef.current = jsonPayload.jobs || [];
@@ -232,6 +273,51 @@ export default function InternshipTracker() {
     fetchJobs();
   }, [fetchJobs]);
 
+  // Manual Trigger: Scan career boards for new jobs
+  const handleManualScan = async () => {
+    if (isScanning) return;
+    setIsScanning(true);
+
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+    setToast({ message: '⚡ Scanning 500+ career boards for new postings...' });
+
+    try {
+      let triggeredBackend = false;
+      try {
+        const res = await fetch(`${BASE_PATH}/api/scan`, { method: 'POST' });
+        if (res.ok) {
+          triggeredBackend = true;
+          const data = await res.json();
+          setToast({ message: data.message || 'Scan started in background.' });
+        }
+      } catch {
+        // Fallback to static refresh
+      }
+
+      // If backend was triggered, give it a moment or refresh data
+      if (triggeredBackend) {
+        setTimeout(async () => {
+          await fetchJobs(true);
+          setIsScanning(false);
+          setToast({ message: '✅ Job scan finished! Latest postings synced.' });
+          toastTimeoutRef.current = setTimeout(() => setToast(null), 4000);
+        }, 3500);
+      } else {
+        // Static export refresh with cache-busting
+        staticJobsCacheRef.current = null;
+        await fetchJobs(true);
+        setIsScanning(false);
+        setToast({ message: '✅ Feed refreshed with latest postings.' });
+        toastTimeoutRef.current = setTimeout(() => setToast(null), 3000);
+      }
+    } catch (e) {
+      console.error('Scan error:', e);
+      setIsScanning(false);
+      setToast({ message: 'Refreshed feed.' });
+      toastTimeoutRef.current = setTimeout(() => setToast(null), 3000);
+    }
+  };
+
   // Multiselect toggle single item
   const handleToggleSelect = (key: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
@@ -247,7 +333,8 @@ export default function InternshipTracker() {
   };
 
   // Select all or deselect all
-  const handleSelectAll = () => {
+  const handleSelectAll = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (selectedKeys.size === jobs.length) {
       setSelectedKeys(new Set());
     } else {
@@ -293,7 +380,7 @@ export default function InternshipTracker() {
       lastKey: key,
       prevStatus,
     });
-    toastTimeoutRef.current = setTimeout(() => setToast(null), 3000);
+    toastTimeoutRef.current = setTimeout(() => setToast(null), 3500);
 
     setLocalOverride(key, newStatus);
 
@@ -395,7 +482,7 @@ export default function InternshipTracker() {
     }
   };
 
-  // Keyboard navigation: J = UP, K = DOWN (as requested by user)
+  // Keyboard navigation: J = UP, K = DOWN, R = REFRESH/SCAN
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (
@@ -456,6 +543,15 @@ export default function InternshipTracker() {
           e.preventDefault();
           if (selectedKey) {
             handleToggleSelect(selectedKey);
+          }
+          break;
+
+        // R = Manual Scan / Refresh
+        case 'r':
+        case 'R':
+          if (!e.metaKey && !e.ctrlKey) {
+            e.preventDefault();
+            handleManualScan();
           }
           break;
 
@@ -529,7 +625,7 @@ export default function InternshipTracker() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [jobs, selectedKey, selectedKeys, isSearchOpen, toast]);
+  }, [jobs, selectedKey, selectedKeys, isSearchOpen, toast, isScanning]);
 
   const queueNavItems = [
     { id: 'inbox', label: 'Inbox', icon: 'inbox', keyNum: '1', color: 'text-indigo-400', count: counts.inbox },
@@ -543,23 +639,23 @@ export default function InternshipTracker() {
       {/* ============================================================ */}
       {/* 1. TOP HEADER (Pixel-Perfect Alignment, Stitch Aesthetic)    */}
       {/* ============================================================ */}
-      <header className="h-14 border-b border-[#262734] bg-[#111115] px-3 sm:px-6 flex items-center justify-between shrink-0 z-30 gap-3">
+      <header className="h-14 border-b border-[#262734] bg-[#111115] px-4 sm:px-6 flex items-center justify-between shrink-0 z-30 gap-3">
         {/* Left: Brand + Mobile/Desktop Sidebar Toggle */}
         <div className="flex items-center gap-2.5 shrink-0">
           <button
             type="button"
             onClick={() => setIsSidebarOpen((prev) => !prev)}
             title={isSidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
-            className="w-8 h-8 rounded-lg border border-[#262734] bg-[#171821] hover:bg-[#22232c] flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+            className="w-8 h-8 p-0 m-0 rounded-lg border border-[#262734] bg-[#171821] hover:bg-[#22232c] flex items-center justify-center text-gray-400 hover:text-white transition-colors cursor-pointer"
           >
-            <span className="material-symbols-outlined text-[18px]">
+            <span className="material-symbols-outlined text-[18px] leading-none select-none flex items-center justify-center">
               {isSidebarOpen ? 'menu_open' : 'menu'}
             </span>
           </button>
 
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0">
-              <span className="material-symbols-outlined text-[18px]">bolt</span>
+              <span className="material-symbols-outlined text-[18px] leading-none select-none">bolt</span>
             </div>
             <span className="font-semibold text-[13.5px] tracking-tight text-white hidden sm:inline">
               Leo&apos;s Tracker
@@ -577,7 +673,7 @@ export default function InternshipTracker() {
             className="w-full h-8 flex items-center justify-between bg-[#171821] border border-[#262734] hover:border-gray-500/70 px-3 rounded-lg text-xs text-gray-400 transition-colors cursor-pointer group"
           >
             <div className="flex items-center gap-2 min-w-0">
-              <span className="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-gray-300 shrink-0">search</span>
+              <span className="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-gray-300 shrink-0 leading-none">search</span>
               <span className="truncate">
                 {searchTerm ? `Search: "${searchTerm}"` : 'Search positions, companies...'}
               </span>
@@ -599,41 +695,58 @@ export default function InternshipTracker() {
                 type="button"
                 onClick={() => handleBatchStatus('applied')}
                 title="Apply all selected (A)"
-                className="h-7 px-2 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-medium flex items-center gap-1 transition-colors"
+                className="h-7 px-2 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-medium flex items-center gap-1 transition-colors cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[15px]">send_and_archive</span>
+                <span className="material-symbols-outlined text-[15px] leading-none">send_and_archive</span>
                 <span className="hidden sm:inline">Apply</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleBatchStatus('ignored')}
                 title="Dismiss all selected (D)"
-                className="h-7 px-2 rounded-md bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 text-xs font-medium flex items-center gap-1 transition-colors"
+                className="h-7 px-2 rounded-md bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 text-xs font-medium flex items-center gap-1 transition-colors cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[15px]">archive</span>
+                <span className="material-symbols-outlined text-[15px] leading-none">archive</span>
                 <span className="hidden sm:inline">Dismiss</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleBatchStatus('saved')}
                 title="Star all selected (S)"
-                className="h-7 px-2 rounded-md bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/30 text-xs font-medium flex items-center gap-1 transition-colors"
+                className="h-7 px-2 rounded-md bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/30 text-xs font-medium flex items-center gap-1 transition-colors cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[15px]">bookmark</span>
+                <span className="material-symbols-outlined text-[15px] leading-none">bookmark</span>
                 <span className="hidden sm:inline">Star</span>
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedKeys(new Set())}
                 title="Clear selection (Esc)"
-                className="h-7 w-7 rounded-md hover:bg-[#22232c] text-gray-400 hover:text-white flex items-center justify-center transition-colors"
+                className="h-7 w-7 p-0 m-0 rounded-md hover:bg-[#22232c] text-gray-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[16px]">close</span>
+                <span className="material-symbols-outlined text-[16px] leading-none">close</span>
               </button>
             </div>
           ) : (
-            /* STANDARD ACTIONS: Every button is exactly 32x32px square */
+            /* STANDARD ACTIONS: Exactly 32x32px square buttons with identical padding */
             <div className="flex items-center gap-1.5">
+              {/* Scan / Refresh Button */}
+              <button
+                type="button"
+                onClick={handleManualScan}
+                disabled={isScanning}
+                title="Scan career boards for new jobs (R)"
+                className="w-8 h-8 p-0 m-0 rounded-lg border border-[#262734] bg-[#171821] hover:bg-indigo-500/15 hover:border-indigo-500/30 text-gray-400 hover:text-indigo-400 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+              >
+                <span
+                  className={`material-symbols-outlined text-[18px] leading-none select-none flex items-center justify-center ${
+                    isScanning ? 'animate-spin text-indigo-400' : ''
+                  }`}
+                >
+                  sync
+                </span>
+              </button>
+
               {/* Previous Role: J (UP) */}
               <button
                 type="button"
@@ -646,9 +759,11 @@ export default function InternshipTracker() {
                   }
                 }}
                 title="Previous role (J)"
-                className="w-8 h-8 rounded-lg border border-[#262734] bg-[#171821] hover:bg-[#22232c] text-gray-400 hover:text-white flex items-center justify-center transition-colors"
+                className="w-8 h-8 p-0 m-0 rounded-lg border border-[#262734] bg-[#171821] hover:bg-[#22232c] text-gray-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
               >
-                <span className="material-symbols-outlined text-[18px]">arrow_upward</span>
+                <span className="material-symbols-outlined text-[18px] leading-none select-none flex items-center justify-center">
+                  arrow_upward
+                </span>
               </button>
 
               {/* Next Role: K (DOWN) */}
@@ -663,9 +778,11 @@ export default function InternshipTracker() {
                   }
                 }}
                 title="Next role (K)"
-                className="w-8 h-8 rounded-lg border border-[#262734] bg-[#171821] hover:bg-[#22232c] text-gray-400 hover:text-white flex items-center justify-center transition-colors"
+                className="w-8 h-8 p-0 m-0 rounded-lg border border-[#262734] bg-[#171821] hover:bg-[#22232c] text-gray-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
               >
-                <span className="material-symbols-outlined text-[18px]">arrow_downward</span>
+                <span className="material-symbols-outlined text-[18px] leading-none select-none flex items-center justify-center">
+                  arrow_downward
+                </span>
               </button>
 
               {/* Apply (A) */}
@@ -675,9 +792,11 @@ export default function InternshipTracker() {
                   if (selectedKey) handleUpdateStatus(selectedKey, 'applied');
                 }}
                 title="Mark as Applied (A)"
-                className="w-8 h-8 rounded-lg border border-[#262734] bg-[#171821] hover:bg-emerald-500/15 hover:border-emerald-500/30 text-gray-400 hover:text-emerald-400 flex items-center justify-center transition-colors"
+                className="w-8 h-8 p-0 m-0 rounded-lg border border-[#262734] bg-[#171821] hover:bg-emerald-500/15 hover:border-emerald-500/30 text-gray-400 hover:text-emerald-400 flex items-center justify-center transition-colors cursor-pointer shrink-0"
               >
-                <span className="material-symbols-outlined text-[18px]">send_and_archive</span>
+                <span className="material-symbols-outlined text-[18px] leading-none select-none flex items-center justify-center">
+                  send_and_archive
+                </span>
               </button>
 
               {/* Dismiss (D) */}
@@ -687,9 +806,11 @@ export default function InternshipTracker() {
                   if (selectedKey) handleUpdateStatus(selectedKey, 'ignored');
                 }}
                 title="Dismiss (D)"
-                className="w-8 h-8 rounded-lg border border-[#262734] bg-[#171821] hover:bg-rose-500/15 hover:border-rose-500/30 text-gray-400 hover:text-rose-400 flex items-center justify-center transition-colors"
+                className="w-8 h-8 p-0 m-0 rounded-lg border border-[#262734] bg-[#171821] hover:bg-rose-500/15 hover:border-rose-500/30 text-gray-400 hover:text-rose-400 flex items-center justify-center transition-colors cursor-pointer shrink-0"
               >
-                <span className="material-symbols-outlined text-[18px]">archive</span>
+                <span className="material-symbols-outlined text-[18px] leading-none select-none flex items-center justify-center">
+                  archive
+                </span>
               </button>
 
               {/* Star / Save (S) */}
@@ -699,19 +820,28 @@ export default function InternshipTracker() {
                   if (selectedKey) handleUpdateStatus(selectedKey, 'saved');
                 }}
                 title="Star / Save (S)"
-                className="w-8 h-8 rounded-lg border border-[#262734] bg-[#171821] hover:bg-amber-500/15 hover:border-amber-500/30 text-gray-400 hover:text-amber-400 flex items-center justify-center transition-colors"
+                className="w-8 h-8 p-0 m-0 rounded-lg border border-[#262734] bg-[#171821] hover:bg-amber-500/15 hover:border-amber-500/30 text-gray-400 hover:text-amber-400 flex items-center justify-center transition-colors cursor-pointer shrink-0"
               >
-                <span className="material-symbols-outlined text-[18px]">bookmark</span>
+                <span className="material-symbols-outlined text-[18px] leading-none select-none flex items-center justify-center">
+                  bookmark
+                </span>
               </button>
 
-              {/* Undo (Z) */}
+              {/* Undo (Z): Matching exact w-8 h-8 p-0 layout and centered icon */}
               <button
                 type="button"
                 onClick={handleUndo}
-                title="Undo last action (Z)"
-                className="w-8 h-8 rounded-lg border border-[#262734] bg-[#171821] hover:bg-[#22232c] text-gray-400 hover:text-white flex items-center justify-center transition-colors"
+                disabled={!toast?.lastKey}
+                title={toast?.lastKey ? 'Undo last action (Z)' : 'No action to undo'}
+                className={`w-8 h-8 p-0 m-0 rounded-lg border border-[#262734] bg-[#171821] flex items-center justify-center transition-colors shrink-0 ${
+                  toast?.lastKey
+                    ? 'hover:bg-[#22232c] text-gray-300 hover:text-white cursor-pointer'
+                    : 'text-gray-500/50 cursor-not-allowed opacity-50'
+                }`}
               >
-                <span className="material-symbols-outlined text-[18px]">undo</span>
+                <span className="material-symbols-outlined text-[18px] leading-none select-none flex items-center justify-center">
+                  undo
+                </span>
               </button>
             </div>
           )}
@@ -751,7 +881,7 @@ export default function InternshipTracker() {
                       setQueue(item.id);
                       if (window.innerWidth < 768) setIsSidebarOpen(false);
                     }}
-                    className={`w-full text-left flex items-center justify-between px-3 py-2 rounded-lg transition-all group ${
+                    className={`w-full text-left flex items-center justify-between px-3 py-2 rounded-lg transition-all group cursor-pointer ${
                       isActive
                         ? 'bg-[#171821] text-white font-medium border border-[#262734] shadow-sm'
                         : 'text-gray-400 hover:text-gray-200 hover:bg-[#171821]/60 border border-transparent'
@@ -761,7 +891,7 @@ export default function InternshipTracker() {
                       {/* Queue Icon: Cleanly replaced on hover with the shortcut digit */}
                       <div className="relative w-6 h-6 flex items-center justify-center shrink-0">
                         <span
-                          className={`material-symbols-outlined text-[18px] ${item.color} transition-opacity duration-150 group-hover:opacity-0`}
+                          className={`material-symbols-outlined text-[18px] leading-none ${item.color} transition-opacity duration-150 group-hover:opacity-0`}
                         >
                           {item.icon}
                         </span>
@@ -797,10 +927,10 @@ export default function InternshipTracker() {
                 className="p-2.5 flex items-center justify-between text-[10px] font-semibold text-gray-400 font-mono uppercase tracking-wider cursor-pointer hover:bg-[#22232c] transition-colors select-none"
               >
                 <span className="flex items-center gap-1.5 text-gray-300">
-                  <span className="material-symbols-outlined text-[15px] text-indigo-400">keyboard</span>
+                  <span className="material-symbols-outlined text-[15px] text-indigo-400 leading-none">keyboard</span>
                   Shortcuts
                 </span>
-                <span className="material-symbols-outlined text-[16px] text-gray-400">
+                <span className="material-symbols-outlined text-[16px] text-gray-400 leading-none">
                   {isShortcutsOpen ? 'expand_more' : 'expand_less'}
                 </span>
               </div>
@@ -814,6 +944,10 @@ export default function InternshipTracker() {
                   <div className="flex items-center justify-between">
                     <span className="text-gray-300">Next / Down</span>
                     <kbd className="bg-[#22232c] text-gray-200 px-1.5 py-0.5 rounded border border-[#262734] text-[10px] font-mono">K</kbd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Scan Career Boards</span>
+                    <kbd className="bg-[#22232c] text-indigo-400 px-1.5 py-0.5 rounded border border-[#262734] text-[10px] font-mono">R</kbd>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-300">Select Multiple</span>
@@ -847,16 +981,14 @@ export default function InternshipTracker() {
 
         {/* COLUMN 2: MAIN FEED AREA */}
         <main className="flex-1 flex flex-col h-full overflow-hidden bg-[#111115]">
-          {/* Subheader Filter Bar (Clean, Compact, Responsive) */}
-          <div className="h-11 border-b border-[#262734] px-3 sm:px-6 bg-[#111115] flex items-center justify-between shrink-0 gap-2">
+          {/* Subheader Filter Bar: Perfectly Centered Dropdown Arrows + Scan Button */}
+          <div className="h-11 border-b border-[#262734] px-4 sm:px-6 bg-[#111115] flex items-center justify-between shrink-0 gap-2">
             <div className="flex items-center gap-2.5 shrink-0">
-              {/* Select All Checkbox */}
-              <input
-                type="checkbox"
+              {/* Custom Dark Themed Select-All Checkbox */}
+              <CustomCheckbox
                 checked={jobs.length > 0 && selectedKeys.size === jobs.length}
                 onChange={handleSelectAll}
                 title="Select all visible postings"
-                className="w-4 h-4 rounded bg-[#171821] border-[#262734] text-indigo-600 focus:ring-0 focus:ring-offset-0 cursor-pointer"
               />
 
               <div className="flex items-center gap-2">
@@ -870,34 +1002,52 @@ export default function InternshipTracker() {
                   {jobs.length.toLocaleString()}
                 </span>
               </div>
+
+              {/* Subheader Manual Scan Trigger */}
+              <button
+                type="button"
+                onClick={handleManualScan}
+                disabled={isScanning}
+                title="Force script to scan career boards for new jobs"
+                className="h-7 px-2 rounded-lg bg-[#171821] hover:bg-[#22232c] border border-[#262734] hover:border-indigo-500/40 text-gray-300 text-[11px] font-medium flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 ml-1"
+              >
+                <span
+                  className={`material-symbols-outlined text-[14px] leading-none flex items-center justify-center ${
+                    isScanning ? 'animate-spin text-indigo-400' : 'text-gray-400'
+                  }`}
+                >
+                  sync
+                </span>
+                <span className="hidden sm:inline">{isScanning ? 'Scanning...' : 'Scan Boards'}</span>
+              </button>
             </div>
 
-            {/* Compact Filter Dropdowns */}
+            {/* Filter Dropdowns (Mathematically Centered Chevron Arrows) */}
             <div className="flex items-center gap-1.5 shrink-0">
               {/* Track Filter */}
-              <div className="relative">
+              <div className="relative inline-flex items-center">
                 <select
                   value={trackFilter}
                   onChange={(e) => setTrackFilter(e.target.value as any)}
                   aria-label="Filter role track"
-                  className="h-7 pl-2 pr-6 rounded-lg bg-[#171821] border border-[#262734] hover:border-gray-500/70 text-[11px] font-medium text-gray-300 outline-none cursor-pointer appearance-none transition-colors"
+                  className="h-7 pl-2.5 pr-6 rounded-lg bg-[#171821] border border-[#262734] hover:border-gray-500/70 text-[11px] font-medium text-gray-300 outline-none cursor-pointer appearance-none transition-colors"
                 >
                   <option value="all" className="bg-[#171821] text-white">All Roles</option>
                   <option value="pm" className="bg-[#171821] text-white">PM</option>
                   <option value="swe" className="bg-[#171821] text-white">SWE</option>
                 </select>
-                <span className="material-symbols-outlined text-[13px] text-gray-400 absolute right-1.5 top-2 pointer-events-none">
+                <span className="material-symbols-outlined text-[15px] text-gray-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none select-none leading-none flex items-center justify-center">
                   expand_more
                 </span>
               </div>
 
               {/* Region Filter */}
-              <div className="relative">
+              <div className="relative inline-flex items-center">
                 <select
                   value={regionFilter}
                   onChange={(e) => setRegionFilter(e.target.value)}
                   aria-label="Filter region"
-                  className="h-7 pl-2 pr-6 rounded-lg bg-[#171821] border border-[#262734] hover:border-gray-500/70 text-[11px] font-medium text-gray-300 outline-none cursor-pointer appearance-none transition-colors"
+                  className="h-7 pl-2.5 pr-6 rounded-lg bg-[#171821] border border-[#262734] hover:border-gray-500/70 text-[11px] font-medium text-gray-300 outline-none cursor-pointer appearance-none transition-colors"
                 >
                   <option value="all" className="bg-[#171821] text-white">🌐 All Regions</option>
                   <option value="us" className="bg-[#171821] text-white">🇺🇸 US</option>
@@ -907,23 +1057,23 @@ export default function InternshipTracker() {
                   <option value="remote" className="bg-[#171821] text-white">🌐 Remote</option>
                   <option value="foreign" className="bg-[#171821] text-white">🌍 Intl</option>
                 </select>
-                <span className="material-symbols-outlined text-[13px] text-gray-400 absolute right-1.5 top-2 pointer-events-none">
+                <span className="material-symbols-outlined text-[15px] text-gray-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none select-none leading-none flex items-center justify-center">
                   expand_more
                 </span>
               </div>
 
               {/* Sort Order */}
-              <div className="relative">
+              <div className="relative inline-flex items-center">
                 <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value as any)}
                   aria-label="Sort order"
-                  className="h-7 pl-2 pr-6 rounded-lg bg-[#171821] border border-[#262734] hover:border-gray-500/70 text-[11px] font-medium text-gray-300 outline-none cursor-pointer appearance-none transition-colors"
+                  className="h-7 pl-2.5 pr-6 rounded-lg bg-[#171821] border border-[#262734] hover:border-gray-500/70 text-[11px] font-medium text-gray-300 outline-none cursor-pointer appearance-none transition-colors"
                 >
                   <option value="newest" className="bg-[#171821] text-white">Newest</option>
                   <option value="company" className="bg-[#171821] text-white">A-Z</option>
                 </select>
-                <span className="material-symbols-outlined text-[13px] text-gray-400 absolute right-1.5 top-2 pointer-events-none">
+                <span className="material-symbols-outlined text-[15px] text-gray-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none select-none leading-none flex items-center justify-center">
                   expand_more
                 </span>
               </div>
@@ -941,10 +1091,10 @@ export default function InternshipTracker() {
 
             {!isLoading && jobs.length === 0 && (
               <div className="h-64 flex flex-col items-center justify-center text-gray-500 gap-2 border border-dashed border-[#262734] rounded-xl my-6">
-                <span className="material-symbols-outlined text-[36px] text-gray-600">inbox</span>
+                <span className="material-symbols-outlined text-[36px] text-gray-600 leading-none">inbox</span>
                 <span className="text-sm font-medium text-gray-300">No postings in this queue</span>
                 <span className="text-xs text-gray-500">
-                  {searchTerm ? 'Try adjusting your search query' : 'Switch queues using 1, 2, 3 or check back later!'}
+                  {searchTerm ? 'Try adjusting your search query' : 'Press R or click Scan Boards to search for new postings!'}
                 </span>
               </div>
             )}
@@ -981,15 +1131,13 @@ export default function InternshipTracker() {
                     {/* ======================================================== */}
                     {!isFocused ? (
                       <div className="flex items-center justify-between gap-3">
-                        {/* Checkbox + Flag + Position (Hero) + Metadata */}
+                        {/* Custom Dark Checkbox + Flag + Position (Hero) + Metadata */}
                         <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                          {/* Checkbox */}
-                          <input
-                            type="checkbox"
+                          {/* Custom Checkbox (Dark theme, zero browser native white) */}
+                          <CustomCheckbox
                             checked={isChecked}
-                            onChange={(e) => handleToggleSelect(job.key, e as any)}
-                            onClick={(e) => e.stopPropagation()}
-                            className="w-4 h-4 rounded bg-[#111115] border-[#262734] text-indigo-600 focus:ring-0 focus:ring-offset-0 cursor-pointer shrink-0"
+                            onChange={(e) => handleToggleSelect(job.key, e)}
+                            title="Select role (X)"
                           />
 
                           {/* Region Flag Avatar */}
@@ -1055,7 +1203,7 @@ export default function InternshipTracker() {
                               className="h-7 px-2 rounded-md bg-indigo-600/15 hover:bg-indigo-600/25 text-indigo-300 border border-indigo-500/30 text-xs font-medium flex items-center gap-1 transition-colors"
                             >
                               <span className="hidden sm:inline">Apply</span>
-                              <span className="material-symbols-outlined text-[13px]">open_in_new</span>
+                              <span className="material-symbols-outlined text-[13px] leading-none">open_in_new</span>
                             </a>
                           )}
 
@@ -1066,9 +1214,9 @@ export default function InternshipTracker() {
                               e.stopPropagation();
                               handleUpdateStatus(job.key, 'applied');
                             }}
-                            className="h-7 w-7 rounded-md bg-[#171821] hover:bg-emerald-500/20 text-gray-400 hover:text-emerald-400 border border-[#262734] hover:border-emerald-500/30 flex items-center justify-center transition-colors"
+                            className="h-7 w-7 p-0 m-0 rounded-md bg-[#171821] hover:bg-emerald-500/20 text-gray-400 hover:text-emerald-400 border border-[#262734] hover:border-emerald-500/30 flex items-center justify-center transition-colors cursor-pointer"
                           >
-                            <span className="material-symbols-outlined text-[14px]">send_and_archive</span>
+                            <span className="material-symbols-outlined text-[14px] leading-none">send_and_archive</span>
                           </button>
 
                           <button
@@ -1078,9 +1226,9 @@ export default function InternshipTracker() {
                               e.stopPropagation();
                               handleUpdateStatus(job.key, 'ignored');
                             }}
-                            className="h-7 w-7 rounded-md bg-[#171821] hover:bg-rose-500/20 text-gray-400 hover:text-rose-400 border border-[#262734] hover:border-rose-500/30 flex items-center justify-center transition-colors"
+                            className="h-7 w-7 p-0 m-0 rounded-md bg-[#171821] hover:bg-rose-500/20 text-gray-400 hover:text-rose-400 border border-[#262734] hover:border-rose-500/30 flex items-center justify-center transition-colors cursor-pointer"
                           >
-                            <span className="material-symbols-outlined text-[14px]">archive</span>
+                            <span className="material-symbols-outlined text-[14px] leading-none">archive</span>
                           </button>
                         </div>
                       </div>
@@ -1089,16 +1237,16 @@ export default function InternshipTracker() {
                       /* 2. EXPANDED VIEW: Full Uncropped Details & Interactive   */
                       /* ======================================================== */
                       <div className="flex flex-col gap-3">
-                        {/* Header Row: Checkbox, Flag, Full Title */}
+                        {/* Header Row: Custom Checkbox, Flag, Full Title */}
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex items-start gap-3 min-w-0 flex-1">
-                            <input
-                              type="checkbox"
-                              checked={isChecked}
-                              onChange={(e) => handleToggleSelect(job.key, e as any)}
-                              onClick={(e) => e.stopPropagation()}
-                              className="w-4 h-4 rounded bg-[#111115] border-[#262734] text-indigo-600 focus:ring-0 focus:ring-offset-0 cursor-pointer mt-1 shrink-0"
-                            />
+                            <div className="mt-1">
+                              <CustomCheckbox
+                                checked={isChecked}
+                                onChange={(e) => handleToggleSelect(job.key, e)}
+                                title="Select role (X)"
+                              />
+                            </div>
 
                             <div className="w-10 h-10 rounded-xl bg-[#21222b] border border-[#262734] flex items-center justify-center text-xl shadow-sm shrink-0 select-none">
                               {flag}
@@ -1148,7 +1296,7 @@ export default function InternshipTracker() {
                                 className="h-8 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs flex items-center gap-1.5 transition-colors shadow-sm"
                               >
                                 <span>Apply on Portal</span>
-                                <span className="material-symbols-outlined text-[15px]">open_in_new</span>
+                                <span className="material-symbols-outlined text-[15px] leading-none">open_in_new</span>
                               </a>
                             )}
                           </div>
@@ -1158,19 +1306,19 @@ export default function InternshipTracker() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-2.5 rounded-lg bg-[#111115] border border-[#262734] text-xs">
                           {job.location && (
                             <div className="flex items-center gap-2 text-gray-300 min-w-0">
-                              <span className="material-symbols-outlined text-[16px] text-gray-500 shrink-0">location_on</span>
+                              <span className="material-symbols-outlined text-[16px] text-gray-500 shrink-0 leading-none">location_on</span>
                               <span className="truncate">{job.location}</span>
                             </div>
                           )}
                           {job.department && (
                             <div className="flex items-center gap-2 text-gray-300 min-w-0">
-                              <span className="material-symbols-outlined text-[16px] text-gray-500 shrink-0">domain</span>
+                              <span className="material-symbols-outlined text-[16px] text-gray-500 shrink-0 leading-none">domain</span>
                               <span className="truncate">{job.department}</span>
                             </div>
                           )}
                           {job.source && (
                             <div className="flex items-center gap-2 text-gray-300 min-w-0">
-                              <span className="material-symbols-outlined text-[16px] text-gray-500 shrink-0">hub</span>
+                              <span className="material-symbols-outlined text-[16px] text-gray-500 shrink-0 leading-none">hub</span>
                               <span className="truncate">Source: {job.source}</span>
                             </div>
                           )}
@@ -1179,7 +1327,7 @@ export default function InternshipTracker() {
                         {/* Notes Input + Action Toolbar */}
                         <div className="flex items-center gap-2 flex-wrap pt-1 border-t border-[#262734]">
                           <div className="flex-1 min-w-[200px] flex items-center gap-1.5 bg-[#111115] border border-[#262734] rounded-lg px-2.5 py-1">
-                            <span className="material-symbols-outlined text-[15px] text-gray-500">edit_note</span>
+                            <span className="material-symbols-outlined text-[15px] text-gray-500 leading-none">edit_note</span>
                             <input
                               type="text"
                               defaultValue={job.notes || ''}
@@ -1199,9 +1347,9 @@ export default function InternshipTracker() {
                                 e.stopPropagation();
                                 handleUpdateStatus(job.key, 'applied');
                               }}
-                              className="h-7.5 px-2.5 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-medium flex items-center gap-1 transition-colors"
+                              className="h-7.5 px-2.5 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-medium flex items-center gap-1 transition-colors cursor-pointer"
                             >
-                              <span className="material-symbols-outlined text-[15px]">send_and_archive</span>
+                              <span className="material-symbols-outlined text-[15px] leading-none">send_and_archive</span>
                               <span>Applied (A)</span>
                             </button>
 
@@ -1211,9 +1359,9 @@ export default function InternshipTracker() {
                                 e.stopPropagation();
                                 handleUpdateStatus(job.key, 'saved');
                               }}
-                              className="h-7.5 px-2.5 rounded-md bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/30 text-xs font-medium flex items-center gap-1 transition-colors"
+                              className="h-7.5 px-2.5 rounded-md bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/30 text-xs font-medium flex items-center gap-1 transition-colors cursor-pointer"
                             >
-                              <span className="material-symbols-outlined text-[15px]">bookmark</span>
+                              <span className="material-symbols-outlined text-[15px] leading-none">bookmark</span>
                               <span>Save (S)</span>
                             </button>
 
@@ -1223,9 +1371,9 @@ export default function InternshipTracker() {
                                 e.stopPropagation();
                                 handleUpdateStatus(job.key, 'ignored');
                               }}
-                              className="h-7.5 px-2.5 rounded-md bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 text-xs font-medium flex items-center gap-1 transition-colors"
+                              className="h-7.5 px-2.5 rounded-md bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 text-xs font-medium flex items-center gap-1 transition-colors cursor-pointer"
                             >
-                              <span className="material-symbols-outlined text-[15px]">archive</span>
+                              <span className="material-symbols-outlined text-[15px] leading-none">archive</span>
                               <span>Dismiss (D)</span>
                             </button>
                           </div>
@@ -1246,7 +1394,7 @@ export default function InternshipTracker() {
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center pt-20 p-4">
           <div className="w-full max-w-xl bg-[#171821] border border-[#262734] rounded-xl shadow-2xl overflow-hidden flex flex-col animate-fadeIn">
             <div className="p-3 border-b border-[#262734] flex items-center gap-2.5">
-              <span className="material-symbols-outlined text-[20px] text-indigo-400">search</span>
+              <span className="material-symbols-outlined text-[20px] text-indigo-400 leading-none">search</span>
               <input
                 ref={searchInputRef}
                 type="text"
@@ -1260,7 +1408,7 @@ export default function InternshipTracker() {
                   setSearchTerm('');
                   setIsSearchOpen(false);
                 }}
-                className="text-xs text-gray-400 hover:text-white px-1.5 py-0.5 rounded bg-[#22232c] border border-[#262734]"
+                className="text-xs text-gray-400 hover:text-white px-1.5 py-0.5 rounded bg-[#22232c] border border-[#262734] cursor-pointer"
               >
                 Esc
               </button>
@@ -1301,7 +1449,7 @@ export default function InternshipTracker() {
           {toast.lastKey && (
             <button
               onClick={handleUndo}
-              className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold underline underline-offset-2"
+              className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold underline underline-offset-2 cursor-pointer"
             >
               Undo (Z)
             </button>

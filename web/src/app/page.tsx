@@ -1275,69 +1275,51 @@ export default function InternshipTracker() {
                       /* ======================================================== */
                       /* 2. EXPANDED VIEW: Clean, Focused, Distraction-Free       */
                       /* ======================================================== */
-                      <div className="flex flex-col gap-3">
+                      <div className="flex flex-col gap-2.5">
                         {/* Header Row: Custom Checkbox, Flag, Full Title */}
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex items-start gap-3 min-w-0 flex-1">
-                            <div className="mt-1">
-                              <CustomCheckbox
-                                checked={isChecked}
-                                onChange={(e) => handleToggleSelect(job.key, e)}
-                                title="Select role (X or Shift+Click)"
-                              />
-                            </div>
-
-                            <div className="w-10 h-10 rounded-xl bg-[#21222b] border border-[#262734] flex items-center justify-center text-xl shadow-sm shrink-0 select-none">
-                              {flag}
-                            </div>
-
-                            <div className="min-w-0 flex-1">
-                              {/* Full Uncropped Position Title (Hero) */}
-                              <h2 className="font-semibold text-base sm:text-lg text-white tracking-tight leading-snug">
-                                {job.title}
-                              </h2>
-
-                              {/* Company & Core Details */}
-                              <div className="flex items-center gap-2 flex-wrap text-xs text-gray-300 mt-1">
-                                <span className="font-semibold text-white text-sm">{job.company}</span>
-                                <span className="text-gray-600">•</span>
-                                <span
-                                  className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded border ${
-                                    isPM
-                                      ? 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30'
-                                      : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                                  }`}
-                                >
-                                  {isPM ? '📋 PM Role' : '💻 SWE Role'}
-                                </span>
-                                <span className="text-gray-600">•</span>
-                                <span className="font-mono text-gray-300">
-                                  {flag} {job.region.toUpperCase()}
-                                </span>
-                                {relativeTime && (
-                                  <>
-                                    <span className="text-gray-600">•</span>
-                                    <span className="text-gray-400 font-mono">Posted {relativeTime}</span>
-                                  </>
-                                )}
-                              </div>
-                            </div>
+                        <div className="flex items-start gap-3 min-w-0">
+                          <div className="mt-1">
+                            <CustomCheckbox
+                              checked={isChecked}
+                              onChange={(e) => handleToggleSelect(job.key, e)}
+                              title="Select role (X or Shift+Click)"
+                            />
                           </div>
 
-                          {/* Top Right Quick Action in Header */}
-                          <div className="flex items-center gap-1.5 shrink-0">
-                            {job.url && (
-                              <a
-                                href={job.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                                className="h-8 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+                          <div className="w-10 h-10 rounded-xl bg-[#21222b] border border-[#262734] flex items-center justify-center text-xl shadow-sm shrink-0 select-none">
+                            {flag}
+                          </div>
+
+                          <div className="min-w-0 flex-1">
+                            {/* Full Uncropped Position Title (Hero) */}
+                            <h2 className="font-semibold text-base sm:text-lg text-white tracking-tight leading-snug">
+                              {job.title}
+                            </h2>
+
+                            {/* Company & Core Details */}
+                            <div className="flex items-center gap-2 flex-wrap text-xs text-gray-300 mt-1">
+                              <span className="font-semibold text-white text-sm">{job.company}</span>
+                              <span className="text-gray-600">•</span>
+                              <span
+                                className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded border ${
+                                  isPM
+                                    ? 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30'
+                                    : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                                }`}
                               >
-                                <span>Apply on Portal</span>
-                                <span className="material-symbols-outlined text-[15px] leading-none">open_in_new</span>
-                              </a>
-                            )}
+                                {isPM ? '📋 PM Role' : '💻 SWE Role'}
+                              </span>
+                              <span className="text-gray-600">•</span>
+                              <span className="font-mono text-gray-300">
+                                {flag} {job.region.toUpperCase()}
+                              </span>
+                              {relativeTime && (
+                                <>
+                                  <span className="text-gray-600">•</span>
+                                  <span className="text-gray-400 font-mono">Posted {relativeTime}</span>
+                                </>
+                              )}
+                            </div>
                           </div>
                         </div>
 
@@ -1363,63 +1345,60 @@ export default function InternshipTracker() {
                           )}
                         </div>
 
-                        {/* Clean Action Toolbar (Zero distracting personal notes) */}
-                        <div className="flex items-center justify-between gap-2 pt-1 border-t border-[#262734] flex-wrap">
-                          <div className="flex items-center gap-2 text-xs text-gray-400">
-                            <span className="text-[11px] font-mono text-gray-500">ID: {job.external_id || job.key.slice(0, 8)}</span>
-                            {job.board && <span className="text-[11px] font-mono text-gray-600 hidden sm:inline">• {job.board}</span>}
-                          </div>
-
-                          <div className="flex items-center gap-1.5">
-                            {job.url && (
-                              <a
-                                href={job.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                                className="h-7.5 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs flex items-center gap-1.5 transition-colors shadow-sm"
-                              >
-                                <span>Apply on Portal</span>
-                                <span className="material-symbols-outlined text-[14px] leading-none">open_in_new</span>
-                              </a>
-                            )}
-
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleUpdateStatus(job.key, 'applied');
-                              }}
-                              className="h-7.5 px-2.5 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-medium flex items-center gap-1 transition-colors cursor-pointer"
+                        {/* Action Row: Single Apply button, no duplicates, single-line text, hover-only shortcut tooltips */}
+                        <div className="flex items-center gap-2 pt-0.5 flex-wrap">
+                          {job.url && (
+                            <a
+                              href={job.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              title="Open application portal (↵ Enter)"
+                              className="h-7.5 px-3 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs flex items-center gap-1.5 whitespace-nowrap transition-colors shadow-sm"
                             >
-                              <span className="material-symbols-outlined text-[15px] leading-none">send_and_archive</span>
-                              <span>Applied (A)</span>
-                            </button>
+                              <span>Apply</span>
+                              <span className="material-symbols-outlined text-[14px] leading-none">open_in_new</span>
+                            </a>
+                          )}
 
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleUpdateStatus(job.key, 'saved');
-                              }}
-                              className="h-7.5 px-2.5 rounded-md bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/30 text-xs font-medium flex items-center gap-1 transition-colors cursor-pointer"
-                            >
-                              <span className="material-symbols-outlined text-[15px] leading-none">bookmark</span>
-                              <span>Save (S)</span>
-                            </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleUpdateStatus(job.key, 'applied');
+                            }}
+                            title="Mark as Applied (A)"
+                            className="h-7.5 px-2.5 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-colors cursor-pointer"
+                          >
+                            <span className="material-symbols-outlined text-[15px] leading-none">send_and_archive</span>
+                            <span>Applied</span>
+                          </button>
 
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleUpdateStatus(job.key, 'ignored');
-                              }}
-                              className="h-7.5 px-2.5 rounded-md bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 text-xs font-medium flex items-center gap-1 transition-colors cursor-pointer"
-                            >
-                              <span className="material-symbols-outlined text-[15px] leading-none">archive</span>
-                              <span>Dismiss (D)</span>
-                            </button>
-                          </div>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleUpdateStatus(job.key, 'saved');
+                            }}
+                            title="Star / Save role (S)"
+                            className="h-7.5 px-2.5 rounded-md bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/30 text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-colors cursor-pointer"
+                          >
+                            <span className="material-symbols-outlined text-[15px] leading-none">bookmark</span>
+                            <span>Save</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleUpdateStatus(job.key, 'ignored');
+                            }}
+                            title="Dismiss role (D)"
+                            className="h-7.5 px-2.5 rounded-md bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-colors cursor-pointer"
+                          >
+                            <span className="material-symbols-outlined text-[15px] leading-none">archive</span>
+                            <span>Dismiss</span>
+                          </button>
                         </div>
                       </div>
                     )}

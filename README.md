@@ -98,6 +98,33 @@ All live internship openings are automatically exported to **[`JOBS.md`](JOBS.md
 
 ---
 
+## ⚡ Keyboard-Driven Web App (Next.js)
+
+Experience the ultra-fast, keyboard-driven frontend designed on **Google Stitch** (Screen `e3056bd1e87449f397fce12aed46e8f1`). Directly connected to your local `jobs.db` database with real-time status updates and undo support.
+
+```bash
+# Launch the web interface (opens on http://localhost:3000)
+python3 cli.py web
+
+# Or run directly in the web directory:
+cd web && npm run dev
+```
+
+### ⌨️ Keyboard Shortcuts
+| Key | Action | Description |
+|:---:|:---|:---|
+| <kbd>J</kbd> / <kbd>K</kbd> | **Navigate** | Move selection down / up through live postings |
+| <kbd>A</kbd> | **Apply & Move** | Mark posting as Applied and advance to next |
+| <kbd>D</kbd> | **Dismiss** | Move to Dismissed / Archived queue |
+| <kbd>S</kbd> | **Save / Star** | Bookmark posting in Saved queue |
+| <kbd>↵ Enter</kbd> / <kbd>O</kbd> | **Open Link** | Open company's direct job posting in new tab |
+| <kbd>Space</kbd> | **Quick Inspect** | Open detailed inspector modal |
+| <kbd>Z</kbd> | **Undo** | Revert last status change immediately |
+| <kbd>1</kbd> / <kbd>2</kbd> / <kbd>3</kbd> / <kbd>4</kbd> | **Switch Queues** | Inbox (Pending) / Applied / Dismissed / Saved |
+| <kbd>⌘K</kbd> | **Command Palette** | Global search across companies, roles, and cities |
+
+---
+
 ## Application Tracker (CLI)
 
 ```bash

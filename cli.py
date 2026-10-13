@@ -257,6 +257,23 @@ def cmd_summary(args) -> None:
     print(export.generate_summary_markdown(conn))
 
 
+def cmd_web(args) -> None:
+    """Launch the Next.js keyboard-driven web application."""
+    import subprocess
+    from pathlib import Path
+    port = getattr(args, "port", 3000)
+    web_dir = Path(__file__).parent / "web"
+    if not web_dir.exists():
+        sys.exit("web directory not found.")
+    print(f"🚀 Starting Leo's Internship Tracker on http://localhost:{port}...")
+    import webbrowser
+    webbrowser.open(f"http://localhost:{port}")
+    try:
+        subprocess.run(["npm", "run", "dev", "--", "-p", str(port)], cwd=str(web_dir), check=True)
+    except KeyboardInterrupt:
+        print("\nWeb app stopped.")
+
+
 def cmd_status(args) -> None:
     conn = store.connect()
     key = resolve_key(conn, args.id)
@@ -593,6 +610,9 @@ def build_parser() -> argparse.ArgumentParser:
     p.set_defaults(func=cmd_export_md)
 
     sub.add_parser("summary", help="output markdown run summary for GitHub Actions or CLI").set_defaults(func=cmd_summary)
+    p = sub.add_parser("web", help="launch Next.js keyboard-driven web application")
+    p.add_argument("--port", "-p", type=int, default=3000, help="port to run web app (default: 3000)")
+    p.set_defaults(func=cmd_web)
     sub.add_parser("health", help="which boards are failing").set_defaults(func=cmd_health)
 
     p = sub.add_parser("verify", help="check every board still responds")

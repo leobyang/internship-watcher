@@ -18,7 +18,6 @@ interface Job {
   closed_at: string;
   status: string;
   status_at: string;
-  notes: string;
   track: string;
   region: string;
 }
@@ -66,7 +65,7 @@ function formatRelativeTime(dateStr: string): string {
   return `${diffMonths}mo ago`;
 }
 
-function getLocalOverrides(): Record<string, { status: string; notes?: string; status_at?: string }> {
+function getLocalOverrides(): Record<string, { status: string; status_at?: string }> {
   if (typeof window === 'undefined') return {};
   try {
     const raw = localStorage.getItem('internship_tracker_overrides');
@@ -76,14 +75,13 @@ function getLocalOverrides(): Record<string, { status: string; notes?: string; s
   }
 }
 
-function setLocalOverride(key: string, status?: string, notes?: string) {
+function setLocalOverride(key: string, status?: string) {
   if (typeof window === 'undefined') return;
   try {
     const overrides = getLocalOverrides();
-    const existing = overrides[key] || { status: 'none', notes: '', status_at: '' };
+    const existing = overrides[key] || { status: 'none', status_at: '' };
     overrides[key] = {
       status: status !== undefined ? status : existing.status,
-      notes: notes !== undefined ? notes : existing.notes,
       status_at: new Date().toISOString(),
     };
     localStorage.setItem('internship_tracker_overrides', JSON.stringify(overrides));
@@ -108,13 +106,15 @@ function CustomCheckbox({
     <button
       type="button"
       role="checkbox"
+      tabIndex={-1}
       aria-checked={checked}
       title={title}
       onClick={(e) => {
         e.stopPropagation();
+        (e.currentTarget as HTMLElement).blur();
         onChange(e);
       }}
-      className={`w-4 h-4 rounded-[4px] p-0 m-0 flex items-center justify-center shrink-0 transition-all duration-150 cursor-pointer ${
+      className={`w-4 h-4 rounded-[4px] p-0 m-0 flex items-center justify-center shrink-0 transition-all duration-150 cursor-pointer outline-none ${
         checked
           ? 'bg-indigo-600 border border-indigo-500 text-white shadow-[0_0_8px_rgba(99,102,241,0.35)]'
           : 'bg-[#12131a] border border-[#2e3042] hover:border-indigo-400/60 hover:bg-[#1a1b24] text-transparent'
@@ -145,6 +145,7 @@ export default function InternshipTracker() {
   const [isScanning, setIsScanning] = useState(false);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
+  const [lastCheckedKey, setLastCheckedKey] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(true);
 
@@ -194,7 +195,6 @@ export default function InternshipTracker() {
             return {
               ...j,
               status: ov.status || j.status,
-              notes: ov.notes !== undefined ? ov.notes : j.notes,
             };
           }
           return j;
@@ -231,8 +231,7 @@ export default function InternshipTracker() {
             (j) =>
               j.company.toLowerCase().includes(q) ||
               j.title.toLowerCase().includes(q) ||
-              j.location.toLowerCase().includes(q) ||
-              (j.notes && j.notes.toLowerCase().includes(q))
+              j.location.toLowerCase().includes(q)
           );
         }
 
@@ -294,7 +293,6 @@ export default function InternshipTracker() {
         // Fallback to static refresh
       }
 
-      // If backend was triggered, give it a moment or refresh data
       if (triggeredBackend) {
         setTimeout(async () => {
           await fetchJobs(true);
@@ -303,7 +301,6 @@ export default function InternshipTracker() {
           toastTimeoutRef.current = setTimeout(() => setToast(null), 4000);
         }, 3500);
       } else {
-        // Static export refresh with cache-busting
         staticJobsCacheRef.current = null;
         await fetchJobs(true);
         setIsScanning(false);
@@ -318,9 +315,31 @@ export default function InternshipTracker() {
     }
   };
 
-  // Multiselect toggle single item
+  // Multiselect toggle single item or Shift+Click range select
   const handleToggleSelect = (key: string, e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
+    // Blur any active element so keyboard navigation (J/K) retains instant focus
+    (document.activeElement as HTMLElement)?.blur();
+
+    if (e?.shiftKey && lastCheckedKey) {
+      const lastIdx = jobs.findIndex((j) => j.key === lastCheckedKey);
+      const currIdx = jobs.findIndex((j) => j.key === key);
+
+      if (lastIdx !== -1 && currIdx !== -1) {
+        const start = Math.min(lastIdx, currIdx);
+        const end = Math.max(lastIdx, currIdx);
+        const rangeKeys = jobs.slice(start, end + 1).map((j) => j.key);
+
+        setSelectedKeys((prev) => {
+          const next = new Set(prev);
+          rangeKeys.forEach((k) => next.add(k));
+          return next;
+        });
+        setLastCheckedKey(key);
+        return;
+      }
+    }
+
+    // Normal single toggle
     setSelectedKeys((prev) => {
       const next = new Set(prev);
       if (next.has(key)) {
@@ -330,11 +349,13 @@ export default function InternshipTracker() {
       }
       return next;
     });
+    setLastCheckedKey(key);
   };
 
   // Select all or deselect all
   const handleSelectAll = (e: React.MouseEvent) => {
     e.stopPropagation();
+    (document.activeElement as HTMLElement)?.blur();
     if (selectedKeys.size === jobs.length) {
       setSelectedKeys(new Set());
     } else {
@@ -439,21 +460,6 @@ export default function InternshipTracker() {
     }
   };
 
-  // Save notes
-  const handleSaveNotes = async (key: string, notes: string) => {
-    setLocalOverride(key, undefined, notes);
-    setJobs((prev) => prev.map((j) => (j.key === key ? { ...j, notes } : j)));
-    try {
-      await fetch(`${BASE_PATH}/api/jobs`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ key, notes }),
-      });
-    } catch {
-      // offline
-    }
-  };
-
   // Undo last action
   const handleUndo = async () => {
     if (!toast?.lastKey || !toast?.prevStatus) return;
@@ -483,19 +489,19 @@ export default function InternshipTracker() {
   };
 
   // Keyboard navigation: J = UP, K = DOWN, R = REFRESH/SCAN
+  // Per-job keyboard shortcuts supersede any element focus!
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (
-        e.target instanceof HTMLInputElement ||
-        e.target instanceof HTMLTextAreaElement ||
-        isSearchOpen
-      ) {
+      // ONLY the modal search command input intercepts shortcut keys
+      if (isSearchOpen && e.target === searchInputRef.current) {
         if (e.key === 'Escape') {
           setIsSearchOpen(false);
+          searchInputRef.current?.blur();
         }
         return;
       }
 
+      // ⌘K opens search palette
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setIsSearchOpen(true);
@@ -503,6 +509,7 @@ export default function InternshipTracker() {
         return;
       }
 
+      // Escape clears multiselect
       if (e.key === 'Escape') {
         if (selectedKeys.size > 0) {
           setSelectedKeys(new Set());
@@ -510,10 +517,15 @@ export default function InternshipTracker() {
         }
       }
 
+      // Ensure activeElement is blurred so keys are never swallowed by buttons/checkboxes
+      if (document.activeElement instanceof HTMLElement && document.activeElement !== document.body) {
+        document.activeElement.blur();
+      }
+
       const currentIndex = jobs.findIndex((j) => j.key === selectedKey);
 
       switch (e.key) {
-        // J = UP (previous item)
+        // J = UP (previous item) | Shift+J = UP + extend selection
         case 'j':
         case 'J':
         case 'ArrowUp':
@@ -521,11 +533,20 @@ export default function InternshipTracker() {
           if (currentIndex > 0) {
             const nextKey = jobs[currentIndex - 1].key;
             setSelectedKey(nextKey);
+            if (e.shiftKey) {
+              setSelectedKeys((prev) => {
+                const next = new Set(prev);
+                if (selectedKey) next.add(selectedKey);
+                next.add(nextKey);
+                return next;
+              });
+              setLastCheckedKey(nextKey);
+            }
             document.getElementById(`job-${nextKey}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
           }
           break;
 
-        // K = DOWN (next item)
+        // K = DOWN (next item) | Shift+K = DOWN + extend selection
         case 'k':
         case 'K':
         case 'ArrowDown':
@@ -533,6 +554,15 @@ export default function InternshipTracker() {
           if (currentIndex < jobs.length - 1) {
             const nextKey = jobs[currentIndex + 1].key;
             setSelectedKey(nextKey);
+            if (e.shiftKey) {
+              setSelectedKeys((prev) => {
+                const next = new Set(prev);
+                if (selectedKey) next.add(selectedKey);
+                next.add(nextKey);
+                return next;
+              });
+              setLastCheckedKey(nextKey);
+            }
             document.getElementById(`job-${nextKey}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
           }
           break;
@@ -946,12 +976,16 @@ export default function InternshipTracker() {
                     <kbd className="bg-[#22232c] text-gray-200 px-1.5 py-0.5 rounded border border-[#262734] text-[10px] font-mono">K</kbd>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-300">Scan Career Boards</span>
-                    <kbd className="bg-[#22232c] text-indigo-400 px-1.5 py-0.5 rounded border border-[#262734] text-[10px] font-mono">R</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
                     <span className="text-gray-300">Select Multiple</span>
                     <kbd className="bg-[#22232c] text-indigo-300 px-1.5 py-0.5 rounded border border-[#262734] text-[10px] font-mono">X</kbd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Range Select</span>
+                    <kbd className="bg-[#22232c] text-indigo-300 px-1.5 py-0.5 rounded border border-[#262734] text-[10px] font-mono">Shift + Click / J / K</kbd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Scan Boards</span>
+                    <kbd className="bg-[#22232c] text-indigo-400 px-1.5 py-0.5 rounded border border-[#262734] text-[10px] font-mono">R</kbd>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-300">Apply</span>
@@ -1111,7 +1145,12 @@ export default function InternshipTracker() {
                   <div
                     key={job.key}
                     id={`job-${job.key}`}
-                    onClick={() => setSelectedKey(job.key)}
+                    onClick={(e) => {
+                      if (e.shiftKey) {
+                        handleToggleSelect(job.key, e);
+                      }
+                      setSelectedKey(job.key);
+                    }}
                     onDoubleClick={() => handleOpenActivePortal(job)}
                     className={`relative rounded-xl border transition-all cursor-pointer group ${
                       isFocused
@@ -1133,11 +1172,11 @@ export default function InternshipTracker() {
                       <div className="flex items-center justify-between gap-3">
                         {/* Custom Dark Checkbox + Flag + Position (Hero) + Metadata */}
                         <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                          {/* Custom Checkbox (Dark theme, zero browser native white) */}
+                          {/* Custom Checkbox with Shift-Select Support */}
                           <CustomCheckbox
                             checked={isChecked}
                             onChange={(e) => handleToggleSelect(job.key, e)}
-                            title="Select role (X)"
+                            title="Select role (X or Shift+Click)"
                           />
 
                           {/* Region Flag Avatar */}
@@ -1234,7 +1273,7 @@ export default function InternshipTracker() {
                       </div>
                     ) : (
                       /* ======================================================== */
-                      /* 2. EXPANDED VIEW: Full Uncropped Details & Interactive   */
+                      /* 2. EXPANDED VIEW: Clean, Focused, Distraction-Free       */
                       /* ======================================================== */
                       <div className="flex flex-col gap-3">
                         {/* Header Row: Custom Checkbox, Flag, Full Title */}
@@ -1244,7 +1283,7 @@ export default function InternshipTracker() {
                               <CustomCheckbox
                                 checked={isChecked}
                                 onChange={(e) => handleToggleSelect(job.key, e)}
-                                title="Select role (X)"
+                                title="Select role (X or Shift+Click)"
                               />
                             </div>
 
@@ -1324,23 +1363,27 @@ export default function InternshipTracker() {
                           )}
                         </div>
 
-                        {/* Notes Input + Action Toolbar */}
-                        <div className="flex items-center gap-2 flex-wrap pt-1 border-t border-[#262734]">
-                          <div className="flex-1 min-w-[200px] flex items-center gap-1.5 bg-[#111115] border border-[#262734] rounded-lg px-2.5 py-1">
-                            <span className="material-symbols-outlined text-[15px] text-gray-500 leading-none">edit_note</span>
-                            <input
-                              type="text"
-                              defaultValue={job.notes || ''}
-                              onBlur={(e) => handleSaveNotes(job.key, e.target.value)}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
-                              }}
-                              placeholder="Add personal notes (e.g., referred by Alex, interview scheduled...)"
-                              className="bg-transparent text-xs text-white placeholder-gray-500 outline-none w-full"
-                            />
+                        {/* Clean Action Toolbar (Zero distracting personal notes) */}
+                        <div className="flex items-center justify-between gap-2 pt-1 border-t border-[#262734] flex-wrap">
+                          <div className="flex items-center gap-2 text-xs text-gray-400">
+                            <span className="text-[11px] font-mono text-gray-500">ID: {job.external_id || job.key.slice(0, 8)}</span>
+                            {job.board && <span className="text-[11px] font-mono text-gray-600 hidden sm:inline">• {job.board}</span>}
                           </div>
 
                           <div className="flex items-center gap-1.5">
+                            {job.url && (
+                              <a
+                                href={job.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="h-7.5 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+                              >
+                                <span>Apply on Portal</span>
+                                <span className="material-symbols-outlined text-[14px] leading-none">open_in_new</span>
+                              </a>
+                            )}
+
                             <button
                               type="button"
                               onClick={(e) => {

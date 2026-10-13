@@ -1,0 +1,832 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"inverse-on-surface":"#2f3036","on-primary-fixed-variant":"#2f2ebe","on-error-container":"#ffdad6","surface-container-high":"#292a2f","surface-container-low":"#1a1b20","surface-container":"#1e1f25","on-secondary-container":"#00311f","surface-container-lowest":"#0d0e13","secondary":"#4edea3","surface-dim":"#121318","primary-container":"#8083ff","on-background":"#e3e1e9","on-surface-variant":"#c7c4d7","primary-fixed":"#e1e0ff","surface-variant":"#34343a","tertiary-fixed-dim":"#bdc2ff","on-tertiary-fixed-variant":"#2f3aa3","on-primary-fixed":"#07006c","tertiary":"#bdc2ff","outline-variant":"#464554","on-surface":"#e3e1e9","on-error":"#690005","outline":"#908fa0","error-container":"#93000a","on-secondary":"#003824","inverse-primary":"#494bd6","error":"#ffb4ab","surface-container-highest":"#34343a","surface-bright":"#38393e","on-primary":"#1000a9","secondary-container":"#00a572","tertiary-fixed":"#e0e0ff","primary":"#c0c1ff","on-secondary-fixed":"#002113","on-secondary-fixed-variant":"#005236","surface-tint":"#c0c1ff","on-tertiary-fixed":"#000767","on-primary-container":"#0d0096","on-tertiary":"#131e8c","primary-fixed-dim":"#c0c1ff","secondary-fixed":"#6ffbbe","inverse-surface":"#e3e1e9","background":"#121318","surface":"#121318","on-tertiary-container":"#081486","secondary-fixed-dim":"#4edea3","tertiary-container":"#7c87f3"},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},spacing:{"space-md":"0.5rem","margin-mobile":"0.75rem","space-xl":"1rem","space-lg":"0.75rem","gutter":"0.75rem","gutter-mobile":"0.5rem","space-xs":"0.125rem","space-sm":"0.25rem","margin":"1rem"},fontFamily:{"body-lg":["Inter"],"headline-sm":["Inter"],"headline-md":["Inter"],"headline-lg":["Inter"],"label-lg":["Inter"],"label-sm":["Inter"],"label-md":["Inter"],"code-keycap":["JetBrains Mono"],"headline-lg-mobile":["Inter"],"body-sm":["Inter"],"body-md":["Inter"]},fontSize:{"body-lg":["0.9375rem",{"lineHeight":"1.375rem","letterSpacing":"-0.01em","fontWeight":"400"}],"headline-sm":["1rem",{"lineHeight":"1.375rem","letterSpacing":"-0.015em","fontWeight":"600"}],"headline-md":["1.25rem",{"lineHeight":"1.625rem","letterSpacing":"-0.02em","fontWeight":"600"}],"headline-lg":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.025em","fontWeight":"600"}],"label-lg":["0.8125rem",{"lineHeight":"1.125rem","letterSpacing":"-0.01em","fontWeight":"500"}],"label-sm":["0.6875rem",{"lineHeight":"0.875rem","letterSpacing":"0.02em","fontWeight":"500"}],"label-md":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0em","fontWeight":"500"}],"code-keycap":["0.6875rem",{"lineHeight":"0.875rem","letterSpacing":"0.05em","fontWeight":"500"}],"headline-lg-mobile":["1.375rem",{"lineHeight":"1.75rem","letterSpacing":"-0.02em","fontWeight":"600"}],"body-sm":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0em","fontWeight":"400"}],"body-md":["0.8125rem",{"lineHeight":"1.1875rem","letterSpacing":"-0.005em","fontWeight":"400"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.25)]"><div class="h-14 w-full px-margin flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-lg shrink-0"><img alt="FastTrack Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VFzRcyXMsMrmzk_gq3wxN7R0FmugVPYIf1g6acPFHQJBF5ECPZcNhYVZVfrFIR8kePs5n_oKGFAjeMi9SQ-gRrlrAJtv-Qpc6ypDAZHG6846sgVlb7jnoXS-7XaaId8IjgXPOFn5AcNcXQ3Ut9ykfu1fzUKiEYLonUIEcRaXj_pL7GyiME_jCEfShOjnoJiCmSMOKJpI6TmL0V-RKUUYcqn0LJkALB6j0Q8He7X39u_3dOvn7nbdcSC2g"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight font-semibold">Leo's Internship Tracker</span><span class="font-label-sm text-label-sm text-on-surface-variant -mt-1">Personal Application Pipeline</span></div></div><div class="flex-1 max-w-xl mx-auto flex items-center justify-center"><div class="w-full flex items-center justify-between bg-surface-container-lowest px-space-lg py-space-sm rounded-lg shadow-[0_1px_8px_rgba(0,0,0,0.1)] hover:bg-surface-container-low transition-colors cursor-pointer"><div class="flex items-center gap-space-md text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">search</span><span class="font-body-sm text-body-sm text-on-surface-variant">Search companies, roles, or commands...</span></div><div class="flex items-center gap-space-xs"><kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded shadow-[0_1px_8px_rgba(0,0,0,0.08)]">⌘K</kbd></div></div></div><div class="flex items-center gap-gutter shrink-0"><div class="hidden xl:flex items-center gap-space-sm"><div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded"><kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-primary px-1 rounded">J</kbd><span class="text-on-surface-variant font-label-sm text-label-sm">/</span><kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-primary px-1 rounded">K</kbd><span class="font-label-sm text-label-sm text-on-surface-variant ml-1">Navigate</span></div><div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded"><kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-secondary px-1 rounded">A</kbd><span class="font-label-sm text-label-sm text-on-surface-variant ml-1">Apply</span></div><div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded"><kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-error px-1 rounded">D</kbd><span class="font-label-sm text-label-sm text-on-surface-variant ml-1">Dismiss</span></div></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed left-0 top-14 bottom-0 w-64 bg-surface-container-lowest z-40 flex flex-col justify-between py-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.1)]"><div class="flex flex-col gap-space-md"><div class="px-margin pb-space-sm"><span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase font-semibold">Queues</span></div><nav class="flex flex-col px-space-md gap-space-xs"><a href="#" onclick="setFilter('inbox'); return false;" class="flex items-center justify-between px-space-md py-space-sm rounded-lg transition-colors bg-surface-container-high text-on-surface font-semibold"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[16px] text-primary">inbox</span><span class="font-body-md text-body-md">Inbox (Pending)</span></div><kbd class="font-code-keycap text-code-keycap bg-surface-container px-1.5 py-0.5 rounded text-on-surface-variant">1</kbd></a><a href="#" onclick="setFilter('applied'); return false;" class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[16px] text-secondary">send_and_archive</span><span class="font-body-md text-body-md">Applied</span></div><kbd class="font-code-keycap text-code-keycap bg-surface-container-high px-1.5 py-0.5 rounded text-on-surface-variant">2</kbd></a><a href="#" onclick="setFilter('dismissed'); return false;" class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[16px] text-error">archive</span><span class="font-body-md text-body-md">Dismissed</span></div><kbd class="font-code-keycap text-code-keycap bg-surface-container-high px-1.5 py-0.5 rounded text-on-surface-variant">3</kbd></a></nav></div><div class="px-margin pt-space-md flex flex-col gap-space-sm"><div class="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-space-xs text-on-surface-variant text-body-sm"><div class="flex items-center justify-between font-label-sm text-label-sm font-medium text-on-surface"><span class="">Navigation</span><span class="font-code-keycap text-code-keycap text-primary">J / K</span></div><div class="flex items-center justify-between font-label-sm text-label-sm font-medium text-on-surface"><span class="">Apply &amp; Next</span><span class="font-code-keycap text-code-keycap text-secondary">A</span></div><div class="flex items-center justify-between font-label-sm text-label-sm font-medium text-on-surface"><span class="">Pass / Dismiss</span><span class="font-code-keycap text-code-keycap text-error">D</span></div><div class="flex items-center justify-between font-label-sm text-label-sm font-medium text-on-surface"><span class="">Quick Search</span><span class="font-code-keycap text-code-keycap text-outline">⌘K</span></div></div><div class="text-center font-label-sm text-label-sm text-on-surface-variant/60">Leo's Workspace</div></div></aside><div class="pl-64"><main class="w-full pt-14 bg-background min-h-screen"><div class="flex flex-col w-full h-[calc(100vh-3.5rem)] overflow-hidden bg-surface-container-lowest">
+<!-- Toast Notification Container (Floating) -->
+<div class="fixed bottom-6 right-6 z-50 flex flex-col gap-space-sm pointer-events-none transition-all" id="toast-container"></div>
+<!-- Workspace Sub-bar / Quick Filter & Metric strip -->
+
+<!-- 3-Pane Fluid Split Layout -->
+<div class="flex flex-1 w-full overflow-hidden h-full">
+<!-- PANE 1: Left Mini-Nav (210px) -->
+<div class="w-52 shrink-0 bg-surface-container-lowest flex flex-col justify-between py-space-md px-space-md shadow-sm">
+<div class="flex flex-col gap-space-xs">
+<div class="px-space-md py-space-xs text-on-surface-variant font-label-sm text-label-sm tracking-wider uppercase flex items-center justify-between">
+<span class="">Queues</span>
+<span class="font-code-keycap text-code-keycap text-outline">NUM</span>
+</div>
+<!-- Inbox View Nav -->
+<button class="w-full text-left flex items-center justify-between px-space-md py-space-sm rounded bg-surface-container text-on-surface transition-all group relative" id="nav-inbox" onclick="setFilter('inbox')">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">inbox</span>
+<span class="font-label-md text-label-md font-medium">Inbox</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-code-keycap text-code-keycap px-1.5 py-0.5 rounded bg-primary-container text-on-primary font-bold" id="badge-inbox">5</span>
+<kbd class="font-code-keycap text-code-keycap px-1 bg-surface-container-high text-on-surface-variant rounded">1</kbd>
+</div>
+<div class="absolute left-0 top-1 bottom-1 w-0.5 bg-primary rounded-r" id="ind-inbox"></div>
+</button>
+<!-- Applied View Nav -->
+<button class="w-full text-left flex items-center justify-between px-space-md py-space-sm rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all group relative" id="nav-applied" onclick="setFilter('applied')">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[16px] text-secondary">send_and_archive</span>
+<span class="font-label-md text-label-md font-medium">Applied</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-code-keycap text-code-keycap px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant" id="badge-applied">0</span>
+<kbd class="font-code-keycap text-code-keycap px-1 bg-surface-container-high text-on-surface-variant rounded">2</kbd>
+</div>
+<div class="absolute left-0 top-1 bottom-1 w-0.5 bg-secondary rounded-r hidden" id="ind-applied"></div>
+</button>
+<!-- Dismissed View Nav -->
+<button class="w-full text-left flex items-center justify-between px-space-md py-space-sm rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all group relative" id="nav-dismissed" onclick="setFilter('dismissed')">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[16px] text-error">archive</span>
+<span class="font-label-md text-label-md font-medium">Dismissed</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-code-keycap text-code-keycap px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant" id="badge-dismissed">0</span>
+<kbd class="font-code-keycap text-code-keycap px-1 bg-surface-container-high text-on-surface-variant rounded">3</kbd>
+</div>
+<div class="absolute left-0 top-1 bottom-1 w-0.5 bg-error rounded-r hidden" id="ind-dismissed"></div>
+</button>
+<div class="my-space-md h-px bg-surface-container-low"></div>
+<div class="px-space-md py-space-xs text-on-surface-variant font-label-sm text-label-sm tracking-wider uppercase">
+          Shortcuts
+        </div>
+<div class="flex flex-col gap-space-xs px-space-md text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center justify-between py-0.5">
+<span class="">Next / Prev</span>
+<div class="flex gap-0.5">
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-on-surface px-1 rounded">J</kbd>
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-on-surface px-1 rounded">K</kbd>
+</div>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="">Instant Apply</span>
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-secondary px-1 rounded">A</kbd>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="">Pass / Dismiss</span>
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-error px-1 rounded">D</kbd>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="">Revert / Undo</span>
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-on-surface px-1 rounded">Z</kbd>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="">Quick Filter</span>
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-primary px-1 rounded">/</kbd>
+</div>
+</div>
+</div>
+<!-- Quick Session Stats Graphic -->
+<div class="bg-surface-container-low p-space-md rounded flex flex-col gap-space-xs"><div class="flex items-center justify-between text-label-sm font-label-sm"><span class="text-on-surface-variant font-medium">Quick Actions</span><kbd class="font-code-keycap text-code-keycap bg-surface-container-high px-1 rounded text-primary">?</kbd></div><div class="text-body-sm text-on-surface-variant/70 font-body-sm mt-0.5">Press <kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-on-surface px-1 rounded">?</kbd> anytime for shortcut reference</div></div>
+</div>
+<!-- PANE 2: Middle Column (The Feed, 380px) -->
+<div class="w-96 shrink-0 bg-surface-container-low flex flex-col h-full shadow-sm">
+<!-- Feed Header -->
+<div class="h-12 px-space-md bg-surface-container flex items-center justify-between shrink-0">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-headline-sm text-on-surface" id="current-view-title">Inbox</span>
+<span class="font-code-keycap text-code-keycap px-1.5 py-0.2 bg-surface-container-high text-primary rounded" id="feed-counter">5</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="flex items-center gap-1 bg-surface-container-high px-space-sm py-0.5 rounded text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">swap_vert</span>
+<span class="">Latest</span>
+</div>
+<div class="flex items-center gap-0.5">
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-on-surface px-1 rounded">J</kbd>
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-on-surface px-1 rounded">K</kbd>
+</div>
+</div>
+</div>
+<!-- Quick In-Pane Filter Search -->
+<div class="p-space-sm bg-surface-container-low">
+<div class="relative w-full">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant absolute left-2.5 top-2 pointer-events-none">search</span>
+<input class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm pl-8 pr-7 py-1.5 rounded focus:outline-none focus:ring-1 focus:ring-primary placeholder-on-surface-variant/50 transition-all" id="quick-filter-input" oninput="handleFilterInput(this.value)" placeholder="Filter company, tag, role... [/]" type="text">
+<span class="hidden material-symbols-outlined text-[14px] text-on-surface-variant hover:text-on-surface absolute right-2 top-2.5 cursor-pointer" id="clear-filter-btn" onclick="clearFilter()">close</span>
+</div>
+</div>
+<!-- Scrollable Job Cards List -->
+<div class="flex-1 overflow-y-auto divide-y divide-surface-container-high/40 p-space-xs" id="job-feed-list">
+<!-- Dynamic Cards rendered via JS -->
+</div>
+</div>
+<!-- PANE 3: Right Inspector Pane (Reading & Action Pane) -->
+<div class="flex-1 bg-surface flex flex-col h-full relative overflow-hidden" id="inspector-pane">
+<!-- Loaded dynamically via renderActiveJob() -->
+<div class="hidden flex-1 flex flex-col items-center justify-center p-margin text-center" id="empty-state-container">
+<div class="w-16 h-16 rounded-full bg-secondary-container/20 flex items-center justify-center mb-space-md text-secondary">
+<span class="material-symbols-outlined text-headline-lg">done_all</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-space-xs">Inbox Zero Achieved</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-sm mb-space-xl">
+          All high-priority SWE internship pipelines triaged. New verified listings ingest automatically every 30 minutes.
+        </p>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-lg py-space-sm bg-primary text-on-primary font-label-md text-label-md rounded flex items-center gap-space-sm hover:opacity-90 transition-opacity" onclick="resetMockData()">
+<span class="">Reload Pipeline Samples</span>
+<kbd class="font-code-keycap text-code-keycap bg-on-primary/20 text-on-primary px-1 rounded">R</kbd>
+</button>
+</div>
+</div>
+<!-- Content Container -->
+<div class="flex-1 flex flex-col h-full overflow-hidden" id="inspector-content">
+<!-- Rendered by JavaScript -->
+</div>
+<!-- Persistent Command & Shortcut Dock -->
+<div class="h-12 bg-surface-container-low px-margin flex items-center justify-between shrink-0 shadow-sm">
+<div class="flex items-center gap-space-xl text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-space-xs">
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-on-surface px-1.5 py-0.5 rounded">J</kbd>
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-on-surface px-1.5 py-0.5 rounded">K</kbd>
+<span class="ml-1">Navigate</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-secondary px-1.5 py-0.5 rounded">A</kbd>
+<span class="ml-1">Apply &amp; Advance</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-error px-1.5 py-0.5 rounded">D</kbd>
+<span class="ml-1">Dismiss</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-primary px-1.5 py-0.5 rounded">O</kbd>
+<span class="ml-1">Open Portal</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-1 bg-surface-container-high text-on-surface-variant hover:text-error hover:bg-error-container/30 transition-colors rounded font-label-md text-label-md flex items-center gap-space-xs" id="btn-quick-dismiss" onclick="handleDismissActive()">
+<span class="">Dismiss</span>
+<kbd class="font-code-keycap text-code-keycap bg-surface-container px-1 rounded">D</kbd>
+</button>
+<button class="px-space-lg py-1 bg-secondary text-on-secondary font-label-md text-label-md rounded font-semibold flex items-center gap-space-xs hover:opacity-90 transition-opacity" id="btn-quick-apply" onclick="handleApplyActive()">
+<span class="">Apply Now</span>
+<kbd class="font-code-keycap text-code-keycap bg-on-secondary/20 text-on-secondary px-1 rounded">A</kbd>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Initial Data Set
+  const INITIAL_JOBS = [
+    {
+      id: "job-1",
+      company: "Stripe",
+      role: "Software Engineering Intern, Summer 2025",
+      location: "San Francisco, CA / Remote",
+      postedAgo: "2h ago",
+      term: "Summer 2025",
+      type: "Full-time Internship",
+      salary: "$68 - $78 / hr",
+      status: "inbox",
+      dateApplied: null,
+      portalUrl: "https://stripe.com/jobs",
+      teamSummary: "Join the Core Payments Orchestration team. You will build and scale distributed ledger infrastructure responsible for processing hundreds of billions in global digital commerce with five-nines reliability.",
+      responsibilities: [
+        "Design and execute idempotent, zero-downtime ledger migration pipelines using Ruby, Go, and Spanner.",
+        "Profile and optimize ultra-low latency payout routing endpoints processing 15,000+ RPS peak.",
+        "Implement end-to-end automated synthetic tests for transaction edge-cases, currency conversion, and fraud mitigation hooks.",
+        "Collaborate directly with cross-functional staff engineers, product leaders, and regulatory infrastructure teams."
+      ],
+      qualifications: [
+        "Currently pursuing a BS/MS in Computer Science, Software Engineering, or equivalent graduation year Dec 2025 - Summer 2026.",
+        "Deep foundation in concurrent systems, data structures, and relational storage engines (Postgres, CockroachDB, or Spanner).",
+        "Demonstrated project work or prior internship experience in backend service development with Go, Rust, Java, or C++."
+      ],
+      tags: ["Go", "Distributed Systems", "PostgreSQL", "FinTech", "High Throughput"],
+      logoBg: "bg-[#635BFF]",
+      logoInitial: "S"
+    },
+    {
+      id: "job-2",
+      company: "Figma",
+      role: "Systems & Web Infrastructure Intern",
+      location: "San Francisco, CA",
+      postedAgo: "5h ago",
+      term: "Summer 2025",
+      type: "Full-time Internship",
+      salary: "$70 - $80 / hr",
+      status: "inbox",
+      dateApplied: null,
+      portalUrl: "https://figma.com/careers",
+      teamSummary: "Join Figma's Multiplayer Engine & Runtime team. We build the high-speed WebAssembly, WebGL, and C++ rendering subsystem that powers synchronous multi-user canvas collaboration in the browser.",
+      responsibilities: [
+        "Optimize WebAssembly compilation bundles to reduce initial canvas cold-start times on complex vector graphs.",
+        "Investigate and patch concurrency races inside Figma's differential operational transformation (OT) sync pipeline.",
+        "Write GPU shader diagnostic tooling to trace frame drops and memory spikes across diverse end-user browser devices.",
+        "Participate in design architecture reviews for next-generation infinite canvas compute layers."
+      ],
+      qualifications: [
+        "Comfortable working with C++, Rust, or TypeScript targeting web-native low-level runtimes.",
+        "Interest in computer graphics, WebGL/WebGPU, compiler pipelines, or real-time collaborative state synchronization.",
+        "Enrolled in an undergraduate or graduate degree returning to classes Fall 2025."
+      ],
+      tags: ["Rust", "WebAssembly", "C++", "WebGL", "Real-Time Collaboration"],
+      logoBg: "bg-[#F24E1E]",
+      logoInitial: "F"
+    },
+    {
+      id: "job-3",
+      company: "Datadog",
+      role: "Backend Engineering Intern",
+      location: "New York, NY",
+      postedAgo: "1d ago",
+      term: "Summer 2025",
+      type: "Full-time Internship",
+      salary: "$60 - $72 / hr",
+      status: "inbox",
+      dateApplied: null,
+      portalUrl: "https://datadoghq.com/careers",
+      teamSummary: "Datadog's Ingestion Platform ingests trillions of real-time telemetry metrics daily. You will build resilient stream-processing pipelines, custom distributed buffers, and metric aggregation nodes.",
+      responsibilities: [
+        "Architect and optimize streaming partitions running on Kafka and Cassandra clusters with sub-second ingestion SLAs.",
+        "Implement automated partition scaling strategies in Go to prevent backpressure spikes under heavy cloud provider incidents.",
+        "Expose live telemetry dashboards and alert thresholds for internal service reliability metrics.",
+        "Debug distributed tail latencies using Datadog APM tracing on live staging microservices."
+      ],
+      qualifications: [
+        "Strong fundamentals in object-oriented or systems languages (Go, Java, Python, or C++).",
+        "Understanding of distributed data flows, streaming queue patterns (Kafka/RabbitMQ), and asynchronous IO.",
+        "Enthusiasm for developer tooling, cloud-native deployments, and observability."
+      ],
+      tags: ["Go", "Kafka", "Cassandra", "Distributed Streaming", "Observability"],
+      logoBg: "bg-[#632CA6]",
+      logoInitial: "D"
+    },
+    {
+      id: "job-4",
+      company: "Ramp",
+      role: "Full Stack Product Engineer Intern",
+      location: "New York, NY / Miami, FL",
+      postedAgo: "1d ago",
+      term: "Summer 2025",
+      type: "Full-time Internship",
+      salary: "$65 - $75 / hr",
+      status: "inbox",
+      dateApplied: null,
+      portalUrl: "https://ramp.com/careers",
+      teamSummary: "Join the fastest growing corporate finance platform in North America. You will ship customer-facing velocity products that automate corporate card spend limits, travel approvals, and automatic invoice reconciliation.",
+      responsibilities: [
+        "Ship high-touch customer workflows in React, TypeScript, and Python (FastAPI/Django) from initial PRD to production.",
+        "Build deterministic audit logs and state machines managing multi-tiered corporate procurement approvals.",
+        "Improve client-side rendering performance and latency across dense interactive financial ledgers.",
+        "Deploy bi-weekly directly to hundreds of thousands of finance operators with instant rollback feature gates."
+      ],
+      qualifications: [
+        "Demonstrated ability to move fast across the full web stack (modern React, TypeScript, Python or similar).",
+        "Attention to micro-interactions, responsive UX details, and high-quality functional typography.",
+        "Self-starter mindset eager to own end-to-end features alongside senior designers and founders."
+      ],
+      tags: ["TypeScript", "React", "Python", "PostgreSQL", "FastAPI"],
+      logoBg: "bg-[#2764FF]",
+      logoInitial: "R"
+    },
+    {
+      id: "job-5",
+      company: "OpenAI",
+      role: "Research & Platform Engineering Intern",
+      location: "San Francisco, CA",
+      postedAgo: "2d ago",
+      term: "Summer 2025",
+      type: "Full-time Internship",
+      salary: "$75 - $90 / hr",
+      status: "inbox",
+      dateApplied: null,
+      portalUrl: "https://openai.com/careers",
+      teamSummary: "Work on large-scale infrastructure supporting frontier artificial intelligence models. You will interface with compute clusters containing tens of thousands of GPUs to optimize model inference latency, checkpointing, and evaluation harness stability.",
+      responsibilities: [
+        "Optimize cluster scheduling heuristics and high-bandwidth interconnect IO for distributed model evaluation suites.",
+        "Build fault-tolerant checkpoint serialization pipelines mitigating hardware failure interrupts during long runs.",
+        "Develop clean developer CLI and telemetry APIs for internal research scientists to submit training jobs seamlessly.",
+        "Conduct empirical benchmarks isolating network latency bottlenecks across NVLink and multi-node clusters."
+      ],
+      qualifications: [
+        "Academic background in CS, Systems, or Machine Learning with strong algorithmic problem-solving skills.",
+        "Fluency in Python, C++, or Rust with solid Linux kernel, networking, and memory profiling familiarity.",
+        "Curiosity for scalable AI systems, transformer architectures, and massive distributed training mechanics."
+      ],
+      tags: ["Python", "Rust", "CUDA", "Cluster Computing", "PyTorch"],
+      logoBg: "bg-[#10A37F]",
+      logoInitial: "O"
+    }
+  ];
+
+  // State Management
+  let jobs = JSON.parse(localStorage.getItem('fasttrack_jobs')) || INITIAL_JOBS;
+  let currentFilter = 'inbox';
+  let activeIndex = 0;
+  let searchQuery = '';
+  let lastAction = null; // For Undo functionality
+
+  function saveState() {
+    localStorage.setItem('fasttrack_jobs', JSON.stringify(jobs));
+  }
+
+  function getVisibleJobs() {
+    return jobs.filter(j => {
+      const matchesFilter = j.status === currentFilter;
+      if (!matchesFilter) return false;
+      if (!searchQuery.trim()) return true;
+      const q = searchQuery.toLowerCase();
+      return (
+        j.company.toLowerCase().includes(q) ||
+        j.role.toLowerCase().includes(q) ||
+        j.location.toLowerCase().includes(q) ||
+        j.tags.some(t => t.toLowerCase().includes(q))
+      );
+    });
+  }
+
+  function updateCounts() {
+    const inboxCount = jobs.filter(j => j.status === 'inbox').length;
+    const appliedCount = jobs.filter(j => j.status === 'applied').length;
+    const dismissedCount = jobs.filter(j => j.status === 'dismissed').length;
+
+    document.getElementById('badge-inbox').textContent = inboxCount;
+    document.getElementById('badge-applied').textContent = appliedCount;
+    document.getElementById('badge-dismissed').textContent = dismissedCount;
+
+    const visibleCount = getVisibleJobs().length;
+    document.getElementById('feed-counter').textContent = visibleCount;
+
+    // Throughput bar
+    const total = jobs.length;
+    const processed = appliedCount + dismissedCount;
+    const pct = total > 0 ? Math.round((processed / total) * 100) : 0;
+    const rateBar = document.getElementById('rate-bar');
+    if (rateBar) rateBar.style.width = pct + '%';
+    const rateStat = document.getElementById('rate-stat');
+    if (rateStat) rateStat.textContent = `${pct}% CLEARED`;
+  }
+
+  function renderFeed() {
+    const listContainer = document.getElementById('job-feed-list');
+    const visibleJobs = getVisibleJobs();
+    listContainer.innerHTML = '';
+
+    if (visibleJobs.length === 0) {
+      listContainer.innerHTML = `
+        <div class="p-space-lg text-center flex flex-col items-center justify-center h-48 text-on-surface-variant">
+          <span class="material-symbols-outlined text-headline-md mb-space-xs text-outline">search_off</span>
+          <span class="font-label-md text-label-md text-on-surface">No entries match queue</span>
+          <span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Switch views or press [1] to reset</span>
+        </div>
+      `;
+      renderActiveJob(null);
+      return;
+    }
+
+    // Guard index bounds
+    if (activeIndex >= visibleJobs.length) {
+      activeIndex = Math.max(0, visibleJobs.length - 1);
+    }
+
+    visibleJobs.forEach((job, idx) => {
+      const isSelected = idx === activeIndex;
+      const card = document.createElement('div');
+      card.className = `p-space-md cursor-pointer transition-all flex flex-col gap-1 relative ${
+        isSelected
+          ? 'bg-surface-container-high ring-1 ring-primary'
+          : 'hover:bg-surface-container bg-surface-container-low'
+      }`;
+      card.onclick = () => {
+        activeIndex = idx;
+        renderFeed();
+      };
+
+      card.innerHTML = `
+        <div class="flex items-start justify-between gap-space-sm">
+          <div class="flex items-center gap-space-sm min-w-0">
+            <div class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs text-white shrink-0 ${job.logoBg}">
+              ${job.logoInitial}
+            </div>
+            <span class="font-label-lg text-label-lg text-on-surface font-semibold truncate">${job.company}</span>
+          </div>
+          <span class="font-label-sm text-label-sm text-on-surface-variant shrink-0 font-code-keycap">${job.postedAgo}</span>
+        </div>
+
+        <div class="font-body-md text-body-md text-on-surface line-clamp-1 mt-0.5 ${isSelected ? 'text-primary' : ''}">
+          ${job.role}
+        </div>
+
+        <div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant mt-1">
+          <div class="flex items-center gap-1 truncate max-w-[200px]">
+            <span class="material-symbols-outlined text-[13px] shrink-0">location_on</span>
+            <span class="truncate">${job.location}</span>
+          </div>
+          <span class="font-code-keycap text-code-keycap text-secondary shrink-0">${job.salary.split('/')[0].trim()}</span>
+        </div>
+
+        <div class="flex items-center gap-1 mt-1 overflow-hidden">
+          ${job.tags.slice(0, 3).map(tag => `
+            <span class="font-label-sm text-label-sm px-1.5 py-0.2 bg-surface-container-highest text-on-surface-variant rounded">
+              ${tag}
+            </span>
+          `).join('')}
+          ${job.tags.length > 3 ? `<span class="font-label-sm text-label-sm text-on-surface-variant">+${job.tags.length - 3}</span>` : ''}
+        </div>
+
+        ${isSelected ? `<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>` : ''}
+      `;
+      listContainer.appendChild(card);
+    });
+
+    renderActiveJob(visibleJobs[activeIndex]);
+  }
+
+  function renderActiveJob(job) {
+    const content = document.getElementById('inspector-content');
+    const empty = document.getElementById('empty-state-container');
+    const quickDismissBtn = document.getElementById('btn-quick-dismiss');
+    const quickApplyBtn = document.getElementById('btn-quick-apply');
+
+    if (!job) {
+      content.classList.add('hidden');
+      empty.classList.remove('hidden');
+      if (quickDismissBtn) quickDismissBtn.disabled = true;
+      if (quickApplyBtn) quickApplyBtn.disabled = true;
+      return;
+    }
+
+    content.classList.remove('hidden');
+    empty.classList.add('hidden');
+    if (quickDismissBtn) quickDismissBtn.disabled = false;
+    if (quickApplyBtn) quickApplyBtn.disabled = false;
+
+    content.innerHTML = `
+      <!-- Detail Header Bar -->
+      <div class="p-space-xl bg-surface-container flex flex-col gap-space-md shrink-0 shadow-sm">
+        <div class="flex items-start justify-between gap-space-md">
+          <div class="flex items-center gap-space-md min-w-0">
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center text-headline-md font-bold text-white shrink-0 ${job.logoBg}">
+              ${job.logoInitial}
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-space-sm">
+                <h1 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">${job.company}</h1>
+                <span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container-high text-secondary border border-surface-container-highest">Verified Listing</span>
+                ${job.status === 'applied' ? `<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-secondary text-on-secondary font-bold">Applied: ${job.dateApplied || 'Recorded'}</span>` : ''}
+                ${job.status === 'dismissed' ? `<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-error-container text-on-error-container">Dismissed</span>` : ''}
+              </div>
+              <p class="font-body-lg text-body-lg text-primary font-medium mt-0.5">${job.role}</p>
+            </div>
+          </div>
+
+          <a href="${job.portalUrl}" target="_blank" rel="noopener noreferrer" class="px-space-md py-1.5 bg-surface-container-highest hover:bg-surface-bright text-on-surface font-label-md text-label-md rounded flex items-center gap-space-xs transition-colors shrink-0">
+            <span>Open Application Portal</span>
+            <span class="material-symbols-outlined text-[15px]">arrow_outward</span>
+            <kbd class="font-code-keycap text-code-keycap bg-surface-container text-on-surface-variant px-1 rounded ml-1">O</kbd>
+          </a>
+        </div>
+
+        <!-- Metric Badges Strip -->
+        <div class="flex flex-wrap items-center gap-space-sm pt-space-xs text-label-sm font-label-sm">
+          <div class="flex items-center gap-1 bg-surface-container-lowest px-2.5 py-1 rounded text-on-surface-variant">
+            <span class="material-symbols-outlined text-[14px] text-primary">calendar_today</span>
+            <span>${job.term}</span>
+          </div>
+          <div class="flex items-center gap-1 bg-surface-container-lowest px-2.5 py-1 rounded text-on-surface-variant">
+            <span class="material-symbols-outlined text-[14px] text-secondary">payments</span>
+            <span class="font-code-keycap text-code-keycap text-on-surface">${job.salary}</span>
+          </div>
+          <div class="flex items-center gap-1 bg-surface-container-lowest px-2.5 py-1 rounded text-on-surface-variant">
+            <span class="material-symbols-outlined text-[14px]">work_history</span>
+            <span>${job.type}</span>
+          </div>
+          <div class="flex items-center gap-1 bg-surface-container-lowest px-2.5 py-1 rounded text-on-surface-variant">
+            <span class="material-symbols-outlined text-[14px]">pin_drop</span>
+            <span>${job.location}</span>
+          </div>
+          <div class="flex items-center gap-1 bg-surface-container-lowest px-2.5 py-1 rounded text-on-surface-variant">
+            <span class="material-symbols-outlined text-[14px]">schedule</span>
+            <span>Active ${job.postedAgo}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Body Scroll -->
+      <div class="flex-1 overflow-y-auto p-space-xl space-y-space-xl">
+        <!-- Team & Role -->
+        <div class="space-y-space-xs">
+          <div class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-space-xs">
+            <span class="material-symbols-outlined text-[15px]">groups</span>
+            <span>About The Team &amp; Mission</span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+            ${job.teamSummary}
+          </p>
+        </div>
+
+        <!-- Key Responsibilities -->
+        <div class="space-y-space-xs">
+          <div class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-space-xs">
+            <span class="material-symbols-outlined text-[15px]">checklist</span>
+            <span>Key Responsibilities</span>
+          </div>
+          <ul class="space-y-space-sm">
+            ${job.responsibilities.map(r => `
+              <li class="flex items-start gap-space-sm font-body-md text-body-md text-on-surface">
+                <span class="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0"></span>
+                <span>${r}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+
+        <!-- Qualifications -->
+        <div class="space-y-space-xs">
+          <div class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-space-xs">
+            <span class="material-symbols-outlined text-[15px]">school</span>
+            <span>Candidate Requirements</span>
+          </div>
+          <ul class="space-y-space-sm">
+            ${job.qualifications.map(q => `
+              <li class="flex items-start gap-space-sm font-body-md text-body-md text-on-surface">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary mt-2 shrink-0"></span>
+                <span>${q}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+
+        <!-- Tech Stack Tags -->
+        <div class="space-y-space-sm pt-space-xs">
+          <div class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-space-xs">
+            <span class="material-symbols-outlined text-[15px]">terminal</span>
+            <span>Target Tech Stack &amp; Protocols</span>
+          </div>
+          <div class="flex flex-wrap gap-space-sm">
+            ${job.tags.map(tag => `
+              <span class="font-code-keycap text-code-keycap px-2.5 py-1 rounded bg-surface-container-high text-on-surface flex items-center gap-1 shadow-sm">
+                <span class="w-1 h-1 rounded-full bg-secondary"></span>
+                ${tag}
+              </span>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- Speed Execution Tip -->
+        <div class="p-space-md rounded bg-surface-container-low flex items-center justify-between text-on-surface-variant text-body-sm font-body-sm">
+          <div class="flex items-center gap-space-sm">
+            <span class="material-symbols-outlined text-secondary text-[18px]">electric_bolt</span>
+            <span>Keyboard flow tip: Tap <kbd class="font-code-keycap text-code-keycap bg-surface-container-high text-secondary px-1 rounded">A</kbd> to mark applied and jump to the next opportunity.</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Action Triggers
+  function handleApplyActive() {
+    const visibleJobs = getVisibleJobs();
+    if (!visibleJobs.length || activeIndex >= visibleJobs.length) return;
+    const target = visibleJobs[activeIndex];
+
+    lastAction = {
+      type: 'apply',
+      id: target.id,
+      prevStatus: target.status,
+      prevAppliedDate: target.dateApplied
+    };
+
+    target.status = 'applied';
+    target.dateApplied = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    saveState();
+    updateCounts();
+    showToast(`Applied to ${target.company}!`, true);
+    renderFeed();
+  }
+
+  function handleDismissActive() {
+    const visibleJobs = getVisibleJobs();
+    if (!visibleJobs.length || activeIndex >= visibleJobs.length) return;
+    const target = visibleJobs[activeIndex];
+
+    lastAction = {
+      type: 'dismiss',
+      id: target.id,
+      prevStatus: target.status,
+      prevAppliedDate: target.dateApplied
+    };
+
+    target.status = 'dismissed';
+    saveState();
+    updateCounts();
+    showToast(`Dismissed ${target.company}`, true);
+    renderFeed();
+  }
+
+  function undoLastAction() {
+    if (!lastAction) {
+      showToast('No recent action to undo', false);
+      return;
+    }
+
+    const job = jobs.find(j => j.id === lastAction.id);
+    if (job) {
+      job.status = lastAction.prevStatus;
+      job.dateApplied = lastAction.prevAppliedDate;
+      saveState();
+      updateCounts();
+      showToast(`Reverted status for ${job.company}`, false);
+      lastAction = null;
+      renderFeed();
+    }
+  }
+
+  function openActivePortal() {
+    const visibleJobs = getVisibleJobs();
+    if (!visibleJobs.length || activeIndex >= visibleJobs.length) return;
+    const target = visibleJobs[activeIndex];
+    window.open(target.portalUrl, '_blank', 'noopener,noreferrer');
+  }
+
+  function showToast(message, allowUndo = true) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'pointer-events-auto bg-surface-container-highest px-space-md py-space-sm rounded shadow-xl flex items-center gap-space-md animate-fade-in text-on-surface ring-1 ring-surface-bright';
+    
+    toast.innerHTML = `
+      <div class="flex items-center gap-space-sm">
+        <span class="w-2 h-2 rounded-full bg-secondary"></span>
+        <span class="font-body-md text-body-md font-medium">${message}</span>
+      </div>
+      ${allowUndo ? `
+        <button onclick="undoLastAction()" class="flex items-center gap-1 font-label-sm text-label-sm text-primary hover:text-on-surface transition-colors ml-space-sm">
+          <span>Undo</span>
+          <kbd class="font-code-keycap text-code-keycap bg-surface-container px-1 rounded text-on-surface-variant">Z</kbd>
+        </button>
+      ` : ''}
+    `;
+
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(8px)';
+      toast.style.transition = 'all 200ms ease';
+      setTimeout(() => toast.remove(), 250);
+    }, 2800);
+  }
+
+  function setFilter(view) {
+    currentFilter = view;
+    activeIndex = 0;
+
+    // Update Nav Buttons
+    const views = ['inbox', 'applied', 'dismissed'];
+    views.forEach(v => {
+      const btn = document.getElementById(`nav-${v}`);
+      const ind = document.getElementById(`ind-${v}`);
+      if (v === view) {
+        btn.classList.add('bg-surface-container', 'text-on-surface');
+        btn.classList.remove('text-on-surface-variant');
+        if (ind) ind.classList.remove('hidden');
+      } else {
+        btn.classList.remove('bg-surface-container', 'text-on-surface');
+        btn.classList.add('text-on-surface-variant');
+        if (ind) ind.classList.add('hidden');
+      }
+    });
+
+    const titleMap = {
+      inbox: 'Inbox (Pending)',
+      applied: 'Submitted Pipeline',
+      dismissed: 'Dismissed Archive'
+    };
+    document.getElementById('current-view-title').textContent = titleMap[view] || view;
+
+    renderFeed();
+    updateCounts();
+  }
+
+  function handleFilterInput(val) {
+    searchQuery = val;
+    activeIndex = 0;
+    const clearBtn = document.getElementById('clear-filter-btn');
+    if (searchQuery) {
+      clearBtn.classList.remove('hidden');
+    } else {
+      clearBtn.classList.add('hidden');
+    }
+    renderFeed();
+    updateCounts();
+  }
+
+  function clearFilter() {
+    const input = document.getElementById('quick-filter-input');
+    input.value = '';
+    handleFilterInput('');
+    input.focus();
+  }
+
+  function resetMockData() {
+    jobs = JSON.parse(JSON.stringify(INITIAL_JOBS));
+    saveState();
+    setFilter('inbox');
+    showToast('Pipeline sample queue reset.', false);
+  }
+
+  // Keyboard Event Dispatcher
+  window.addEventListener('keydown', (e) => {
+    // If typing in input, allow default typing except Escape
+    const activeEl = document.activeElement;
+    const isInput = activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA';
+
+    if (e.key === 'Escape' && isInput) {
+      activeEl.blur();
+      return;
+    }
+
+    if (isInput) return;
+
+    // Global Key Handlers
+    switch (e.key) {
+      case 'j':
+      case 'ArrowDown': {
+        e.preventDefault();
+        const visible = getVisibleJobs();
+        if (activeIndex < visible.length - 1) {
+          activeIndex++;
+          renderFeed();
+        }
+        break;
+      }
+      case 'k':
+      case 'ArrowUp': {
+        e.preventDefault();
+        if (activeIndex > 0) {
+          activeIndex--;
+          renderFeed();
+        }
+        break;
+      }
+      case 'a':
+      case 'A': {
+        e.preventDefault();
+        handleApplyActive();
+        break;
+      }
+      case 'd':
+      case 'D': {
+        e.preventDefault();
+        handleDismissActive();
+        break;
+      }
+      case 'z':
+      case 'Z': {
+        e.preventDefault();
+        undoLastAction();
+        break;
+      }
+      case 'o':
+      case 'O': {
+        e.preventDefault();
+        openActivePortal();
+        break;
+      }
+      case '1': {
+        e.preventDefault();
+        setFilter('inbox');
+        break;
+      }
+      case '2': {
+        e.preventDefault();
+        setFilter('applied');
+        break;
+      }
+      case '3': {
+        e.preventDefault();
+        setFilter('dismissed');
+        break;
+      }
+      case '/': {
+        e.preventDefault();
+        const input = document.getElementById('quick-filter-input');
+        if (input) input.focus();
+        break;
+      }
+      case '?': {
+        e.preventDefault();
+        showToast('Shortcuts: J/K (Nav), A (Apply), D (Dismiss), Z (Undo), O (Open), 1-3 (Views), / (Search)', false);
+        break;
+      }
+      case 'r':
+      case 'R': {
+        if (getVisibleJobs().length === 0) {
+          resetMockData();
+        }
+        break;
+      }
+    }
+  });
+
+  // Init
+  setFilter('inbox');
+</script></main></div>
+
+</body></html>

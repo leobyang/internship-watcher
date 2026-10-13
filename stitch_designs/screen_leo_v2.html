@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Leo's Internship Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          background: "#121318",
+          surface: {
+            lowest: "#0d0e13",
+            base: "#121318",
+            card: "#1a1b22",
+            elevated: "#22232c",
+            hover: "#282935",
+            border: "#292a36",
+            borderLight: "#383949"
+          },
+          primary: {
+            DEFAULT: "#8083ff",
+            dim: "#c0c1ff",
+            container: "#2a2b5e"
+          },
+          secondary: {
+            DEFAULT: "#4edea3",
+            emerald: "#10b981"
+          }
+        },
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+          mono: ['JetBrains Mono', 'monospace']
+        }
+      }
+    }
+  }
+</script>
+<style>
+  @layer base {
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #121318;
+      color: #e3e1e9;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+    }
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #121318;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #292a36;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3c3d4e;
+  }
+</style>
+</head>
+<body class="bg-[#121318] text-[#e3e1e9] antialiased h-screen flex overflow-hidden select-none">
+<!-- COLUMN 1: LEFT SIDEBAR -->
+<aside class="w-64 border-r border-surface-border bg-[#121318] flex flex-col justify-between shrink-0 h-full">
+<div class="flex flex-col">
+<!-- Sidebar Header / Brand Title -->
+<div class="h-14 px-4 border-b border-surface-border flex items-center gap-3 shrink-0">
+<div class="w-7 h-7 rounded-lg bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+</div>
+<span class="font-semibold text-[14px] tracking-tight text-white">Leo's Internship Tracker</span>
+</div>
+<!-- Navigation Queues Section -->
+<div class="p-3">
+<div class="px-2.5 pb-2 text-[10px] font-semibold tracking-wider text-gray-400 uppercase font-mono">
+          Queues
+        </div>
+<nav class="flex flex-col gap-1.5" id="nav-queue-list">
+<!-- Inbox (Pending) -->
+<button class="w-full text-left flex items-center justify-between px-3 py-2 rounded-lg bg-surface-card text-white font-medium border border-surface-borderLight transition-all group shadow-sm" id="queue-btn-inbox" onclick="setQueue('inbox')">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[17px] text-indigo-400">inbox</span>
+<span class="text-xs">Inbox (Pending)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[11px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-1.5 py-0.2 rounded" id="badge-inbox">6</span>
+<kbd class="font-mono text-[10px] text-gray-400">1</kbd>
+</div>
+</button>
+<!-- Applied -->
+<button class="w-full text-left flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-surface-card/60 transition-all border border-transparent group" id="queue-btn-applied" onclick="setQueue('applied')">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[17px] text-emerald-400">send_and_archive</span>
+<span class="text-xs">Applied</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[11px] text-gray-300 bg-surface-elevated px-1.5 py-0.2 rounded border border-surface-border" id="badge-applied">14</span>
+<kbd class="font-mono text-[10px] text-gray-400">2</kbd>
+</div>
+</button>
+<!-- Dismissed -->
+<button class="w-full text-left flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-surface-card/60 transition-all border border-transparent group" id="queue-btn-dismissed" onclick="setQueue('dismissed')">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[17px] text-rose-400">archive</span>
+<span class="text-xs">Dismissed</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[11px] text-gray-300 bg-surface-elevated px-1.5 py-0.2 rounded border border-surface-border" id="badge-dismissed">8</span>
+<kbd class="font-mono text-[10px] text-gray-400">3</kbd>
+</div>
+</button>
+</nav>
+</div>
+</div>
+<!-- Bottom Shortcut Cheatsheet Card -->
+<div class="p-3">
+<div class="bg-surface-card border border-surface-border p-3 rounded-lg flex flex-col gap-2">
+<div class="flex items-center justify-between text-[10px] font-semibold text-gray-400 font-mono uppercase tracking-wider">
+<span>Shortcuts</span>
+<span class="text-indigo-400 flex items-center gap-0.5"><span class="material-symbols-outlined text-[13px]">bolt</span> Speedy</span>
+</div>
+<div class="flex flex-col gap-1.5 text-[11px] text-gray-400">
+<div class="flex items-center justify-between">
+<span class="text-gray-300">Navigate</span>
+<span class="font-mono text-gray-400"><kbd class="bg-surface-elevated text-gray-200 px-1 py-0.5 rounded border border-surface-border text-[10px]">J</kbd> <kbd class="bg-surface-elevated text-gray-200 px-1 py-0.5 rounded border border-surface-border text-[10px]">K</kbd></span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-gray-300">Apply &amp; Move</span>
+<kbd class="font-mono bg-surface-elevated text-emerald-400 px-1.5 py-0.5 rounded border border-surface-border text-[10px]">A</kbd>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-gray-300">Dismiss</span>
+<kbd class="font-mono bg-surface-elevated text-rose-400 px-1.5 py-0.5 rounded border border-surface-border text-[10px]">D</kbd>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-gray-300">Search</span>
+<kbd class="font-mono bg-surface-elevated text-gray-200 px-1.5 py-0.5 rounded border border-surface-border text-[10px]">⌘K</kbd>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-gray-300">Open Link</span>
+<kbd class="font-mono bg-surface-elevated text-indigo-400 px-1.5 py-0.5 rounded border border-surface-border text-[10px]">↵ Enter</kbd>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-surface-border/60">
+<span class="text-gray-400 text-[10px]">Undo</span>
+<kbd class="font-mono bg-surface-elevated text-gray-400 px-1 py-0.5 rounded border border-surface-border text-[10px]">Z</kbd>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- COLUMN 2: MAIN CONTENT AREA (Full-width Inbox Feed) -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-[#121318]">
+<!-- Top Header -->
+<header class="h-14 border-b border-surface-border bg-[#121318] px-6 flex items-center justify-between shrink-0 z-20">
+<!-- Center Search Bar with ⌘K -->
+<div class="w-full max-w-xl">
+<div class="w-full flex items-center justify-between bg-surface-card border border-surface-border px-3.5 py-1.5 rounded-lg text-sm text-gray-400 hover:border-gray-500 transition-colors cursor-pointer group">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[17px] text-gray-400 group-hover:text-gray-300">search</span>
+<span class="text-xs text-gray-400 group-hover:text-gray-300">Search companies, roles, tags...</span>
+</div>
+<kbd class="font-mono text-[11px] bg-surface-elevated text-gray-300 px-1.5 py-0.5 rounded border border-surface-border font-medium">⌘K</kbd>
+</div>
+</div>
+<!-- Quick keyboard shortcuts indicator -->
+<div class="flex items-center gap-2 shrink-0">
+<div class="flex items-center gap-1.5 bg-surface-card border border-surface-border px-2.5 py-1 rounded-md text-[11px] text-gray-300">
+<kbd class="font-mono bg-surface-elevated text-indigo-400 px-1 py-0.2 rounded border border-surface-border">J</kbd>
+<span class="text-gray-500">/</span>
+<kbd class="font-mono bg-surface-elevated text-indigo-400 px-1 py-0.2 rounded border border-surface-border">K</kbd>
+<span class="text-gray-400 ml-1">Navigate</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-card border border-surface-border px-2.5 py-1 rounded-md text-[11px] text-gray-300">
+<kbd class="font-mono bg-surface-elevated text-emerald-400 px-1.5 py-0.2 rounded border border-surface-border">A</kbd>
+<span class="text-gray-400 ml-0.5">Apply</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-card border border-surface-border px-2.5 py-1 rounded-md text-[11px] text-gray-300">
+<kbd class="font-mono bg-surface-elevated text-rose-400 px-1.5 py-0.2 rounded border border-surface-border">D</kbd>
+<span class="text-gray-400 ml-0.5">Dismiss</span>
+</div>
+</div>
+</header>
+<!-- Feed Header: Queue Title + Pill Badge + Filter & Sort Controls -->
+<div class="h-12 border-b border-surface-border px-6 bg-[#121318] flex items-center justify-between shrink-0">
+<div class="flex items-center gap-2.5">
+<h1 class="text-sm font-semibold text-white tracking-tight" id="feed-title">Inbox (Pending)</h1>
+<span class="text-[11px] font-mono font-medium px-2 py-0.5 rounded bg-surface-card text-indigo-300 border border-surface-border" id="feed-count-pill">6 listings</span>
+</div>
+<!-- Filters & Sorting Controls -->
+<div class="flex items-center gap-3 text-xs text-gray-400">
+<div class="flex items-center gap-1.5 bg-surface-card/60 hover:bg-surface-card border border-surface-border px-2.5 py-1 rounded-md cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[14px] text-gray-400">swap_vert</span>
+<span class="text-[11px] font-medium text-gray-300">Sort by: <span class="text-white">Newest</span></span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-card/60 hover:bg-surface-card border border-surface-border px-2.5 py-1 rounded-md cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[14px] text-gray-400">filter_alt</span>
+<span class="text-[11px] font-medium text-gray-300">Filter: <span class="text-white">All roles</span></span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-card/60 hover:bg-surface-card border border-surface-border px-2.5 py-1 rounded-md cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[14px] text-gray-400">location_on</span>
+<span class="text-[11px] font-medium text-gray-300">Location: <span class="text-white">Remote/US</span></span>
+</div>
+</div>
+</div>
+<!-- Feed List Container (Full-width high-density cards) -->
+<div class="flex-1 overflow-y-auto p-4 space-y-2.5" id="jobs-list">
+<!-- Populated dynamically via JS with rich content -->
+</div>
+</main>
+<!-- Toast Notification Container -->
+<div class="fixed bottom-5 right-6 z-50 flex flex-col gap-2 pointer-events-none" id="toast-container"></div>
+<!-- SCRIPT LOGIC -->
+<script>
+    const INITIAL_DATA = [
+      {
+        id: "stripe",
+        company: "Stripe",
+        monogram: "S",
+        colorBg: "bg-[#635BFF]",
+        role: "Software Engineering Intern (Backend & Payments Infrastructure)",
+        team: "Payments Core & Ledger Infrastructure",
+        location: "South San Francisco / Remote",
+        compensation: "$68/hr + Housing",
+        postedAgo: "2d ago",
+        status: "inbox",
+        portalUrl: "https://stripe.com/jobs",
+        summary: "Join the Core Payments Orchestration team. Architect high-throughput distributed ledger pipelines processing hundreds of billions in global digital commerce with zero transaction drift.",
+        tags: ["Go", "Ruby", "Distributed Systems", "Payments"]
+      },
+      {
+        id: "figma",
+        company: "Figma",
+        monogram: "F",
+        colorBg: "bg-[#F24E1E]",
+        role: "Frontend Systems & Canvas Intern",
+        team: "Multiplayer Engine & WebAssembly Runtime",
+        location: "San Francisco, CA / Hybrid",
+        compensation: "$65/hr",
+        postedAgo: "3d ago",
+        status: "inbox",
+        portalUrl: "https://figma.com/careers",
+        summary: "Work directly on Figma's multiplayer vector engine. Build low-level WebAssembly, WebGL shaders, and differential OT synchronization to sustain fluid 60fps canvas performance.",
+        tags: ["C++", "WebAssembly", "TypeScript", "WebGL"]
+      },
+      {
+        id: "datadog",
+        company: "Datadog",
+        monogram: "D",
+        colorBg: "bg-[#632CA6]",
+        role: "Systems Software Intern (Core Infrastructure)",
+        team: "Ingestion Platform & Distributed Buffers",
+        location: "New York, NY",
+        compensation: "$60/hr",
+        postedAgo: "4d ago",
+        status: "inbox",
+        portalUrl: "https://datadoghq.com/careers",
+        summary: "Construct resilient stream-processing pipelines, custom high-frequency memory aggregators, and distributed Kafka partitions capable of processing trillions of events daily.",
+        tags: ["Go", "Kafka", "Distributed Tracing", "Linux"]
+      },
+      {
+        id: "openai",
+        company: "OpenAI",
+        monogram: "O",
+        colorBg: "bg-[#10A37F]",
+        role: "Research Engineer Intern (Scaling & Training Systems)",
+        team: "Frontier Alignment & Post-Training Harness",
+        location: "San Francisco, CA",
+        compensation: "$75/hr",
+        postedAgo: "4d ago",
+        status: "inbox",
+        portalUrl: "https://openai.com/careers",
+        summary: "Interface with massive GPU clusters to optimize model evaluation latency and training harness stability across NVLink and multi-node interconnects for frontier foundation models.",
+        tags: ["Python", "PyTorch", "CUDA", "High-Performance Computing"]
+      },
+      {
+        id: "ramp",
+        company: "Ramp",
+        monogram: "R",
+        colorBg: "bg-[#2764FF]",
+        role: "Full Stack Engineering Intern (Card & Spend Management)",
+        team: "Spend Velocity & Automated Approvals",
+        location: "New York / Remote",
+        compensation: "$62/hr",
+        postedAgo: "5d ago",
+        status: "inbox",
+        portalUrl: "https://ramp.com/careers",
+        summary: "Ship high-velocity financial workflows in React, TypeScript, and FastAPI that automate corporate card limits, travel approvals, and real-time reconciliation ledgers.",
+        tags: ["TypeScript", "React", "Python", "PostgreSQL"]
+      },
+      {
+        id: "anthropic",
+        company: "Anthropic",
+        monogram: "A",
+        colorBg: "bg-[#D97706]",
+        role: "Systems & Platform Security Intern",
+        team: "Cloud Security Architecture & Model Guardrails",
+        location: "San Francisco, CA",
+        compensation: "$72/hr",
+        postedAgo: "1w ago",
+        status: "inbox",
+        portalUrl: "https://anthropic.com/careers",
+        summary: "Design and implement hardware security isolation, automated zero-trust credential pipelines, and cloud sandboxing environments for large-scale safety research infrastructure.",
+        tags: ["Rust", "Python", "AWS", "Cloud Security"]
+      }
+    ];
+
+    let jobs = JSON.parse(localStorage.getItem('leos_jobs_2col_v1')) || INITIAL_DATA;
+    let currentQueue = 'inbox';
+    let selectedJobId = 'stripe';
+    let lastAction = null;
+
+    function saveState() {
+      localStorage.setItem('leos_jobs_2col_v1', JSON.stringify(jobs));
+    }
+
+    function getQueueJobs() {
+      return jobs.filter(j => j.status === currentQueue);
+    }
+
+    function updateBadgeCounts() {
+      const inboxCount = jobs.filter(j => j.status === 'inbox').length;
+      const appliedCount = jobs.filter(j => j.status === 'applied').length;
+      const dismissedCount = jobs.filter(j => j.status === 'dismissed').length;
+
+      document.getElementById('badge-inbox').textContent = inboxCount;
+      document.getElementById('badge-applied').textContent = appliedCount;
+      document.getElementById('badge-dismissed').textContent = dismissedCount;
+
+      const queueJobs = getQueueJobs();
+      document.getElementById('feed-count-pill').textContent = `${queueJobs.length} listings`;
+    }
+
+    function setQueue(queue) {
+      currentQueue = queue;
+
+      const queues = ['inbox', 'applied', 'dismissed'];
+      queues.forEach(q => {
+        const btn = document.getElementById(`queue-btn-${q}`);
+        if (q === queue) {
+          btn.className = "w-full text-left flex items-center justify-between px-3 py-2 rounded-lg bg-surface-card text-white font-medium border border-surface-borderLight transition-all group shadow-sm";
+        } else {
+          btn.className = "w-full text-left flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-surface-card/60 transition-all border border-transparent group";
+        }
+      });
+
+      const titles = {
+        inbox: 'Inbox (Pending)',
+        applied: 'Applied Queue',
+        dismissed: 'Dismissed Archive'
+      };
+      document.getElementById('feed-title').textContent = titles[queue] || 'Queue';
+
+      const visible = getQueueJobs();
+      if (visible.length > 0) {
+        selectedJobId = visible[0].id;
+      } else {
+        selectedJobId = null;
+      }
+
+      renderFeed();
+      updateBadgeCounts();
+    }
+
+    function selectJob(id) {
+      selectedJobId = id;
+      renderFeed();
+    }
+
+    function renderFeed() {
+      const container = document.getElementById('jobs-list');
+      const visible = getQueueJobs();
+      container.innerHTML = '';
+
+      if (visible.length === 0) {
+        container.innerHTML = `
+          <div class="h-80 flex flex-col items-center justify-center p-8 text-center bg-surface-card/30 border border-surface-border rounded-xl">
+            <span class="material-symbols-outlined text-4xl mb-2 text-gray-500">done_all</span>
+            <p class="text-sm font-semibold text-gray-300">All caught up in ${currentQueue}</p>
+            <p class="text-xs text-gray-500 mt-1 max-w-xs">No listings remaining in this queue. Use 1, 2, or 3 to switch queues or reset listings below.</p>
+            <button onclick="resetData()" class="mt-4 px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs rounded-lg font-medium transition-colors shadow">
+              Reset Initial Listings
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      if (!visible.some(j => j.id === selectedJobId)) {
+        selectedJobId = visible[0].id;
+      }
+
+      visible.forEach(job => {
+        const isSelected = job.id === selectedJobId;
+        const card = document.createElement('div');
+        card.onclick = () => selectJob(job.id);
+
+        if (isSelected) {
+          // Expanded, highlighted selected card
+          card.className = "group relative p-4 rounded-xl bg-surface-card border-2 border-indigo-500/80 shadow-[0_0_24px_rgba(99,102,241,0.12)] transition-all cursor-pointer";
+          card.innerHTML = `
+            <div class="flex flex-col gap-3">
+              <!-- Top Row: Monogram, Title, Meta, and Quick Action Badges -->
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-start gap-3 min-w-0">
+                  <div class="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-sm text-white shrink-0 ${job.colorBg} shadow-sm">
+                    ${job.monogram}
+                  </div>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <span class="text-sm font-bold text-white tracking-tight">${job.company}</span>
+                      <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Verified</span>
+                      <span class="text-xs text-gray-400 font-normal">·</span>
+                      <span class="text-xs text-gray-400 font-medium">${job.location}</span>
+                    </div>
+                    <h2 class="text-base font-semibold text-indigo-300 mt-0.5 tracking-tight">${job.role}</h2>
+                  </div>
+                </div>
+
+                <!-- Right Pill Meta -->
+                <div class="flex items-center gap-3 shrink-0">
+                  <div class="flex flex-col items-end">
+                    <span class="text-xs font-mono font-bold text-emerald-400">${job.compensation}</span>
+                    <span class="text-[11px] font-mono text-gray-400">${job.postedAgo}</span>
+                  </div>
+                  <div class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></div>
+                </div>
+              </div>
+
+              <!-- Expanded Summary Description -->
+              <div class="text-xs text-gray-300 bg-surface-elevated/70 p-3 rounded-lg border border-surface-borderLight leading-relaxed">
+                ${job.summary}
+              </div>
+
+              <!-- Bottom Row: Tech Tags & Direct Inline Actions with Keyboard Cues -->
+              <div class="flex items-center justify-between gap-3 pt-1 border-t border-surface-borderLight/60">
+                <!-- Tech Tags -->
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  ${job.tags.map(tag => `
+                    <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-surface-elevated text-gray-300 border border-surface-border flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+                      ${tag}
+                    </span>
+                  `).join('')}
+                </div>
+
+                <!-- Action Buttons with Key Cues -->
+                <div class="flex items-center gap-2 shrink-0">
+                  <!-- Portal Link -->
+                  <a href="${job.portalUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="px-2.5 py-1 rounded-md bg-surface-elevated hover:bg-surface-hover text-gray-200 border border-surface-border text-xs font-medium flex items-center gap-1.5 transition-colors">
+                    <span>Apply on Portal</span>
+                    <span class="material-symbols-outlined text-[13px]">arrow_outward</span>
+                    <kbd class="font-mono text-[10px] bg-surface-lowest text-indigo-300 px-1 py-0.2 rounded border border-surface-border">↵</kbd>
+                  </a>
+
+                  <!-- Dismiss Button -->
+                  <button onclick="event.stopPropagation(); handleDismissId('${job.id}')" class="px-2.5 py-1 rounded-md bg-surface-elevated hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-700/50 text-gray-300 border border-surface-border text-xs font-medium flex items-center gap-1.5 transition-colors">
+                    <span>Dismiss</span>
+                    <kbd class="font-mono text-[10px] bg-surface-lowest text-rose-400 px-1 py-0.2 rounded border border-surface-border">D</kbd>
+                  </button>
+
+                  <!-- Apply & Move Button -->
+                  <button onclick="event.stopPropagation(); handleApplyId('${job.id}')" class="px-3 py-1 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors shadow">
+                    <span>Apply &amp; Move</span>
+                    <kbd class="font-mono text-[10px] bg-emerald-700 text-emerald-100 px-1.5 py-0.2 rounded">A</kbd>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          // Compact / High-density unselected card
+          card.className = "group relative p-3 rounded-lg bg-surface-card/60 hover:bg-surface-card border border-surface-border hover:border-surface-borderLight transition-all cursor-pointer";
+          card.innerHTML = `
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-8 h-8 rounded-md flex items-center justify-center font-bold text-xs text-white shrink-0 ${job.colorBg}">
+                  ${job.monogram}
+                </div>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-semibold text-white truncate">${job.company}</span>
+                    <span class="text-[10px] text-gray-400">·</span>
+                    <span class="text-[11px] text-gray-400 truncate max-w-[200px]">${job.location}</span>
+                  </div>
+                  <div class="text-xs text-gray-300 font-medium truncate max-w-xl group-hover:text-white transition-colors">
+                    ${job.role}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tags and Meta Pills -->
+              <div class="flex items-center gap-3 shrink-0">
+                <div class="hidden md:flex items-center gap-1">
+                  ${job.tags.slice(0, 3).map(tag => `
+                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface-elevated text-gray-400 border border-surface-border">
+                      ${tag}
+                    </span>
+                  `).join('')}
+                  ${job.tags.length > 3 ? `<span class="text-[10px] font-mono text-gray-500">+${job.tags.length - 3}</span>` : ''}
+                </div>
+                <span class="text-xs font-mono font-medium text-emerald-400">${job.compensation}</span>
+                <span class="text-[11px] font-mono text-gray-400 w-12 text-right">${job.postedAgo}</span>
+              </div>
+            </div>
+          `;
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleApplyId(id) {
+      const job = jobs.find(j => j.id === id);
+      if (!job) return;
+
+      lastAction = { id: job.id, prevStatus: job.status, company: job.company };
+      job.status = 'applied';
+      saveState();
+      updateBadgeCounts();
+      showToast(`Applied to ${job.company}! Moved to Applied queue.`);
+      advanceSelection();
+    }
+
+    function handleDismissId(id) {
+      const job = jobs.find(j => j.id === id);
+      if (!job) return;
+
+      lastAction = { id: job.id, prevStatus: job.status, company: job.company };
+      job.status = 'dismissed';
+      saveState();
+      updateBadgeCounts();
+      showToast(`Dismissed ${job.company}.`);
+      advanceSelection();
+    }
+
+    function advanceSelection() {
+      const visible = getQueueJobs();
+      if (visible.length > 0) {
+        selectedJobId = visible[0].id;
+      } else {
+        selectedJobId = null;
+      }
+      renderFeed();
+    }
+
+    function openActivePortal() {
+      const visible = getQueueJobs();
+      const current = visible.find(j => j.id === selectedJobId);
+      if (current) {
+        window.open(current.portalUrl, '_blank', 'noopener,noreferrer');
+      }
+    }
+
+    function undoLastAction() {
+      if (!lastAction) {
+        showToast("Nothing to undo.");
+        return;
+      }
+      const job = jobs.find(j => j.id === lastAction.id);
+      if (job) {
+        job.status = lastAction.prevStatus;
+        selectedJobId = job.id;
+        saveState();
+        updateBadgeCounts();
+        showToast(`Reverted ${job.company} back to ${lastAction.prevStatus}.`);
+        lastAction = null;
+        renderFeed();
+      }
+    }
+
+    function showToast(msg) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = "pointer-events-auto bg-surface-card border border-surface-border text-white text-xs px-3.5 py-2.5 rounded-lg shadow-xl flex items-center justify-between gap-3";
+      toast.innerHTML = `
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>${msg}</span>
+        </div>
+        <button onclick="undoLastAction()" class="text-indigo-400 hover:text-indigo-300 font-mono text-[11px] flex items-center gap-1">
+          Undo <kbd class="bg-surface-elevated px-1 py-0.2 rounded border border-surface-border text-gray-300">Z</kbd>
+        </button>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 200ms ease';
+        setTimeout(() => toast.remove(), 250);
+      }, 3000);
+    }
+
+    function resetData() {
+      jobs = JSON.parse(JSON.stringify(INITIAL_DATA));
+      saveState();
+      setQueue('inbox');
+      showToast("Reset to 6 sample listings.");
+    }
+
+    // Keyboard Shortcuts Listeners
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      const visible = getQueueJobs();
+      const currentIndex = visible.findIndex(j => j.id === selectedJobId);
+
+      switch (e.key) {
+        case 'j':
+        case 'ArrowDown': {
+          e.preventDefault();
+          if (currentIndex < visible.length - 1) {
+            selectJob(visible[currentIndex + 1].id);
+          }
+          break;
+        }
+        case 'k':
+        case 'ArrowUp': {
+          e.preventDefault();
+          if (currentIndex > 0) {
+            selectJob(visible[currentIndex - 1].id);
+          }
+          break;
+        }
+        case 'a':
+        case 'A': {
+          e.preventDefault();
+          if (selectedJobId) handleApplyId(selectedJobId);
+          break;
+        }
+        case 'd':
+        case 'D': {
+          e.preventDefault();
+          if (selectedJobId) handleDismissId(selectedJobId);
+          break;
+        }
+        case 'Enter': {
+          e.preventDefault();
+          openActivePortal();
+          break;
+        }
+        case 'z':
+        case 'Z': {
+          e.preventDefault();
+          undoLastAction();
+          break;
+        }
+        case '1': {
+          e.preventDefault();
+          setQueue('inbox');
+          break;
+        }
+        case '2': {
+          e.preventDefault();
+          setQueue('applied');
+          break;
+        }
+        case '3': {
+          e.preventDefault();
+          setQueue('dismissed');
+          break;
+        }
+      }
+    });
+
+    // Initial boot
+    setQueue('inbox');
+  </script>
+</body></html>

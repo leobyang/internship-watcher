@@ -148,11 +148,169 @@ export default function InternshipTracker() {
   const [lastCheckedKey, setLastCheckedKey] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(true);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [notificationPermission, setNotificationPermission] = useState<string>('default');
+  const knownJobKeysRef = useRef<Set<string> | null>(null);
 
   const [toast, setToast] = useState<{ message: string; lastKey?: string; prevStatus?: string } | null>(null);
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const staticJobsCacheRef = useRef<Job[] | null>(null);
+
+  // Sync notification permissions on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if ('Notification' in window) {
+        setNotificationPermission(Notification.permission);
+        const stored = localStorage.getItem('internship_notifications_enabled');
+        if (stored === 'true' && Notification.permission === 'granted') {
+          setNotificationsEnabled(true);
+        }
+      } else {
+        setNotificationPermission('unsupported');
+      }
+    }
+  }, []);
+
+  // Send desktop alert for new postings
+  const sendJobNotification = useCallback((newJobs: Job[]) => {
+    if (typeof window === 'undefined' || !('Notification' in window)) return;
+    if (Notification.permission !== 'granted') return;
+    if (!newJobs || newJobs.length === 0) return;
+
+    try {
+      if (newJobs.length === 1) {
+        const j = newJobs[0];
+        const n = new Notification(`⚡ New Internship: ${j.company}`, {
+          body: `${j.title} • ${j.location || 'Remote/US'}`,
+          icon: `${BASE_PATH}/favicon.svg`,
+          tag: `job-${j.key}`,
+        });
+        n.onclick = () => {
+          window.focus();
+          setSelectedKey(j.key);
+          document.getElementById(`job-${j.key}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        };
+      } else {
+        const preview = newJobs.slice(0, 3).map((j) => `${j.company}: ${j.title}`).join('\n');
+        const extra = newJobs.length > 3 ? `\n...and ${newJobs.length - 3} more` : '';
+        const n = new Notification(`⚡ ${newJobs.length} New Internships Posted`, {
+          body: `${preview}${extra}`,
+          icon: `${BASE_PATH}/favicon.svg`,
+          tag: `jobs-batch-${Date.now()}`,
+        });
+        n.onclick = () => {
+          window.focus();
+          setSelectedKey(newJobs[0].key);
+        };
+      }
+    } catch (notifErr) {
+      console.warn('Could not dispatch browser notification:', notifErr);
+    }
+  }, []);
+
+  // Compare incoming jobs with known job keys
+  const checkForNewJobs = useCallback((allJobs: Job[]) => {
+    if (typeof window === 'undefined' || !allJobs || allJobs.length === 0) return;
+
+    const rawKnown = localStorage.getItem('internship_known_keys');
+    if (!rawKnown) {
+      // First load: seed with existing jobs so we don't alert for existing postings
+      const keys = allJobs.map((j) => j.key);
+      localStorage.setItem('internship_known_keys', JSON.stringify(keys));
+      knownJobKeysRef.current = new Set(keys);
+      return;
+    }
+
+    let knownSet: Set<string>;
+    try {
+      knownSet = new Set(JSON.parse(rawKnown));
+    } catch {
+      knownSet = new Set();
+    }
+
+    const brandNew = allJobs.filter((j) => !knownSet.has(j.key));
+    if (brandNew.length > 0) {
+      for (const j of brandNew) {
+        knownSet.add(j.key);
+      }
+      localStorage.setItem('internship_known_keys', JSON.stringify(Array.from(knownSet)));
+      knownJobKeysRef.current = knownSet;
+
+      // Trigger native Chromium notification if user has enabled alerts
+      const isEnabled = localStorage.getItem('internship_notifications_enabled') === 'true';
+      if (isEnabled) {
+        sendJobNotification(brandNew);
+      }
+    } else {
+      knownJobKeysRef.current = knownSet;
+    }
+  }, [sendJobNotification]);
+
+  // Toggle desktop notifications
+  const handleToggleNotifications = useCallback(async () => {
+    if (typeof window === 'undefined' || !('Notification' in window)) {
+      setToast({ message: '⚠️ Browser notifications are not supported in this browser.' });
+      if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+      toastTimeoutRef.current = setTimeout(() => setToast(null), 4000);
+      return;
+    }
+
+    if (Notification.permission === 'denied') {
+      setToast({
+        message: '⚠️ Notifications are blocked in browser settings. Please allow notifications for this site.',
+      });
+      if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+      toastTimeoutRef.current = setTimeout(() => setToast(null), 5000);
+      return;
+    }
+
+    if (Notification.permission === 'default') {
+      const perm = await Notification.requestPermission();
+      setNotificationPermission(perm);
+      if (perm === 'granted') {
+        setNotificationsEnabled(true);
+        localStorage.setItem('internship_notifications_enabled', 'true');
+        try {
+          new Notification('⚡ Job Alerts Active', {
+            body: 'You will receive instant alerts whenever new internships are posted online!',
+            icon: `${BASE_PATH}/favicon.svg`,
+            tag: 'welcome-notification',
+          });
+        } catch {}
+        setToast({ message: '🔔 Desktop notifications enabled! Sent test notification.' });
+        if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+        toastTimeoutRef.current = setTimeout(() => setToast(null), 4000);
+      } else {
+        setNotificationsEnabled(false);
+        localStorage.setItem('internship_notifications_enabled', 'false');
+        setToast({ message: 'Notifications permission was not granted.' });
+        if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+        toastTimeoutRef.current = setTimeout(() => setToast(null), 3000);
+      }
+      return;
+    }
+
+    if (Notification.permission === 'granted') {
+      const nextState = !notificationsEnabled;
+      setNotificationsEnabled(nextState);
+      localStorage.setItem('internship_notifications_enabled', nextState ? 'true' : 'false');
+      if (nextState) {
+        try {
+          new Notification('⚡ Job Alerts Active', {
+            body: 'Alerts are on. You will be notified whenever new internships are found!',
+            icon: `${BASE_PATH}/favicon.svg`,
+            tag: 'welcome-notification',
+          });
+        } catch {}
+        setToast({ message: '🔔 Desktop notifications active.' });
+      } else {
+        setToast({ message: '🔕 Desktop notifications muted.' });
+      }
+      if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+      toastTimeoutRef.current = setTimeout(() => setToast(null), 3000);
+    }
+  }, [notificationsEnabled]);
 
   // Fetch jobs
   const fetchJobs = useCallback(async (forceRefresh = false) => {
@@ -178,6 +336,18 @@ export default function InternshipTracker() {
         // Proceed to static fallback
       }
 
+      if (loadedData) {
+        // Ensure background notification check inspects fresh universe of jobs
+        if (forceRefresh) {
+          fetch(`${BASE_PATH}/jobs.json?_t=${Date.now()}`)
+            .then((r) => r.json())
+            .then((data) => {
+              if (data.jobs) checkForNewJobs(data.jobs);
+            })
+            .catch(() => {});
+        }
+      }
+
       // 2. Static GitHub Pages fallback
       if (!loadedData) {
         if (!staticJobsCacheRef.current || forceRefresh) {
@@ -186,6 +356,7 @@ export default function InternshipTracker() {
           if (!res.ok) throw new Error('Failed to load static jobs.json');
           const jsonPayload = await res.json();
           staticJobsCacheRef.current = jsonPayload.jobs || [];
+          checkForNewJobs(staticJobsCacheRef.current || []);
         }
 
         const overrides = getLocalOverrides();
@@ -268,11 +439,31 @@ export default function InternshipTracker() {
     } finally {
       setIsLoading(false);
     }
-  }, [queue, trackFilter, regionFilter, sortOption, searchTerm]);
+  }, [queue, trackFilter, regionFilter, sortOption, searchTerm, checkForNewJobs]);
 
   useEffect(() => {
     fetchJobs();
   }, [fetchJobs]);
+
+  // Periodically check for new jobs in background every 3 minutes if notifications are enabled
+  useEffect(() => {
+    if (!notificationsEnabled) return;
+    const pollTimer = setInterval(async () => {
+      try {
+        const res = await fetch(`${BASE_PATH}/jobs.json?_t=${Date.now()}`);
+        if (res.ok) {
+          const payload = await res.json();
+          const allJobs: Job[] = payload.jobs || [];
+          if (allJobs.length > 0) {
+            checkForNewJobs(allJobs);
+          }
+        }
+      } catch {
+        // Silently ignore background poll failure
+      }
+    }, 3 * 60 * 1000);
+    return () => clearInterval(pollTimer);
+  }, [notificationsEnabled, checkForNewJobs]);
 
   // Manual Trigger: Scan career boards online for new jobs
   const handleManualScan = async () => {
@@ -648,6 +839,15 @@ export default function InternshipTracker() {
           }
           break;
 
+        // N = Toggle Desktop Notifications
+        case 'n':
+        case 'N':
+          if (!e.metaKey && !e.ctrlKey) {
+            e.preventDefault();
+            handleToggleNotifications();
+          }
+          break;
+
         // A = Apply
         case 'a':
         case 'A':
@@ -718,7 +918,7 @@ export default function InternshipTracker() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [jobs, selectedKey, selectedKeys, toast, isScanning]);
+  }, [jobs, selectedKey, selectedKeys, toast, isScanning, handleToggleNotifications]);
 
   const queueNavItems = [
     { id: 'inbox', label: 'Inbox', icon: 'inbox', keyNum: '1', color: 'text-indigo-400', count: counts.inbox },
@@ -846,6 +1046,37 @@ export default function InternshipTracker() {
           ) : (
             /* STANDARD ACTIONS: Exactly 32x32px square buttons with identical padding */
             <div className="flex items-center gap-1.5">
+              {/* Desktop Notifications Toggle Button */}
+              <button
+                type="button"
+                onClick={handleToggleNotifications}
+                title={
+                  notificationPermission === 'denied'
+                    ? 'Notifications blocked in browser settings (N)'
+                    : notificationsEnabled && notificationPermission === 'granted'
+                    ? 'Desktop notifications active (Click/N to mute)'
+                    : 'Enable desktop notifications for new jobs (N)'
+                }
+                className={`w-8 h-8 p-0 m-0 rounded-lg border border-[#262734] bg-[#171821] flex items-center justify-center transition-colors cursor-pointer shrink-0 relative ${
+                  notificationsEnabled && notificationPermission === 'granted'
+                    ? 'hover:bg-indigo-500/15 border-indigo-500/40 text-indigo-400'
+                    : notificationPermission === 'denied'
+                    ? 'hover:bg-rose-500/15 text-rose-400/80'
+                    : 'hover:bg-[#22232c] text-gray-400 hover:text-white'
+                }`}
+              >
+                <span className="material-symbols-outlined text-[18px] leading-none select-none flex items-center justify-center">
+                  {notificationPermission === 'denied'
+                    ? 'notifications_off'
+                    : notificationsEnabled && notificationPermission === 'granted'
+                    ? 'notifications_active'
+                    : 'notifications'}
+                </span>
+                {notificationsEnabled && notificationPermission === 'granted' && (
+                  <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_6px_#818cf8]" />
+                )}
+              </button>
+
               {/* Scan / Refresh Button */}
               <button
                 type="button"
@@ -1072,6 +1303,10 @@ export default function InternshipTracker() {
                   <div className="flex items-center justify-between">
                     <span className="text-gray-300">Scan Boards</span>
                     <kbd className="bg-[#22232c] text-indigo-400 px-1.5 py-0.5 rounded border border-[#262734] text-[10px] font-mono">R</kbd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Desktop Alerts</span>
+                    <kbd className="bg-[#22232c] text-indigo-400 px-1.5 py-0.5 rounded border border-[#262734] text-[10px] font-mono">N</kbd>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-300">Apply</span>

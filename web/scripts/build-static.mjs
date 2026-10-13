@@ -15,6 +15,17 @@ try {
     renamed = true;
   }
 
+  // Ensure jobs.json is synced with latest JOBS.md directory
+  try {
+    const syncScript = path.resolve(rootDir, '..', 'scripts', 'sync_jobs.py');
+    if (fs.existsSync(syncScript)) {
+      console.log('🔄 Syncing active jobs from JOBS.md into jobs.json...');
+      execSync(`python3 "${syncScript}"`, { cwd: path.resolve(rootDir, '..'), stdio: 'inherit' });
+    }
+  } catch (syncErr) {
+    console.warn('⚠️ Sync script warning (non-fatal):', syncErr.message);
+  }
+
   console.log('⚡ Building static Next.js export for GitHub Pages...');
   execSync('npx next build', {
     cwd: rootDir,

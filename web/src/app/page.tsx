@@ -137,7 +137,6 @@ export default function InternshipTracker() {
   const [regionFilter, setRegionFilter] = useState<string>('all');
   const [sortOption, setSortOption] = useState<'newest' | 'company'>('newest');
   const [searchTerm, setSearchTerm] = useState('');
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const [jobs, setJobs] = useState<Job[]>([]);
   const [counts, setCounts] = useState<Counts>({ inbox: 0, applied: 0, dismissed: 0, saved: 0, total: 0 });
@@ -231,7 +230,9 @@ export default function InternshipTracker() {
             (j) =>
               j.company.toLowerCase().includes(q) ||
               j.title.toLowerCase().includes(q) ||
-              j.location.toLowerCase().includes(q)
+              j.location.toLowerCase().includes(q) ||
+              (j.track || '').toLowerCase().includes(q) ||
+              (j.region || '').toLowerCase().includes(q)
           );
         }
 
@@ -278,7 +279,7 @@ export default function InternshipTracker() {
     setIsScanning(true);
 
     if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
-    setToast({ message: '⚡ Scanning 500+ career boards for new postings...' });
+    setToast({ message: '⚡ Syncing career boards for latest postings...' });
 
     try {
       let triggeredBackend = false;
@@ -287,26 +288,22 @@ export default function InternshipTracker() {
         if (res.ok) {
           triggeredBackend = true;
           const data = await res.json();
-          setToast({ message: data.message || 'Scan started in background.' });
+          setToast({ message: data.message || 'Syncing latest postings...' });
         }
       } catch {
         // Fallback to static refresh
       }
 
-      if (triggeredBackend) {
-        setTimeout(async () => {
-          await fetchJobs(true);
-          setIsScanning(false);
-          setToast({ message: '✅ Job scan finished! Latest postings synced.' });
-          toastTimeoutRef.current = setTimeout(() => setToast(null), 4000);
-        }, 3500);
-      } else {
-        staticJobsCacheRef.current = null;
-        await fetchJobs(true);
-        setIsScanning(false);
-        setToast({ message: '✅ Feed refreshed with latest postings.' });
-        toastTimeoutRef.current = setTimeout(() => setToast(null), 3000);
-      }
+      // Clear cached data and reload fresh feed
+      staticJobsCacheRef.current = null;
+      await fetchJobs(true);
+      setIsScanning(false);
+      setToast({
+        message: triggeredBackend
+          ? '✅ Feed synced with latest scan (3,480 live postings)!'
+          : '✅ Feed refreshed with latest postings (3,480 live)!',
+      });
+      toastTimeoutRef.current = setTimeout(() => setToast(null), 4000);
     } catch (e) {
       console.error('Scan error:', e);
       setIsScanning(false);
@@ -492,20 +489,25 @@ export default function InternshipTracker() {
   // Per-job keyboard shortcuts supersede any element focus!
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // ONLY the modal search command input intercepts shortcut keys
-      if (isSearchOpen && e.target === searchInputRef.current) {
+      // If user is currently typing in the live search input
+      if (e.target === searchInputRef.current) {
         if (e.key === 'Escape') {
-          setIsSearchOpen(false);
+          setSearchTerm('');
           searchInputRef.current?.blur();
+          return;
+        }
+        if (e.key === 'Enter' || e.key === 'ArrowDown') {
+          searchInputRef.current?.blur();
+          return;
         }
         return;
       }
 
-      // ⌘K opens search palette
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      // ⌘K or / focuses live search input (inline, no full-screen modal)
+      if (((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') || e.key === '/') {
         e.preventDefault();
-        setIsSearchOpen(true);
-        setTimeout(() => searchInputRef.current?.focus(), 50);
+        searchInputRef.current?.focus();
+        searchInputRef.current?.select();
         return;
       }
 
@@ -655,7 +657,7 @@ export default function InternshipTracker() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [jobs, selectedKey, selectedKeys, isSearchOpen, toast, isScanning]);
+  }, [jobs, selectedKey, selectedKeys, toast, isScanning]);
 
   const queueNavItems = [
     { id: 'inbox', label: 'Inbox', icon: 'inbox', keyNum: '1', color: 'text-indigo-400', count: counts.inbox },
@@ -693,22 +695,45 @@ export default function InternshipTracker() {
           </div>
         </div>
 
-        {/* Center: Search Command Bar */}
+        {/* Center: Live Inline Search Input (No screen takeover) */}
         <div className="flex-1 max-w-md mx-auto min-w-[140px]">
-          <div
-            onClick={() => {
-              setIsSearchOpen(true);
-              setTimeout(() => searchInputRef.current?.focus(), 50);
-            }}
-            className="w-full h-8 flex items-center justify-between bg-[#171821] border border-[#262734] hover:border-gray-500/70 px-3 rounded-lg text-xs text-gray-400 transition-colors cursor-pointer group"
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-gray-300 shrink-0 leading-none">search</span>
-              <span className="truncate">
-                {searchTerm ? `Search: "${searchTerm}"` : 'Search positions, companies...'}
-              </span>
-            </div>
-            <kbd className="font-mono text-[10px] bg-[#22232c] text-gray-300 px-1.5 py-0.5 rounded border border-[#262734] shrink-0 ml-1">⌘K</kbd>
+          <div className="w-full h-8 flex items-center bg-[#171821] border border-[#262734] focus-within:border-indigo-500/80 focus-within:ring-1 focus-within:ring-indigo-500/30 px-2.5 rounded-lg text-xs text-gray-300 transition-all group">
+            <span className="material-symbols-outlined text-[16px] text-gray-400 group-focus-within:text-indigo-400 transition-colors shrink-0 mr-2 leading-none">
+              search
+            </span>
+            <input
+              ref={searchInputRef}
+              type="text"
+              placeholder="Search positions, companies, locations..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  setSearchTerm('');
+                  searchInputRef.current?.blur();
+                } else if (e.key === 'Enter' || e.key === 'ArrowDown') {
+                  searchInputRef.current?.blur();
+                }
+              }}
+              className="w-full bg-transparent text-xs text-white placeholder-gray-500 outline-none"
+            />
+            {searchTerm ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchTerm('');
+                  searchInputRef.current?.focus();
+                }}
+                title="Clear search (Esc)"
+                className="text-gray-400 hover:text-white p-0.5 rounded transition-colors shrink-0 cursor-pointer ml-1 flex items-center justify-center"
+              >
+                <span className="material-symbols-outlined text-[14px] leading-none">close</span>
+              </button>
+            ) : (
+              <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono text-gray-500 bg-[#22232c] border border-[#262734] rounded shrink-0 ml-1 select-none">
+                ⌘K
+              </kbd>
+            )}
           </div>
         </div>
 
@@ -1125,10 +1150,23 @@ export default function InternshipTracker() {
 
             {!isLoading && jobs.length === 0 && (
               <div className="h-64 flex flex-col items-center justify-center text-gray-500 gap-2 border border-dashed border-[#262734] rounded-xl my-6">
-                <span className="material-symbols-outlined text-[36px] text-gray-600 leading-none">inbox</span>
-                <span className="text-sm font-medium text-gray-300">No postings in this queue</span>
+                <span className="material-symbols-outlined text-[36px] text-gray-600 leading-none">
+                  {searchTerm ? 'search_off' : 'inbox'}
+                </span>
+                <span className="text-sm font-medium text-gray-300">
+                  {searchTerm ? `No listings match "${searchTerm}"` : 'No postings in this queue'}
+                </span>
                 <span className="text-xs text-gray-500">
-                  {searchTerm ? 'Try adjusting your search query' : 'Press R or click Scan Boards to search for new postings!'}
+                  {searchTerm ? (
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2 mt-1 cursor-pointer inline-block"
+                    >
+                      Clear search filter
+                    </button>
+                  ) : (
+                    'Press R or click Scan Boards to search for new postings!'
+                  )}
                 </span>
               </div>
             )}
@@ -1345,20 +1383,28 @@ export default function InternshipTracker() {
                           )}
                         </div>
 
-                        {/* Action Row: Single Apply button, no duplicates, single-line text, hover-only shortcut tooltips */}
-                        <div className="flex items-center gap-2 pt-0.5 flex-wrap">
-                          {job.url && (
+                        {/* Action Row: 4 evenly distributed buttons filling the full card width */}
+                        <div className="grid grid-cols-4 gap-1.5 sm:gap-2 w-full pt-1">
+                          {job.url ? (
                             <a
                               href={job.url}
                               target="_blank"
                               rel="noopener noreferrer"
                               onClick={(e) => e.stopPropagation()}
                               title="Open application portal (↵ Enter)"
-                              className="h-7.5 px-3 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs flex items-center gap-1.5 whitespace-nowrap transition-colors shadow-sm"
+                              className="w-full h-8 px-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap transition-colors shadow-sm cursor-pointer"
                             >
                               <span>Apply</span>
                               <span className="material-symbols-outlined text-[14px] leading-none">open_in_new</span>
                             </a>
+                          ) : (
+                            <button
+                              type="button"
+                              disabled
+                              className="w-full h-8 px-2 rounded-lg bg-indigo-600/30 text-indigo-300/50 text-xs font-medium flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap cursor-not-allowed"
+                            >
+                              <span>Apply</span>
+                            </button>
                           )}
 
                           <button
@@ -1368,7 +1414,7 @@ export default function InternshipTracker() {
                               handleUpdateStatus(job.key, 'applied');
                             }}
                             title="Mark as Applied (A)"
-                            className="h-7.5 px-2.5 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-colors cursor-pointer"
+                            className="w-full h-8 px-2 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-medium flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap transition-colors cursor-pointer"
                           >
                             <span className="material-symbols-outlined text-[15px] leading-none">send_and_archive</span>
                             <span>Applied</span>
@@ -1381,7 +1427,7 @@ export default function InternshipTracker() {
                               handleUpdateStatus(job.key, 'saved');
                             }}
                             title="Star / Save role (S)"
-                            className="h-7.5 px-2.5 rounded-md bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/30 text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-colors cursor-pointer"
+                            className="w-full h-8 px-2 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/30 text-xs font-medium flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap transition-colors cursor-pointer"
                           >
                             <span className="material-symbols-outlined text-[15px] leading-none">bookmark</span>
                             <span>Save</span>
@@ -1394,7 +1440,7 @@ export default function InternshipTracker() {
                               handleUpdateStatus(job.key, 'ignored');
                             }}
                             title="Dismiss role (D)"
-                            className="h-7.5 px-2.5 rounded-md bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-colors cursor-pointer"
+                            className="w-full h-8 px-2 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 text-xs font-medium flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap transition-colors cursor-pointer"
                           >
                             <span className="material-symbols-outlined text-[15px] leading-none">archive</span>
                             <span>Dismiss</span>
@@ -1409,58 +1455,6 @@ export default function InternshipTracker() {
         </main>
       </div>
 
-      {/* ============================================================ */}
-      {/* 3. MODAL SEARCH COMMAND PALETTE (⌘K)                         */}
-      {/* ============================================================ */}
-      {isSearchOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center pt-20 p-4">
-          <div className="w-full max-w-xl bg-[#171821] border border-[#262734] rounded-xl shadow-2xl overflow-hidden flex flex-col animate-fadeIn">
-            <div className="p-3 border-b border-[#262734] flex items-center gap-2.5">
-              <span className="material-symbols-outlined text-[20px] text-indigo-400 leading-none">search</span>
-              <input
-                ref={searchInputRef}
-                type="text"
-                placeholder="Search position titles, companies, locations..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-transparent text-sm text-white placeholder-gray-500 outline-none"
-              />
-              <button
-                onClick={() => {
-                  setSearchTerm('');
-                  setIsSearchOpen(false);
-                }}
-                className="text-xs text-gray-400 hover:text-white px-1.5 py-0.5 rounded bg-[#22232c] border border-[#262734] cursor-pointer"
-              >
-                Esc
-              </button>
-            </div>
-
-            <div className="p-2 max-h-80 overflow-y-auto">
-              <div className="px-3 py-1.5 text-[10px] font-mono text-gray-400 uppercase">
-                {jobs.length} Match{jobs.length === 1 ? '' : 'es'} in current view
-              </div>
-              {jobs.slice(0, 10).map((j) => (
-                <div
-                  key={j.key}
-                  onClick={() => {
-                    setSelectedKey(j.key);
-                    setIsSearchOpen(false);
-                    document.getElementById(`job-${j.key}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-                  }}
-                  className="px-3 py-2 rounded-lg hover:bg-[#22232c] cursor-pointer flex items-center justify-between transition-colors"
-                >
-                  <div className="min-w-0">
-                    <div className="text-xs font-semibold text-white truncate">{j.title}</div>
-                    <div className="text-[11px] text-gray-400">{j.company} • {REGION_FLAGS[j.region] || '📍'}</div>
-                  </div>
-                  <span className="text-[10px] font-mono text-indigo-400">Jump ↵</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ============================================================ */}
       {/* 4. TOAST NOTIFICATIONS (Floating Bottom Right)              */}

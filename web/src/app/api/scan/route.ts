@@ -9,28 +9,23 @@ let lastScanSummary = '';
 export async function POST() {
   const rootDir = path.resolve(process.cwd(), '..');
 
-  // Step 1: Immediately sync any existing jobs in JOBS.md so the web app has latest postings instantly
-  try {
-    execSync('python3 scripts/sync_jobs.py', { cwd: rootDir, timeout: 15000 });
-  } catch (syncErr: any) {
-    console.warn('Initial sync warning:', syncErr.message);
-  }
-
   if (isScanRunning) {
     return NextResponse.json({
       status: 'running',
-      message: 'Feed synced with latest directory. Background scan is actively crawling 600+ boards.',
+      message: '⚡ Live scan in progress: querying 670+ career boards online...',
       lastScanTime,
     });
   }
 
   isScanRunning = true;
   lastScanTime = new Date().toISOString();
+  lastScanSummary = 'Checking career boards online for new postings...';
 
   try {
-    const proc = spawn('python3', ['cli.py', 'scan'], {
+    const proc = spawn('python3', ['-u', 'cli.py', 'scan'], {
       cwd: rootDir,
       stdio: ['ignore', 'pipe', 'pipe'],
+      env: { ...process.env, PMINTERN_FAST: '1' },
     });
 
     let output = '';
@@ -43,21 +38,25 @@ export async function POST() {
 
     proc.on('close', (code) => {
       isScanRunning = false;
-      lastScanSummary = output.slice(-500);
+      const cleanOutput = output.trim();
+      const lines = cleanOutput.split('\n').map((l) => l.trim()).filter(Boolean);
+      // Look for the scan summary line: "scanned X boards in Ys | Z matching live | N new"
+      const summaryLine = lines.find((l) => l.startsWith('scanned ')) || lines[lines.length - 1] || '';
+      lastScanSummary = summaryLine || `Live board scan completed (code ${code})`;
 
-      // Re-export JOBS.md and fresh JSON right after scan finishes
+      // Export fresh JSON and markdown directory right after online scan finishes
       try {
-        execSync('python3 cli.py export-md JOBS.md', { cwd: rootDir, timeout: 15000 });
-        execSync('python3 scripts/sync_jobs.py', { cwd: rootDir, timeout: 15000 });
-        console.log(`Scan completed with code ${code}. Synced JOBS.md and web/public/jobs.json.`);
-      } catch (postErr) {
-        console.error('Post-scan export error:', postErr);
+        execSync('python3 cli.py export-json web/public/jobs.json', { cwd: rootDir, timeout: 25000 });
+        execSync('python3 cli.py export-md JOBS.md', { cwd: rootDir, timeout: 25000 });
+        console.log(`Live scan finished (${code}): ${lastScanSummary}`);
+      } catch (postErr: any) {
+        console.error('Post-scan export error:', postErr.message);
       }
     });
 
     return NextResponse.json({
       status: 'started',
-      message: 'Synced 3,480+ postings! Active board scan running in background.',
+      message: '⚡ Live scan started: querying 670+ career boards online for new postings...',
       lastScanTime,
     });
   } catch (err: any) {

@@ -274,37 +274,67 @@ export default function InternshipTracker() {
     fetchJobs();
   }, [fetchJobs]);
 
-  // Manual Trigger: Scan career boards for new jobs
+  // Manual Trigger: Scan career boards online for new jobs
   const handleManualScan = async () => {
     if (isScanning) return;
     setIsScanning(true);
 
     if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
-    setToast({ message: '⚡ Syncing career boards for latest postings...' });
+    setToast({ message: '⚡ Querying 670+ career boards online for new postings...' });
 
     try {
       let triggeredBackend = false;
       try {
-        const res = await fetch(`${BASE_PATH}/api/scan`, { method: 'POST' });
+        const res = await fetch(`${BASE_PATH}/api/scan/`, { method: 'POST' });
         if (res.ok) {
           triggeredBackend = true;
           const data = await res.json();
-          setToast({ message: data.message || 'Syncing latest postings...' });
+          setToast({ message: data.message || '⚡ Checking career boards online...' });
         }
       } catch {
-        // Fallback to static refresh
+        // Fallback for static GitHub Pages hosting
       }
 
-      // Clear cached data and reload fresh feed
-      staticJobsCacheRef.current = null;
-      await fetchJobs(true);
-      setIsScanning(false);
-      setToast({
-        message: triggeredBackend
-          ? '✅ Feed synced with latest scan (3,480 live postings)!'
-          : '✅ Feed refreshed with latest postings (3,480 live)!',
-      });
-      toastTimeoutRef.current = setTimeout(() => setToast(null), 4000);
+      if (triggeredBackend) {
+        // Poll backend until the online crawler finishes
+        let attempts = 0;
+        const pollInterval = setInterval(async () => {
+          attempts++;
+          try {
+            const checkRes = await fetch(`${BASE_PATH}/api/scan/`);
+            if (checkRes.ok) {
+              const status = await checkRes.json();
+              if (status.isRunning && attempts < 150) {
+                // Keep user informed with live scanning heartbeat
+                setToast({
+                  message: `⚡ Scanning 670+ career boards online (${attempts * 2}s elapsed)...`,
+                });
+              } else {
+                clearInterval(pollInterval);
+                staticJobsCacheRef.current = null;
+                await fetchJobs(true);
+                setIsScanning(false);
+                setToast({
+                  message: status.lastScanSummary
+                    ? `✅ ${status.lastScanSummary}`
+                    : '✅ Online board scan complete! Feed up to date.',
+                });
+                toastTimeoutRef.current = setTimeout(() => setToast(null), 5000);
+              }
+            }
+          } catch {
+            clearInterval(pollInterval);
+            setIsScanning(false);
+          }
+        }, 2000);
+      } else {
+        // Static GitHub Pages refresh
+        staticJobsCacheRef.current = null;
+        await fetchJobs(true);
+        setIsScanning(false);
+        setToast({ message: '✅ Feed refreshed with latest postings.' });
+        toastTimeoutRef.current = setTimeout(() => setToast(null), 3000);
+      }
     } catch (e) {
       console.error('Scan error:', e);
       setIsScanning(false);

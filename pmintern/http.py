@@ -10,11 +10,15 @@ import re
 import random
 import os
 import pathlib
+import socket
 import ssl
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
+
+# Global socket connect timeout to prevent dropped SYN packets from hanging
+socket.setdefaulttimeout(7)
 
 USER_AGENT = "pm-internship-watcher/1.0 (personal job alert script)"
 
@@ -62,12 +66,12 @@ class FetchError(Exception):
 # Hosts that serve many of our boards from shared infrastructure. Workday runs
 # ~200 of them; unthrottled, a cloud runner's shared IP drew HTTP 429 on 59
 # boards in one scan. A per-host gate keeps concurrency polite.
-_HOST_LIMITS = {"myworkdayjobs.com": 6}
+_HOST_LIMITS = {"myworkdayjobs.com": 20}
 _gates: dict[str, threading.BoundedSemaphore] = {}
 _gates_lock = threading.Lock()
 
 RETRYABLE = (429, 500, 502, 503, 504)
-MAX_BACKOFF = 30
+MAX_BACKOFF = 10
 
 
 def _gate(url: str):
@@ -85,7 +89,7 @@ def _backoff(exc: urllib.error.HTTPError | None, attempt: int) -> float:
         header = exc.headers.get("Retry-After") if exc.headers else None
         if header and header.strip().isdigit():
             return min(float(header), MAX_BACKOFF)
-    return min(2.0 * (2 ** attempt), MAX_BACKOFF) + random.uniform(0, 1)
+    return min(1.5 * (2 ** attempt), MAX_BACKOFF) + random.uniform(0, 0.5)
 
 
 def _detail(exc: urllib.error.HTTPError) -> str:
@@ -115,21 +119,20 @@ def _request_json(req: urllib.request.Request, url: str, timeout: int, retries: 
                 time.sleep(_backoff(exc, attempt))
             continue
         except (urllib.error.URLError, OSError, http.client.HTTPException, json.JSONDecodeError) as exc:
-            last = exc
-        if attempt < retries:
-            time.sleep(_backoff(None, attempt))
+            # Connection timeouts, DNS errors, and network issues fail fast without redundant retry delays
+            raise FetchError(f"{type(exc).__name__}: {exc}") from exc
     code = f"HTTP {last.code}" if isinstance(last, urllib.error.HTTPError) else type(last).__name__
     raise FetchError(f"{code} after {retries + 1} attempts")
 
 
-def get_json(url: str, timeout: int = 25, retries: int = 4):
+def get_json(url: str, timeout: int = 8, retries: int = 1):
     """GET a URL and parse JSON. Retries throttling and transient failures."""
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT, "Accept": "application/json"})
     return _request_json(req, url, timeout, retries)
 
 
-def post_json(url: str, payload: dict, timeout: int = 25, retries: int = 4,
+def post_json(url: str, payload: dict, timeout: int = 8, retries: int = 1,
               headers: dict | None = None):
     """POST JSON and parse the JSON response. Retries throttling (429) with backoff."""
     req_headers = {"User-Agent": USER_AGENT, "Content-Type": "application/json"}

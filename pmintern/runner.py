@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 import time
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 
 from . import config, discord, store, telegram
@@ -54,7 +54,7 @@ def _scan_board(company: dict) -> tuple[dict, list[Job] | None, str]:
         return company, None, f"{type(exc).__name__}: {exc}"[:200]
 
 
-def scan(conn, *, workers: int = 20, require_location: bool = True,
+def scan(conn, *, workers: int = 45, require_location: bool = True,
          verbose: bool = False, record: bool = True, only: str | None = None,
          region: str | None = None, tracks: set[str] | None = None,
          allowed_regions: set[str] | None = None) -> ScanResult:
@@ -77,7 +77,9 @@ def scan(conn, *, workers: int = 20, require_location: bool = True,
     seen_by_board: dict[tuple[str, str], set] = {}
 
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        for company, jobs, error in pool.map(_scan_board, companies):
+        futures = [pool.submit(_scan_board, c) for c in companies]
+        for fut in as_completed(futures):
+            company, jobs, error = fut.result()
             source, board = company["source"], company["board"]
             if jobs is None:
                 failed.append((company["name"], error))

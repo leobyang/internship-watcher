@@ -60,8 +60,9 @@ jobs:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
           DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python3 cli.py scan ${{ inputs.digest && '--digest' || '' }}
+        run: |
+          python3 cli.py scan ${{ inputs.digest && '--digest' || '' }}
+          python3 cli.py urlwatch
 
       # Generate browsable markdown directory & GitHub Actions Step Summary
       - name: Generate Directory & Summary

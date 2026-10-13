@@ -417,19 +417,24 @@ def cmd_send(args) -> None:
 def cmd_urlwatch(args) -> None:
     conn = store.connect()
     discord_client, tg_client = get_notifiers()
+    dry = args.dry_run or config.get_bool("DRY_RUN")
+    force = getattr(args, "force", False)
+    verbose = not getattr(args, "quiet", False)
     print("watching tracked URLs...")
     while True:
-        hits = urlwatch.scan_watched(conn)
+        hits = urlwatch.scan_watched(conn, record=not dry, force=force, verbose=verbose)
         for job in hits:
             print(f"FOUND: {job}")
-            if not args.dry_run:
+            if not dry:
+                store.record_seen(conn, [job])
                 if discord_client:
                     discord_client.send_job_alert(job)
                 if tg_client:
-                    tg_client.send(f"<b>URL WATCH HIT:</b>\n{telegram.job_message(job)}")
+                    tg_client.send(f"🚨 <b>URL WATCH HIT:</b>\n\n{telegram.job_message(job)}",
+                                   reply_markup=telegram.job_keyboard(job.key, job.url))
         if not args.loop:
             break
-        time.sleep(max(30, args.loop * 60))
+        time.sleep(max(30, int(args.loop * 60)))
 
 
 def cmd_test(args) -> None:
@@ -609,6 +614,8 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("urlwatch", help="watch individual job URLs and alert when they open")
     p.add_argument("--loop", type=float, metavar="MIN", help="keep checking every MIN minutes")
     p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--force", action="store_true", help="alert even if already reported open")
+    p.add_argument("--quiet", "-q", action="store_true", help="suppress per-URL status lines")
     p.set_defaults(func=cmd_urlwatch)
 
     sub.add_parser("chatid", help="find your Telegram chat id").set_defaults(func=cmd_chatid)

@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`dark ${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`dark ${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link
@@ -37,7 +37,10 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
         />
       </head>
-      <body className="bg-[#121318] text-[#e3e1e9] antialiased overflow-hidden select-none font-sans">
+      <body
+        suppressHydrationWarning
+        className="bg-[#121318] text-[#e3e1e9] antialiased overflow-hidden select-none font-sans"
+      >
         {children}
       </body>
     </html>

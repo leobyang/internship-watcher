@@ -122,6 +122,8 @@ export default function InternshipTracker() {
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [inspectingJob, setInspectingJob] = useState<Job | null>(null);
   const [isCloudStatic, setIsCloudStatic] = useState<boolean>(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState<boolean>(true);
 
   const [toast, setToast] = useState<{ message: string; lastKey?: string; prevStatus?: string } | null>(null);
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -484,157 +486,187 @@ export default function InternshipTracker() {
   return (
     <div className="bg-[#121318] text-[#e3e1e9] h-screen flex overflow-hidden select-none font-sans">
       {/* COLUMN 1: LEFT SIDEBAR */}
-      <aside className="w-64 border-r border-[#292a36] bg-[#121318] flex flex-col justify-between shrink-0 h-full z-30">
-        <div className="flex flex-col">
+      <aside
+        className={`${
+          isSidebarOpen ? 'w-60 sm:w-64' : 'w-0 border-r-0'
+        } border-r border-[#292a36] bg-[#121318] flex flex-col justify-between shrink-0 h-full z-30 transition-all duration-200 overflow-hidden`}
+      >
+        <div className="flex flex-col min-w-[240px]">
           {/* Brand Title */}
           <div className="h-14 px-4 border-b border-[#292a36] flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-lg bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
-                <span className="material-symbols-outlined text-[18px]">bolt</span>
+                <span className="material-symbols-outlined text-[17px]">bolt</span>
               </div>
-              <span className="font-semibold text-[14px] tracking-tight text-white">
-                Leo&apos;s Internship Tracker
+              <span className="font-semibold text-[13px] tracking-tight text-white">
+                Internship Tracker
               </span>
             </div>
+            <button
+              type="button"
+              onClick={() => setIsSidebarOpen(false)}
+              title="Collapse sidebar"
+              className="p-1 rounded-md text-gray-400 hover:text-white hover:bg-[#1a1b22] transition-colors"
+            >
+              <span className="material-symbols-outlined text-[18px]">menu_open</span>
+            </button>
           </div>
 
           {/* Queues Section */}
           <div className="p-3">
-            <div className="px-2.5 pb-2 text-[10px] font-semibold tracking-wider text-gray-400 uppercase font-mono flex items-center justify-between">
-              <span>Queues</span>
-              <span className="text-[9px] text-gray-500 font-normal">1-4 KEYS</span>
+            <div className="px-2.5 pb-2 text-[10px] font-semibold tracking-wider text-gray-400 uppercase font-mono">
+              Queues
             </div>
 
-            <nav className="flex flex-col gap-1.5" id="nav-queue-list">
-              {/* Inbox (Pending) */}
+            <nav className="flex flex-col gap-1" id="nav-queue-list">
+              {/* Inbox */}
               <button
                 onClick={() => setQueue('inbox')}
-                className={`w-full text-left flex items-center justify-between px-3 py-2 rounded-lg transition-all group ${
+                className={`w-full text-left flex items-center justify-between px-2.5 py-2 rounded-lg transition-all group ${
                   queue === 'inbox'
                     ? 'bg-[#1a1b22] text-white font-medium border border-[#383949] shadow-sm'
                     : 'text-gray-400 hover:text-gray-200 hover:bg-[#1a1b22]/60 border border-transparent'
                 }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-[17px] text-indigo-400">inbox</span>
-                  <span className="text-xs">Inbox (Pending)</span>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-[17px] text-indigo-400 group-hover:hidden">inbox</span>
+                    <kbd className="hidden group-hover:flex w-4 h-4 rounded bg-[#252634] border border-indigo-500/40 items-center justify-center font-mono text-[10px] text-indigo-300 font-bold shadow-sm">1</kbd>
+                  </div>
+                  <span className="text-xs truncate">Inbox</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-[11px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-1.5 py-0.2 rounded">
-                    {counts.inbox.toLocaleString()}
-                  </span>
-                  <kbd className="font-mono text-[10px] text-gray-500">1</kbd>
-                </div>
+                <span className="font-mono text-[11px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-1.5 py-0.2 rounded shrink-0">
+                  {counts.inbox.toLocaleString()}
+                </span>
               </button>
 
               {/* Applied */}
               <button
                 onClick={() => setQueue('applied')}
-                className={`w-full text-left flex items-center justify-between px-3 py-2 rounded-lg transition-all group ${
+                className={`w-full text-left flex items-center justify-between px-2.5 py-2 rounded-lg transition-all group ${
                   queue === 'applied'
                     ? 'bg-[#1a1b22] text-white font-medium border border-[#383949] shadow-sm'
                     : 'text-gray-400 hover:text-gray-200 hover:bg-[#1a1b22]/60 border border-transparent'
                 }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-[17px] text-emerald-400">send_and_archive</span>
-                  <span className="text-xs">Applied</span>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-[17px] text-emerald-400 group-hover:hidden">send_and_archive</span>
+                    <kbd className="hidden group-hover:flex w-4 h-4 rounded bg-[#1e2e28] border border-emerald-500/40 items-center justify-center font-mono text-[10px] text-emerald-300 font-bold shadow-sm">2</kbd>
+                  </div>
+                  <span className="text-xs truncate">Applied</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-[11px] text-gray-300 bg-[#22232c] px-1.5 py-0.2 rounded border border-[#292a36]">
-                    {counts.applied.toLocaleString()}
-                  </span>
-                  <kbd className="font-mono text-[10px] text-gray-500">2</kbd>
-                </div>
+                <span className="font-mono text-[11px] text-gray-300 bg-[#22232c] px-1.5 py-0.2 rounded border border-[#292a36] shrink-0">
+                  {counts.applied.toLocaleString()}
+                </span>
               </button>
 
               {/* Dismissed */}
               <button
                 onClick={() => setQueue('dismissed')}
-                className={`w-full text-left flex items-center justify-between px-3 py-2 rounded-lg transition-all group ${
+                className={`w-full text-left flex items-center justify-between px-2.5 py-2 rounded-lg transition-all group ${
                   queue === 'dismissed'
                     ? 'bg-[#1a1b22] text-white font-medium border border-[#383949] shadow-sm'
                     : 'text-gray-400 hover:text-gray-200 hover:bg-[#1a1b22]/60 border border-transparent'
                 }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-[17px] text-rose-400">archive</span>
-                  <span className="text-xs">Dismissed</span>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-[17px] text-rose-400 group-hover:hidden">archive</span>
+                    <kbd className="hidden group-hover:flex w-4 h-4 rounded bg-[#2e1e24] border border-rose-500/40 items-center justify-center font-mono text-[10px] text-rose-300 font-bold shadow-sm">3</kbd>
+                  </div>
+                  <span className="text-xs truncate">Dismissed</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-[11px] text-gray-300 bg-[#22232c] px-1.5 py-0.2 rounded border border-[#292a36]">
-                    {counts.dismissed.toLocaleString()}
-                  </span>
-                  <kbd className="font-mono text-[10px] text-gray-500">3</kbd>
-                </div>
+                <span className="font-mono text-[11px] text-gray-300 bg-[#22232c] px-1.5 py-0.2 rounded border border-[#292a36] shrink-0">
+                  {counts.dismissed.toLocaleString()}
+                </span>
               </button>
 
               {/* Saved */}
               <button
                 onClick={() => setQueue('saved')}
-                className={`w-full text-left flex items-center justify-between px-3 py-2 rounded-lg transition-all group ${
+                className={`w-full text-left flex items-center justify-between px-2.5 py-2 rounded-lg transition-all group ${
                   queue === 'saved'
                     ? 'bg-[#1a1b22] text-white font-medium border border-[#383949] shadow-sm'
                     : 'text-gray-400 hover:text-gray-200 hover:bg-[#1a1b22]/60 border border-transparent'
                 }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-[17px] text-amber-400">bookmark</span>
-                  <span className="text-xs">Saved (Starred)</span>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-[17px] text-amber-400 group-hover:hidden">bookmark</span>
+                    <kbd className="hidden group-hover:flex w-4 h-4 rounded bg-[#2e261e] border border-amber-500/40 items-center justify-center font-mono text-[10px] text-amber-300 font-bold shadow-sm">4</kbd>
+                  </div>
+                  <span className="text-xs truncate">Saved</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-[11px] text-gray-300 bg-[#22232c] px-1.5 py-0.2 rounded border border-[#292a36]">
-                    {counts.saved.toLocaleString()}
-                  </span>
-                  <kbd className="font-mono text-[10px] text-gray-500">4</kbd>
-                </div>
+                <span className="font-mono text-[11px] text-gray-300 bg-[#22232c] px-1.5 py-0.2 rounded border border-[#292a36] shrink-0">
+                  {counts.saved.toLocaleString()}
+                </span>
               </button>
             </nav>
           </div>
         </div>
 
-        {/* Shortcuts Cheatsheet Card */}
-        <div className="p-3">
-          <div className="bg-[#1a1b22] border border-[#292a36] p-3 rounded-lg flex flex-col gap-2">
-            <div className="flex items-center justify-between text-[10px] font-semibold text-gray-400 font-mono uppercase tracking-wider">
-              <span>Shortcuts</span>
-              <span className="text-indigo-400 flex items-center gap-0.5">
-                <span className="material-symbols-outlined text-[13px]">bolt</span> Speedy
+        {/* Shortcuts Cheatsheet Card (Collapsible) */}
+        <div className="p-3 min-w-[240px]">
+          <div className="bg-[#1a1b22] border border-[#292a36] rounded-lg overflow-hidden transition-all">
+            <div
+              onClick={() => setIsShortcutsOpen((prev) => !prev)}
+              className="p-2.5 flex items-center justify-between text-[10px] font-semibold text-gray-400 font-mono uppercase tracking-wider cursor-pointer hover:bg-[#22232c] transition-colors select-none"
+            >
+              <span className="flex items-center gap-1.5 text-gray-300">
+                <span className="material-symbols-outlined text-[14px] text-indigo-400">keyboard</span>
+                Shortcuts
               </span>
-            </div>
-            <div className="flex flex-col gap-1.5 text-[11px] text-gray-400">
-              <div className="flex items-center justify-between">
-                <span className="text-gray-300">Navigate</span>
-                <span className="font-mono text-gray-400 flex gap-1">
-                  <kbd className="bg-[#22232c] text-gray-200 px-1 py-0.5 rounded border border-[#292a36] text-[10px]">J</kbd>
-                  <kbd className="bg-[#22232c] text-gray-200 px-1 py-0.5 rounded border border-[#292a36] text-[10px]">K</kbd>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsShortcutsOpen((prev) => !prev);
+                }}
+                title={isShortcutsOpen ? "Minimize shortcuts" : "Expand shortcuts"}
+                className="text-gray-400 hover:text-white p-0.5 rounded transition-colors"
+              >
+                <span className="material-symbols-outlined text-[16px]">
+                  {isShortcutsOpen ? 'expand_more' : 'expand_less'}
                 </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-300">Apply &amp; Move</span>
-                <kbd className="font-mono bg-[#22232c] text-emerald-400 px-1.5 py-0.5 rounded border border-[#292a36] text-[10px]">A</kbd>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-300">Dismiss</span>
-                <kbd className="font-mono bg-[#22232c] text-rose-400 px-1.5 py-0.5 rounded border border-[#292a36] text-[10px]">D</kbd>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-300">Save</span>
-                <kbd className="font-mono bg-[#22232c] text-amber-400 px-1.5 py-0.5 rounded border border-[#292a36] text-[10px]">S</kbd>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-300">Open Link</span>
-                <kbd className="font-mono bg-[#22232c] text-indigo-400 px-1.5 py-0.5 rounded border border-[#292a36] text-[10px]">↵ Enter</kbd>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-300">Quick Inspect</span>
-                <kbd className="font-mono bg-[#22232c] text-gray-200 px-1.5 py-0.5 rounded border border-[#292a36] text-[10px]">Space</kbd>
-              </div>
-              <div className="flex items-center justify-between pt-1 border-t border-[#292a36]/60">
-                <span className="text-gray-400 text-[10px]">Undo</span>
-                <kbd className="font-mono bg-[#22232c] text-gray-400 px-1 py-0.5 rounded border border-[#292a36] text-[10px]">Z</kbd>
-              </div>
+              </button>
             </div>
+
+            {isShortcutsOpen && (
+              <div className="px-3 pb-3 pt-1 flex flex-col gap-1.5 text-[11px] text-gray-400 border-t border-[#292a36]/60">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Navigate</span>
+                  <span className="font-mono text-gray-400 flex gap-1">
+                    <kbd className="bg-[#22232c] text-gray-200 px-1 py-0.5 rounded border border-[#292a36] text-[10px]">J</kbd>
+                    <kbd className="bg-[#22232c] text-gray-200 px-1 py-0.5 rounded border border-[#292a36] text-[10px]">K</kbd>
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Apply</span>
+                  <kbd className="font-mono bg-[#22232c] text-emerald-400 px-1.5 py-0.5 rounded border border-[#292a36] text-[10px]">A</kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Dismiss</span>
+                  <kbd className="font-mono bg-[#22232c] text-rose-400 px-1.5 py-0.5 rounded border border-[#292a36] text-[10px]">D</kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Save</span>
+                  <kbd className="font-mono bg-[#22232c] text-amber-400 px-1.5 py-0.5 rounded border border-[#292a36] text-[10px]">S</kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Open Portal</span>
+                  <kbd className="font-mono bg-[#22232c] text-indigo-400 px-1.5 py-0.5 rounded border border-[#292a36] text-[10px]">↵ Enter</kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Quick Inspect</span>
+                  <kbd className="font-mono bg-[#22232c] text-gray-200 px-1.5 py-0.5 rounded border border-[#292a36] text-[10px]">Space</kbd>
+                </div>
+                <div className="flex items-center justify-between pt-1 border-t border-[#292a36]/60">
+                  <span className="text-gray-400 text-[10px]">Undo</span>
+                  <kbd className="font-mono bg-[#22232c] text-gray-400 px-1 py-0.5 rounded border border-[#292a36] text-[10px]">Z</kbd>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </aside>
@@ -642,35 +674,51 @@ export default function InternshipTracker() {
       {/* COLUMN 2: MAIN CONTENT AREA (High-density Feed) */}
       <main className="flex-1 flex flex-col h-full overflow-hidden bg-[#121318]">
         {/* Top Header */}
-        <header className="h-14 border-b border-[#292a36] bg-[#121318] px-6 flex items-center justify-between shrink-0 z-20">
-          {/* Search Trigger */}
-          <div className="w-full max-w-xl">
-            <div
-              onClick={() => {
-                setIsSearchOpen(true);
-                setTimeout(() => searchInputRef.current?.focus(), 50);
-              }}
-              className="w-full flex items-center justify-between bg-[#1a1b22] border border-[#292a36] px-3.5 py-1.5 rounded-lg text-sm text-gray-400 hover:border-gray-500 transition-colors cursor-pointer group"
-            >
-              <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[17px] text-gray-400 group-hover:text-gray-300">search</span>
-                <span className="text-xs text-gray-400 group-hover:text-gray-300">
-                  {searchTerm ? `Filtering: "${searchTerm}"` : 'Search companies, roles, locations...'}
-                </span>
+        <header className="h-14 border-b border-[#292a36] bg-[#121318] px-3 sm:px-6 flex items-center justify-between shrink-0 z-20 gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 min-w-0">
+            {!isSidebarOpen && (
+              <button
+                type="button"
+                onClick={() => setIsSidebarOpen(true)}
+                title="Open sidebar"
+                className="p-1.5 rounded-lg bg-[#1a1b22] hover:bg-[#252632] text-gray-400 hover:text-white border border-[#292a36] transition-colors shrink-0"
+              >
+                <span className="material-symbols-outlined text-[18px]">menu</span>
+              </button>
+            )}
+
+            {/* Search Trigger */}
+            <div className="w-40 sm:w-56 md:w-72 lg:w-80 min-w-0">
+              <div
+                onClick={() => {
+                  setIsSearchOpen(true);
+                  setTimeout(() => searchInputRef.current?.focus(), 50);
+                }}
+                className="w-full flex items-center justify-between bg-[#1a1b22] border border-[#292a36] px-2.5 sm:px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:border-gray-500 transition-colors cursor-pointer group"
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-gray-300 shrink-0">search</span>
+                  <span className="text-xs text-gray-400 group-hover:text-gray-300 truncate">
+                    {searchTerm ? `"${searchTerm}"` : 'Search jobs...'}
+                  </span>
+                </div>
+                <kbd className="font-mono text-[10px] bg-[#22232c] text-gray-300 px-1.5 py-0.5 rounded border border-[#292a36] font-medium shrink-0 ml-1">⌘K</kbd>
               </div>
-              <kbd className="font-mono text-[11px] bg-[#22232c] text-gray-300 px-1.5 py-0.5 rounded border border-[#292a36] font-medium">⌘K</kbd>
             </div>
           </div>
 
-          {/* Quick Shortcuts & Mode Pill */}
-          <div className="flex items-center gap-2 shrink-0">
-            {/* Mode badge */}
-            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono border bg-[#1a1b22] border-[#292a36]">
-              <span className={`w-2 h-2 rounded-full ${isCloudStatic ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'}`}></span>
-              <span className="text-gray-300">{isCloudStatic ? 'GitHub Pages' : 'Local SQLite'}</span>
+          {/* Top Right Action & Tooling Controls */}
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+            {/* Cloud / Local mode indicator */}
+            <div
+              title={isCloudStatic ? "Cloud Static Feed (GitHub Pages)" : "Connected to local SQLite"}
+              className="hidden lg:flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] font-mono border bg-[#1a1b22] border-[#292a36]"
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${isCloudStatic ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'}`}></span>
+              <span className="text-gray-400">{isCloudStatic ? 'Cloud' : 'Local'}</span>
             </div>
 
-            {/* Export / Import */}
+            {/* Import / Export */}
             <div className="flex items-center gap-1">
               <input
                 type="file"
@@ -680,76 +728,156 @@ export default function InternshipTracker() {
                 className="hidden"
               />
               <button
+                type="button"
                 onClick={() => importInputRef.current?.click()}
                 title="Import decisions from tracker.json"
-                className="px-2 py-1 rounded-md text-[11px] font-mono bg-[#1a1b22] hover:bg-[#252632] text-gray-300 hover:text-white border border-[#292a36] transition-colors"
+                className="p-1.5 sm:px-2 sm:py-1 rounded-md text-[11px] font-mono bg-[#1a1b22] hover:bg-[#252632] text-gray-400 hover:text-white border border-[#292a36] transition-colors"
               >
-                Import
+                <span className="material-symbols-outlined text-[16px] sm:hidden">upload</span>
+                <span className="hidden sm:inline">Import</span>
               </button>
               <button
+                type="button"
                 onClick={handleExportDecisions}
                 title="Export decisions to JSON"
-                className="px-2 py-1 rounded-md text-[11px] font-mono bg-[#1a1b22] hover:bg-[#252632] text-gray-300 hover:text-white border border-[#292a36] transition-colors"
+                className="p-1.5 sm:px-2 sm:py-1 rounded-md text-[11px] font-mono bg-[#1a1b22] hover:bg-[#252632] text-gray-400 hover:text-white border border-[#292a36] transition-colors"
               >
-                Export
+                <span className="material-symbols-outlined text-[16px] sm:hidden">download</span>
+                <span className="hidden sm:inline">Export</span>
               </button>
             </div>
 
-            <div className="flex items-center gap-1.5 bg-[#1a1b22] border border-[#292a36] px-2.5 py-1 rounded-md text-[11px] text-gray-300">
-              <kbd className="font-mono bg-[#22232c] text-indigo-400 px-1 py-0.2 rounded border border-[#292a36]">J</kbd>
-              <span className="text-gray-500">/</span>
-              <kbd className="font-mono bg-[#22232c] text-indigo-400 px-1 py-0.2 rounded border border-[#292a36]">K</kbd>
-              <span className="text-gray-400 ml-1">Navigate</span>
+            <div className="h-4 w-[1px] bg-[#292a36] mx-0.5"></div>
+
+            {/* Navigate Arrows */}
+            <div className="flex items-center bg-[#1a1b22] border border-[#292a36] rounded-md overflow-hidden">
+              <button
+                type="button"
+                onClick={() => {
+                  const idx = jobs.findIndex((j) => j.key === selectedKey);
+                  if (idx > 0) {
+                    setSelectedKey(jobs[idx - 1].key);
+                    document.getElementById(`job-${jobs[idx - 1].key}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                  }
+                }}
+                title="Previous role (K or ↑)"
+                className="p-1.5 hover:bg-[#252632] text-gray-400 hover:text-white transition-colors"
+              >
+                <span className="material-symbols-outlined text-[16px]">arrow_upward</span>
+              </button>
+              <div className="w-[1px] h-3.5 bg-[#292a36]"></div>
+              <button
+                type="button"
+                onClick={() => {
+                  const idx = jobs.findIndex((j) => j.key === selectedKey);
+                  if (idx < jobs.length - 1) {
+                    setSelectedKey(jobs[idx + 1].key);
+                    document.getElementById(`job-${jobs[idx + 1].key}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                  }
+                }}
+                title="Next role (J or ↓)"
+                className="p-1.5 hover:bg-[#252632] text-gray-400 hover:text-white transition-colors"
+              >
+                <span className="material-symbols-outlined text-[16px]">arrow_downward</span>
+              </button>
             </div>
-            <div className="flex items-center gap-1.5 bg-[#1a1b22] border border-[#292a36] px-2.5 py-1 rounded-md text-[11px] text-gray-300">
-              <kbd className="font-mono bg-[#22232c] text-emerald-400 px-1.5 py-0.2 rounded border border-[#292a36]">A</kbd>
-              <span className="text-gray-400 ml-0.5">Apply</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-[#1a1b22] border border-[#292a36] px-2.5 py-1 rounded-md text-[11px] text-gray-300">
-              <kbd className="font-mono bg-[#22232c] text-rose-400 px-1.5 py-0.2 rounded border border-[#292a36]">D</kbd>
-              <span className="text-gray-400 ml-0.5">Dismiss</span>
-            </div>
+
+            {/* Apply Button */}
+            <button
+              type="button"
+              onClick={() => {
+                if (selectedKey) handleUpdateStatus(selectedKey, 'applied');
+              }}
+              title="Apply (A)"
+              className="p-1.5 rounded-md bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-colors"
+            >
+              <span className="material-symbols-outlined text-[17px]">send_and_archive</span>
+            </button>
+
+            {/* Dismiss Button */}
+            <button
+              type="button"
+              onClick={() => {
+                if (selectedKey) handleUpdateStatus(selectedKey, 'ignored');
+              }}
+              title="Dismiss (D)"
+              className="p-1.5 rounded-md bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 transition-colors"
+            >
+              <span className="material-symbols-outlined text-[17px]">archive</span>
+            </button>
+
+            {/* Save Button */}
+            <button
+              type="button"
+              onClick={() => {
+                if (selectedKey) handleUpdateStatus(selectedKey, 'saved');
+              }}
+              title="Save (S)"
+              className="p-1.5 rounded-md bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 transition-colors"
+            >
+              <span className="material-symbols-outlined text-[17px]">bookmark</span>
+            </button>
+
+            {/* Undo Button */}
+            <button
+              type="button"
+              onClick={handleUndo}
+              title="Undo (Z)"
+              className="p-1.5 rounded-md bg-[#1a1b22] hover:bg-[#252632] text-gray-400 hover:text-white border border-[#292a36] transition-colors"
+            >
+              <span className="material-symbols-outlined text-[17px]">undo</span>
+            </button>
           </div>
         </header>
 
         {/* Feed Header / Filter Bar */}
-        <div className="h-12 border-b border-[#292a36] px-6 bg-[#121318] flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-sm font-semibold text-white tracking-tight capitalize">
-              {queue === 'inbox' && 'Inbox (Pending)'}
-              {queue === 'applied' && 'Applied Postings'}
-              {queue === 'dismissed' && 'Dismissed Archive'}
-              {queue === 'saved' && 'Saved Postings'}
+        <div className="h-11 border-b border-[#292a36] px-4 sm:px-6 bg-[#121318] flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2">
+            <h1 className="text-xs sm:text-sm font-semibold text-white tracking-tight capitalize">
+              {queue === 'inbox' && 'Inbox'}
+              {queue === 'applied' && 'Applied'}
+              {queue === 'dismissed' && 'Dismissed'}
+              {queue === 'saved' && 'Saved'}
             </h1>
-            <span className="text-[11px] font-mono font-medium px-2 py-0.5 rounded bg-[#1a1b22] text-indigo-300 border border-[#292a36]">
-              {jobs.length.toLocaleString()} listings
+            <span className="text-[11px] font-mono font-medium px-1.5 py-0.2 rounded bg-[#1a1b22] text-indigo-300 border border-[#292a36]">
+              {jobs.length.toLocaleString()}
             </span>
           </div>
 
-          {/* Filter & Sort Controls */}
-          <div className="flex items-center gap-3 text-xs text-gray-400">
-            {/* Sort Filter */}
-            <div className="flex items-center gap-1.5 bg-[#1a1b22]/60 hover:bg-[#1a1b22] border border-[#292a36] px-2.5 py-1 rounded-md transition-colors">
-              <span className="material-symbols-outlined text-[14px] text-gray-400">swap_vert</span>
+          {/* Compact Icon Dropdowns */}
+          <div className="flex items-center gap-1.5">
+            {/* Sort Filter Icon */}
+            <div className="relative" title={`Sort: ${sortOption === 'newest' ? 'Newest' : 'Company A-Z'}`}>
+              <div className="w-7 h-7 rounded-md bg-[#1a1b22] hover:bg-[#252632] border border-[#292a36] hover:border-gray-500 flex items-center justify-center text-gray-300 hover:text-white transition-colors cursor-pointer">
+                <span className="material-symbols-outlined text-[16px]">swap_vert</span>
+              </div>
               <select
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value as any)}
                 aria-label="Sort postings by"
-                className="bg-transparent text-[11px] text-gray-200 font-medium outline-none cursor-pointer"
+                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
               >
-                <option value="newest" className="bg-[#1a1b22] text-white">Sort: Newest</option>
+                <option value="newest" className="bg-[#1a1b22] text-white">Sort: Newest First</option>
                 <option value="company" className="bg-[#1a1b22] text-white">Sort: Company A-Z</option>
               </select>
             </div>
 
-            {/* Track Filter */}
-            <div className="flex items-center gap-1.5 bg-[#1a1b22]/60 hover:bg-[#1a1b22] border border-[#292a36] px-2.5 py-1 rounded-md transition-colors">
-              <span className="material-symbols-outlined text-[14px] text-gray-400">filter_alt</span>
+            {/* Track Filter Icon */}
+            <div className="relative" title={`Track: ${trackFilter === 'all' ? 'All Roles' : trackFilter.toUpperCase()}`}>
+              <div className={`w-7 h-7 rounded-md border flex items-center justify-center transition-colors cursor-pointer ${
+                trackFilter !== 'all'
+                  ? 'bg-indigo-600/20 border-indigo-500/50 text-indigo-300'
+                  : 'bg-[#1a1b22] hover:bg-[#252632] border-[#292a36] hover:border-gray-500 text-gray-300 hover:text-white'
+              }`}>
+                <span className="material-symbols-outlined text-[16px]">
+                  {trackFilter === 'pm' ? 'assignment' : trackFilter === 'swe' ? 'code' : 'tune'}
+                </span>
+              </div>
               <select
                 value={trackFilter}
                 onChange={(e) => setTrackFilter(e.target.value as any)}
                 aria-label="Filter postings by role track"
-                className="bg-transparent text-[11px] text-gray-200 font-medium outline-none cursor-pointer"
+                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
               >
                 <option value="all" className="bg-[#1a1b22] text-white">Track: All Roles</option>
                 <option value="pm" className="bg-[#1a1b22] text-white">Track: 📋 PM Only</option>
@@ -757,28 +885,40 @@ export default function InternshipTracker() {
               </select>
             </div>
 
-            {/* Region Filter */}
-            <div className="flex items-center gap-1.5 bg-[#1a1b22]/60 hover:bg-[#1a1b22] border border-[#292a36] px-2.5 py-1 rounded-md transition-colors">
-              <span className="material-symbols-outlined text-[14px] text-gray-400">location_on</span>
+            {/* Region Filter Icon */}
+            <div className="relative" title={`Region: ${regionFilter === 'all' ? 'Worldwide' : regionFilter.toUpperCase()}`}>
+              <div className={`w-7 h-7 rounded-md border flex items-center justify-center transition-colors cursor-pointer text-xs ${
+                regionFilter !== 'all'
+                  ? 'bg-indigo-600/20 border-indigo-500/50 text-white'
+                  : 'bg-[#1a1b22] hover:bg-[#252632] border-[#292a36] hover:border-gray-500 text-gray-300 hover:text-white'
+              }`}>
+                {regionFilter !== 'all' ? (
+                  <span>{REGION_FLAGS[regionFilter] || '📍'}</span>
+                ) : (
+                  <span className="material-symbols-outlined text-[16px]">public</span>
+                )}
+              </div>
               <select
                 value={regionFilter}
                 onChange={(e) => setRegionFilter(e.target.value)}
-                aria-label="Filter postings by geographic region"
-                className="bg-transparent text-[11px] text-gray-200 font-medium outline-none cursor-pointer"
+                aria-label="Filter postings by region"
+                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
               >
-                <option value="all" className="bg-[#1a1b22] text-white">Region: All Regions</option>
+                <option value="all" className="bg-[#1a1b22] text-white">Region: All Worldwide</option>
                 <option value="us" className="bg-[#1a1b22] text-white">🇺🇸 United States</option>
                 <option value="ca" className="bg-[#1a1b22] text-white">🇨🇦 Canada</option>
                 <option value="uk" className="bg-[#1a1b22] text-white">🇬🇧 United Kingdom</option>
-                <option value="apac" className="bg-[#1a1b22] text-white">🌏 APAC</option>
+                <option value="apac" className="bg-[#1a1b22] text-white">🌏 Asia-Pacific</option>
                 <option value="remote" className="bg-[#1a1b22] text-white">🌐 Remote</option>
+                <option value="foreign" className="bg-[#1a1b22] text-white">🌍 International</option>
               </select>
             </div>
           </div>
         </div>
 
+
         {/* Jobs Feed List Container */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-2.5" id="jobs-list">
+        <div className="flex-1 overflow-y-auto px-3 sm:px-6 py-3 space-y-1.5 focus:outline-none" id="jobs-list">
           {isLoading && (
             <div className="h-64 flex flex-col items-center justify-center text-gray-400 gap-3">
               <span className="material-symbols-outlined text-[32px] animate-spin text-indigo-400">sync</span>
@@ -810,81 +950,78 @@ export default function InternshipTracker() {
                   id={`job-${job.key}`}
                   onClick={() => setSelectedKey(job.key)}
                   onDoubleClick={() => handleOpenActivePortal(job)}
-                  className={`relative p-3.5 rounded-xl border transition-all cursor-pointer group ${
+                  className={`relative px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl border transition-all cursor-pointer group ${
                     isSelected
-                      ? 'bg-[#1c1d27] border-indigo-500/80 shadow-lg shadow-indigo-950/20'
+                      ? 'bg-[#1c1d27] border-indigo-500/80 shadow-md shadow-indigo-950/20'
                       : 'bg-[#1a1b22] border-[#292a36] hover:border-[#383949] hover:bg-[#1e1f28]'
                   }`}
                 >
                   {/* Active Selection Indicator Bar */}
                   {isSelected && (
-                    <div className="absolute left-0 top-2 bottom-2 w-1 bg-indigo-500 rounded-r-md" />
+                    <div className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-indigo-500 rounded-r-md" />
                   )}
 
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center justify-between gap-2.5">
                     {/* Left details */}
-                    <div className="flex items-start gap-3.5 min-w-0">
+                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
                       {/* Monogram */}
                       <div
-                        className={`w-9 h-9 rounded-lg ${getMonogramColor(
+                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${getMonogramColor(
                           job.company
-                        )} flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-sm`}
+                        )} flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm`}
                       >
                         {job.company.charAt(0).toUpperCase()}
                       </div>
 
                       {/* Content */}
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-semibold text-sm text-white hover:text-indigo-300 transition-colors">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                          <span className="font-semibold text-xs sm:text-[13px] text-white hover:text-indigo-300 transition-colors truncate max-w-[130px] sm:max-w-[200px]">
                             {job.company}
                           </span>
 
                           {/* Track Badge */}
                           <span
-                            className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded border ${
+                            className={`text-[9px] font-mono font-semibold px-1.5 py-0.2 rounded border shrink-0 ${
                               isPM
                                 ? 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30'
                                 : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
                             }`}
                           >
-                            {isPM ? '📋 PM' : '💻 SWE'}
+                            {isPM ? 'PM' : 'SWE'}
                           </span>
 
                           {/* Region Flag */}
-                          <span className="text-xs" title={`Region: ${job.region.toUpperCase()}`}>
+                          <span className="text-[11px] shrink-0" title={`Region: ${job.region.toUpperCase()}`}>
                             {flag}
                           </span>
 
                           {/* Date posted */}
-                          <span className="text-[11px] font-mono text-gray-500 flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[13px]">calendar_today</span>
+                          <span className="text-[10px] font-mono text-gray-500 hidden sm:inline-flex items-center gap-0.5 shrink-0">
                             {dateDisplay}
                           </span>
+                        </div>
 
-                          {/* Source */}
-                          {job.source && (
-                            <span className="text-[10px] font-mono text-gray-500 bg-[#22232c] px-1.5 py-0.2 rounded border border-[#292a36]">
-                              {job.source}
-                            </span>
+                        {/* Title & Location combined inline */}
+                        <div className="flex items-center gap-1.5 mt-0.5 min-w-0 text-xs">
+                          <div className="text-[11px] sm:text-[12px] font-medium text-gray-200 truncate">
+                            {job.title}
+                          </div>
+                          {job.location && (
+                            <>
+                              <span className="text-gray-600 hidden md:inline shrink-0">•</span>
+                              <div className="text-[10px] text-gray-400 truncate hidden md:flex items-center gap-0.5 shrink-0">
+                                <span className="material-symbols-outlined text-[11px] text-gray-500">location_on</span>
+                                <span>{job.location}</span>
+                              </div>
+                            </>
                           )}
-                        </div>
-
-                        {/* Title */}
-                        <div className="text-[13px] font-medium text-gray-200 mt-1 truncate">
-                          {job.title}
-                        </div>
-
-                        {/* Location */}
-                        <div className="text-[11px] text-gray-400 mt-0.5 flex items-center gap-1">
-                          <span className="material-symbols-outlined text-[13px] text-gray-500">location_on</span>
-                          <span>{job.location || 'Location unstated'}</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Right Action Buttons */}
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
                       {/* Apply Link Button */}
                       {job.url && (
                         <a
@@ -892,45 +1029,49 @@ export default function InternshipTracker() {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-1 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/40 text-xs px-2.5 py-1.5 rounded-lg font-medium transition-colors"
+                          title="Open application portal (↵ Enter)"
+                          className="flex items-center gap-1 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/40 text-[11px] px-2 py-1 rounded-md font-medium transition-colors"
                         >
-                          <span>Apply</span>
-                          <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+                          <span className="hidden sm:inline">Apply</span>
+                          <span className="material-symbols-outlined text-[13px]">open_in_new</span>
                         </a>
                       )}
 
                       {/* Quick Action Pills */}
                       <button
+                        type="button"
                         title="Mark as Applied (A)"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleUpdateStatus(job.key, 'applied', `Applied to ${job.company}!`);
                         }}
-                        className="p-1.5 rounded-lg bg-[#22232c] hover:bg-emerald-500/20 text-gray-400 hover:text-emerald-400 border border-[#292a36] hover:border-emerald-500/40 transition-colors"
+                        className="p-1 sm:p-1.5 rounded-md bg-[#22232c] hover:bg-emerald-500/20 text-gray-400 hover:text-emerald-400 border border-[#292a36] hover:border-emerald-500/40 transition-colors"
                       >
-                        <span className="material-symbols-outlined text-[16px]">check_circle</span>
+                        <span className="material-symbols-outlined text-[15px]">send_and_archive</span>
                       </button>
 
                       <button
+                        type="button"
                         title="Star / Save (S)"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleUpdateStatus(job.key, 'saved', `Saved ${job.company}`);
                         }}
-                        className="p-1.5 rounded-lg bg-[#22232c] hover:bg-amber-500/20 text-gray-400 hover:text-amber-400 border border-[#292a36] hover:border-amber-500/40 transition-colors"
+                        className="p-1 sm:p-1.5 rounded-md bg-[#22232c] hover:bg-amber-500/20 text-gray-400 hover:text-amber-400 border border-[#292a36] hover:border-amber-500/40 transition-colors"
                       >
-                        <span className="material-symbols-outlined text-[16px]">bookmark</span>
+                        <span className="material-symbols-outlined text-[15px]">bookmark</span>
                       </button>
 
                       <button
+                        type="button"
                         title="Dismiss / Archive (D)"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleUpdateStatus(job.key, 'ignored', `Dismissed ${job.company}`);
                         }}
-                        className="p-1.5 rounded-lg bg-[#22232c] hover:bg-rose-500/20 text-gray-400 hover:text-rose-400 border border-[#292a36] hover:border-rose-500/40 transition-colors"
+                        className="p-1 sm:p-1.5 rounded-md bg-[#22232c] hover:bg-rose-500/20 text-gray-400 hover:text-rose-400 border border-[#292a36] hover:border-rose-500/40 transition-colors"
                       >
-                        <span className="material-symbols-outlined text-[16px]">archive</span>
+                        <span className="material-symbols-outlined text-[15px]">archive</span>
                       </button>
                     </div>
                   </div>

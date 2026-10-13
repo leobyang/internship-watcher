@@ -6,3 +6,6 @@ __pycache__/
 .DS_Store
 logs/
 .cache/
+web/node_modules/
+web/.next/
+web/out/

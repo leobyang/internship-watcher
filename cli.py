@@ -252,6 +252,13 @@ def cmd_export_md(args) -> None:
     print(f"exported active postings to {written}")
 
 
+def cmd_export_json(args) -> None:
+    conn = store.connect()
+    path = getattr(args, "output", None) or "jobs.json"
+    written = export.export_json(conn, path)
+    print(f"exported {written}")
+
+
 def cmd_summary(args) -> None:
     conn = store.connect()
     print(export.generate_summary_markdown(conn))
@@ -608,6 +615,10 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("export-md", help="generate browsable JOBS.md markdown directory")
     p.add_argument("output", nargs="?", default="JOBS.md", help="output file path (default: JOBS.md)")
     p.set_defaults(func=cmd_export_md)
+
+    p = sub.add_parser("export-json", help="export active postings to JSON for web app")
+    p.add_argument("output", nargs="?", default="web/public/jobs.json", help="output file path (default: web/public/jobs.json)")
+    p.set_defaults(func=cmd_export_json)
 
     sub.add_parser("summary", help="output markdown run summary for GitHub Actions or CLI").set_defaults(func=cmd_summary)
     p = sub.add_parser("web", help="launch Next.js keyboard-driven web application")

@@ -81,6 +81,33 @@ function getMonogramColor(company: string) {
   return colors[Math.abs(hash) % colors.length];
 }
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
+function getLocalOverrides(): Record<string, { status: string; notes?: string; status_at?: string }> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem('internship_tracker_overrides');
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function setLocalOverride(key: string, status: string, notes?: string) {
+  if (typeof window === 'undefined') return;
+  try {
+    const overrides = getLocalOverrides();
+    overrides[key] = {
+      status,
+      notes: notes !== undefined ? notes : overrides[key]?.notes || '',
+      status_at: new Date().toISOString(),
+    };
+    localStorage.setItem('internship_tracker_overrides', JSON.stringify(overrides));
+  } catch (e) {
+    console.error('Failed to save to localStorage:', e);
+  }
+}
+
 export default function InternshipTracker() {
   const [queue, setQueue] = useState<'inbox' | 'applied' | 'dismissed' | 'saved'>('inbox');
   const [trackFilter, setTrackFilter] = useState<'all' | 'pm' | 'swe'>('all');
@@ -94,10 +121,13 @@ export default function InternshipTracker() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [inspectingJob, setInspectingJob] = useState<Job | null>(null);
+  const [isCloudStatic, setIsCloudStatic] = useState<boolean>(false);
 
   const [toast, setToast] = useState<{ message: string; lastKey?: string; prevStatus?: string } | null>(null);
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const importInputRef = useRef<HTMLInputElement>(null);
+  const staticJobsCacheRef = useRef<Job[] | null>(null);
 
   // Fetch jobs
   const fetchJobs = useCallback(async () => {
@@ -111,17 +141,99 @@ export default function InternshipTracker() {
         search: searchTerm,
       });
 
-      const res = await fetch(`/api/jobs?${params.toString()}`);
-      if (!res.ok) throw new Error('Failed to load jobs');
-      const data = await res.json();
-      setJobs(data.jobs || []);
-      setCounts(data.counts || { inbox: 0, applied: 0, dismissed: 0, saved: 0, total: 0 });
+      let loadedData: { jobs: Job[]; counts: Counts } | null = null;
+
+      // 1. Try local API first
+      try {
+        const res = await fetch(`${BASE_PATH}/api/jobs?${params.toString()}`);
+        if (res.ok) {
+          loadedData = await res.json();
+          setIsCloudStatic(false);
+        }
+      } catch {
+        // API not available, proceed to static fallback
+      }
+
+      // 2. Static GitHub Pages fallback
+      if (!loadedData) {
+        setIsCloudStatic(true);
+        if (!staticJobsCacheRef.current) {
+          const res = await fetch(`${BASE_PATH}/jobs.json`);
+          if (!res.ok) throw new Error('Failed to load static jobs.json');
+          const jsonPayload = await res.json();
+          staticJobsCacheRef.current = jsonPayload.jobs || [];
+        }
+
+        const overrides = getLocalOverrides();
+        const allJobs = (staticJobsCacheRef.current || []).map((j) => {
+          const ov = overrides[j.key];
+          if (ov) {
+            return { ...j, status: ov.status, notes: ov.notes !== undefined ? ov.notes : j.notes };
+          }
+          return j;
+        });
+
+        // Compute counts across all jobs
+        const computedCounts: Counts = {
+          inbox: allJobs.filter((j) => !j.status || j.status === 'new' || j.status === 'none').length,
+          applied: allJobs.filter((j) => j.status === 'applied').length,
+          dismissed: allJobs.filter((j) => j.status === 'ignored').length,
+          saved: allJobs.filter((j) => j.status === 'saved').length,
+          total: allJobs.length,
+        };
+
+        // Filter by queue
+        let filtered = allJobs.filter((j) => {
+          const st = j.status || 'new';
+          if (queue === 'inbox') return st === 'new' || st === 'none';
+          if (queue === 'applied') return st === 'applied';
+          if (queue === 'dismissed') return st === 'ignored';
+          if (queue === 'saved') return st === 'saved';
+          return true;
+        });
+
+        // Filter by track
+        if (trackFilter !== 'all') {
+          filtered = filtered.filter((j) => (j.track || 'pm').toLowerCase() === trackFilter);
+        }
+
+        // Filter by region
+        if (regionFilter !== 'all') {
+          filtered = filtered.filter((j) => (j.region || 'unknown').toLowerCase() === regionFilter);
+        }
+
+        // Filter by search
+        if (searchTerm.trim()) {
+          const s = searchTerm.toLowerCase();
+          filtered = filtered.filter(
+            (j) =>
+              j.company.toLowerCase().includes(s) ||
+              j.title.toLowerCase().includes(s) ||
+              (j.location && j.location.toLowerCase().includes(s))
+          );
+        }
+
+        // Sort
+        filtered.sort((a, b) => {
+          if (sortOption === 'company') {
+            return a.company.localeCompare(b.company);
+          }
+          const dateA = a.posted_at || a.first_seen || '';
+          const dateB = b.posted_at || b.first_seen || '';
+          return dateB.localeCompare(dateA);
+        });
+
+        loadedData = { jobs: filtered, counts: computedCounts };
+      }
+
+      setJobs(loadedData.jobs || []);
+      setCounts(loadedData.counts || { inbox: 0, applied: 0, dismissed: 0, saved: 0, total: 0 });
 
       // Keep active selection or pick first
-      if (data.jobs && data.jobs.length > 0) {
+      if (loadedData.jobs && loadedData.jobs.length > 0) {
         setSelectedKey((prev) => {
-          if (prev && data.jobs.some((j: Job) => j.key === prev)) return prev;
-          return data.jobs[0].key;
+          if (prev && loadedData!.jobs.some((j: Job) => j.key === prev)) return prev;
+          return loadedData!.jobs[0].key;
         });
       } else {
         setSelectedKey(null);
@@ -180,15 +292,18 @@ export default function InternshipTracker() {
     });
     toastTimeoutRef.current = setTimeout(() => setToast(null), 3500);
 
-    // Call API
+    // Save to local storage for static mode
+    setLocalOverride(key, newStatus);
+
+    // Call API if available
     try {
-      await fetch('/api/jobs', {
+      await fetch(`${BASE_PATH}/api/jobs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key, status: newStatus }),
       });
     } catch (e) {
-      console.error('Failed to sync status to server:', e);
+      console.warn('API sync bypassed in static mode:', e);
     }
   };
 
@@ -198,16 +313,49 @@ export default function InternshipTracker() {
     const { lastKey, prevStatus } = toast;
     setToast(null);
 
+    setLocalOverride(lastKey, prevStatus);
+
     try {
-      await fetch('/api/jobs', {
+      await fetch(`${BASE_PATH}/api/jobs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key: lastKey, status: prevStatus }),
       });
-      fetchJobs();
     } catch (e) {
-      console.error('Undo failed:', e);
+      console.warn('API sync bypassed in static mode:', e);
     }
+    fetchJobs();
+  };
+
+  // Export & Import local decisions
+  const handleExportDecisions = () => {
+    const overrides = getLocalOverrides();
+    const blob = new Blob([JSON.stringify(overrides, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tracker-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportDecisions = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const parsed = JSON.parse(event.target?.result as string);
+        const existing = getLocalOverrides();
+        const merged = { ...existing, ...parsed };
+        localStorage.setItem('internship_tracker_overrides', JSON.stringify(merged));
+        fetchJobs();
+        setToast({ message: `Imported ${Object.keys(parsed).length} decisions!` });
+      } catch {
+        alert('Invalid JSON file format.');
+      }
+    };
+    reader.readAsText(file);
   };
 
   // Open active portal link
@@ -514,8 +662,39 @@ export default function InternshipTracker() {
             </div>
           </div>
 
-          {/* Quick Shortcuts Pill */}
+          {/* Quick Shortcuts & Mode Pill */}
           <div className="flex items-center gap-2 shrink-0">
+            {/* Mode badge */}
+            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono border bg-[#1a1b22] border-[#292a36]">
+              <span className={`w-2 h-2 rounded-full ${isCloudStatic ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'}`}></span>
+              <span className="text-gray-300">{isCloudStatic ? 'GitHub Pages' : 'Local SQLite'}</span>
+            </div>
+
+            {/* Export / Import */}
+            <div className="flex items-center gap-1">
+              <input
+                type="file"
+                ref={importInputRef}
+                onChange={handleImportDecisions}
+                accept=".json"
+                className="hidden"
+              />
+              <button
+                onClick={() => importInputRef.current?.click()}
+                title="Import decisions from tracker.json"
+                className="px-2 py-1 rounded-md text-[11px] font-mono bg-[#1a1b22] hover:bg-[#252632] text-gray-300 hover:text-white border border-[#292a36] transition-colors"
+              >
+                Import
+              </button>
+              <button
+                onClick={handleExportDecisions}
+                title="Export decisions to JSON"
+                className="px-2 py-1 rounded-md text-[11px] font-mono bg-[#1a1b22] hover:bg-[#252632] text-gray-300 hover:text-white border border-[#292a36] transition-colors"
+              >
+                Export
+              </button>
+            </div>
+
             <div className="flex items-center gap-1.5 bg-[#1a1b22] border border-[#292a36] px-2.5 py-1 rounded-md text-[11px] text-gray-300">
               <kbd className="font-mono bg-[#22232c] text-indigo-400 px-1 py-0.2 rounded border border-[#292a36]">J</kbd>
               <span className="text-gray-500">/</span>

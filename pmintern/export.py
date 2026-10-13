@@ -255,3 +255,60 @@ def generate_summary_markdown(conn: sqlite3.Connection) -> str:
         "",
     ])
     return "\n".join(lines)
+
+
+def export_json(conn: sqlite3.Connection, output_path: str | Path = "jobs.json") -> Path:
+    """Export active jobs and tracker decisions to a compact JSON file for web hosting."""
+    import json
+
+    path = Path(output_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    rows = conn.execute("""
+        SELECT key, source, company, board, external_id, title, location, url,
+               track, region, posted_at, first_seen, last_seen, closed_at, department
+        FROM jobs
+        WHERE closed_at = ''
+        ORDER BY COALESCE(NULLIF(posted_at, ''), first_seen) DESC, first_seen DESC
+    """).fetchall()
+
+    tracker = {}
+    tracker_file = Path("tracker.json")
+    if tracker_file.exists():
+        try:
+            tracker = json.loads(tracker_file.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+
+    jobs_list = []
+    for r in rows:
+        t_info = tracker.get(r["key"], {})
+        jobs_list.append({
+            "key": r["key"],
+            "source": r["source"] or "",
+            "company": r["company"] or "",
+            "board": r["board"] or "",
+            "external_id": r["external_id"] or "",
+            "title": r["title"] or "",
+            "location": r["location"] or "",
+            "url": r["url"] or "",
+            "track": r["track"] or "pm",
+            "region": r["region"] or "unknown",
+            "posted_at": r["posted_at"] or "",
+            "first_seen": r["first_seen"] or "",
+            "last_seen": r["last_seen"] or "",
+            "closed_at": r["closed_at"] or "",
+            "department": r["department"] or "",
+            "status": t_info.get("status", "none"),
+            "status_at": t_info.get("status_at", ""),
+            "notes": t_info.get("notes", ""),
+        })
+
+    payload = {
+        "updated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "total": len(jobs_list),
+        "jobs": jobs_list,
+    }
+
+    path.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
+    return path

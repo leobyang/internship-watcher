@@ -1,5 +1,5 @@
 // Lightweight Service Worker for Leo's Internship Tracker PWA
-const CACHE_NAME = 'internship-watcher-v1';
+const CACHE_NAME = 'internship-watcher-v2';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
@@ -19,11 +19,25 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if ('focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow('./');
+      }
+    })
+  );
+});
+
 self.addEventListener('fetch', (event) => {
   // Pass through non-GET requests directly
   if (event.request.method !== 'GET') return;
-
-  const url = new URL(event.request.url);
 
   // Network-first strategy for jobs data and HTML pages
   event.respondWith(

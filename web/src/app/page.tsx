@@ -172,42 +172,93 @@ export default function InternshipTracker() {
     }
   }, []);
 
+  // Safe cross-browser notification dispatcher (Supports Service Worker, Desktop Chrome, iOS PWA, Android)
+  const displayNotification = useCallback(async (title: string, options: NotificationOptions) => {
+    if (typeof window === 'undefined') return;
+
+    const origin = window.location.origin;
+    const iconUrl = `${origin}${BASE_PATH}/apple-touch-icon.png`;
+    const opts = {
+      ...options,
+      icon: options.icon || iconUrl,
+      badge: options.badge || iconUrl,
+    };
+
+    // Try Service Worker registration first (Required for iOS PWA and Android Chrome)
+    if ('serviceWorker' in navigator) {
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        if (reg && reg.showNotification) {
+          await reg.showNotification(title, opts);
+          return;
+        }
+      } catch {}
+    }
+
+    // Fallback to desktop Notification constructor
+    try {
+      if ('Notification' in window) {
+        new Notification(title, opts);
+      }
+    } catch (err) {
+      console.warn('Native notification fallback:', err);
+    }
+  }, []);
+
+  // Safe permission requester compatible with both Promise and callback-based Safari
+  const requestNotificationPermission = useCallback(async (): Promise<NotificationPermission> => {
+    if (typeof window === 'undefined' || !('Notification' in window)) return 'denied';
+    try {
+      return await new Promise<NotificationPermission>((resolve) => {
+        let done = false;
+        const res = Notification.requestPermission((p) => {
+          if (!done) {
+            done = true;
+            resolve(p);
+          }
+        });
+        if (res && typeof (res as any).then === 'function') {
+          (res as any)
+            .then((p: NotificationPermission) => {
+              if (!done) {
+                done = true;
+                resolve(p);
+              }
+            })
+            .catch(() => {
+              if (!done) {
+                done = true;
+                resolve(Notification.permission || 'denied');
+              }
+            });
+        }
+      });
+    } catch {
+      return Notification.permission || 'denied';
+    }
+  }, []);
+
   // Send desktop alert for new postings
   const sendJobNotification = useCallback((newJobs: Job[]) => {
     if (typeof window === 'undefined' || !('Notification' in window)) return;
     if (Notification.permission !== 'granted') return;
     if (!newJobs || newJobs.length === 0) return;
 
-    try {
-      if (newJobs.length === 1) {
-        const j = newJobs[0];
-        const n = new Notification(`⚡ New Internship: ${j.company}`, {
-          body: `${j.title} • ${j.location || 'Remote/US'}`,
-          icon: `${BASE_PATH}/favicon.svg`,
-          tag: `job-${j.key}`,
-        });
-        n.onclick = () => {
-          window.focus();
-          setSelectedKey(j.key);
-          document.getElementById(`job-${j.key}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-        };
-      } else {
-        const preview = newJobs.slice(0, 3).map((j) => `${j.company}: ${j.title}`).join('\n');
-        const extra = newJobs.length > 3 ? `\n...and ${newJobs.length - 3} more` : '';
-        const n = new Notification(`⚡ ${newJobs.length} New Internships Posted`, {
-          body: `${preview}${extra}`,
-          icon: `${BASE_PATH}/favicon.svg`,
-          tag: `jobs-batch-${Date.now()}`,
-        });
-        n.onclick = () => {
-          window.focus();
-          setSelectedKey(newJobs[0].key);
-        };
-      }
-    } catch (notifErr) {
-      console.warn('Could not dispatch browser notification:', notifErr);
+    if (newJobs.length === 1) {
+      const j = newJobs[0];
+      displayNotification(`⚡ New Internship: ${j.company}`, {
+        body: `${j.title} • ${j.location || 'Remote/US'}`,
+        tag: `job-${j.key}`,
+      });
+    } else {
+      const preview = newJobs.slice(0, 3).map((j) => `${j.company}: ${j.title}`).join('\n');
+      const extra = newJobs.length > 3 ? `\n...and ${newJobs.length - 3} more` : '';
+      displayNotification(`⚡ ${newJobs.length} New Internships Posted`, {
+        body: `${preview}${extra}`,
+        tag: `jobs-batch-${Date.now()}`,
+      });
     }
-  }, []);
+  }, [displayNotification]);
 
   // Compare incoming jobs with known job keys
   const checkForNewJobs = useCallback((allJobs: Job[]) => {
@@ -249,8 +300,27 @@ export default function InternshipTracker() {
 
   // Toggle desktop notifications
   const handleToggleNotifications = useCallback(async () => {
-    if (typeof window === 'undefined' || !('Notification' in window)) {
-      setToast({ message: '⚠️ Browser notifications are not supported in this browser.' });
+    if (typeof window === 'undefined') return;
+
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isStandalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (navigator as any).standalone === true;
+
+    // iOS Safari in normal browser tab cannot show web notifications without being added to Home Screen as PWA
+    if (isIOS && !isStandalone) {
+      setToast({
+        message: '📱 On iPhone, tap Share ➔ "Add to Home Screen" to enable PWA notifications!',
+      });
+      if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+      toastTimeoutRef.current = setTimeout(() => setToast(null), 6000);
+      return;
+    }
+
+    if (!('Notification' in window)) {
+      setToast({ message: '⚠️ Web notifications are not supported in this browser.' });
       if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
       toastTimeoutRef.current = setTimeout(() => setToast(null), 4000);
       return;
@@ -265,52 +335,53 @@ export default function InternshipTracker() {
       return;
     }
 
-    if (Notification.permission === 'default') {
-      const perm = await Notification.requestPermission();
-      setNotificationPermission(perm);
-      if (perm === 'granted') {
-        setNotificationsEnabled(true);
-        localStorage.setItem('internship_notifications_enabled', 'true');
-        try {
-          new Notification('⚡ Job Alerts Active', {
+    try {
+      if (Notification.permission === 'default') {
+        const perm = await requestNotificationPermission();
+        setNotificationPermission(perm);
+        if (perm === 'granted') {
+          setNotificationsEnabled(true);
+          localStorage.setItem('internship_notifications_enabled', 'true');
+          displayNotification('⚡ Job Alerts Active', {
             body: 'You will receive instant alerts whenever new internships are posted online!',
-            icon: `${BASE_PATH}/favicon.svg`,
             tag: 'welcome-notification',
           });
-        } catch {}
-        setToast({ message: '🔔 Desktop notifications enabled! Sent test notification.' });
-        if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
-        toastTimeoutRef.current = setTimeout(() => setToast(null), 4000);
-      } else {
-        setNotificationsEnabled(false);
-        localStorage.setItem('internship_notifications_enabled', 'false');
-        setToast({ message: 'Notifications permission was not granted.' });
+          setToast({ message: '🔔 Desktop notifications enabled! Sent test notification.' });
+          if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+          toastTimeoutRef.current = setTimeout(() => setToast(null), 4000);
+        } else {
+          setNotificationsEnabled(false);
+          localStorage.setItem('internship_notifications_enabled', 'false');
+          setToast({ message: 'Notifications permission was not granted.' });
+          if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+          toastTimeoutRef.current = setTimeout(() => setToast(null), 3000);
+        }
+        return;
+      }
+
+      if (Notification.permission === 'granted') {
+        const nextState = !notificationsEnabled;
+        setNotificationsEnabled(nextState);
+        localStorage.setItem('internship_notifications_enabled', nextState ? 'true' : 'false');
+        if (nextState) {
+          displayNotification('⚡ Job Alerts Active', {
+            body: 'Alerts are on. You will be notified whenever new internships are found!',
+            tag: 'welcome-notification',
+          });
+          setToast({ message: '🔔 Desktop notifications active.' });
+        } else {
+          setToast({ message: '🔕 Desktop notifications muted.' });
+        }
         if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
         toastTimeoutRef.current = setTimeout(() => setToast(null), 3000);
       }
-      return;
-    }
-
-    if (Notification.permission === 'granted') {
-      const nextState = !notificationsEnabled;
-      setNotificationsEnabled(nextState);
-      localStorage.setItem('internship_notifications_enabled', nextState ? 'true' : 'false');
-      if (nextState) {
-        try {
-          new Notification('⚡ Job Alerts Active', {
-            body: 'Alerts are on. You will be notified whenever new internships are found!',
-            icon: `${BASE_PATH}/favicon.svg`,
-            tag: 'welcome-notification',
-          });
-        } catch {}
-        setToast({ message: '🔔 Desktop notifications active.' });
-      } else {
-        setToast({ message: '🔕 Desktop notifications muted.' });
-      }
+    } catch (toggleErr: any) {
+      console.error('Notification toggle error:', toggleErr);
+      setToast({ message: `Notification error: ${toggleErr.message || 'unknown'}` });
       if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
-      toastTimeoutRef.current = setTimeout(() => setToast(null), 3000);
+      toastTimeoutRef.current = setTimeout(() => setToast(null), 4000);
     }
-  }, [notificationsEnabled]);
+  }, [notificationsEnabled, requestNotificationPermission, displayNotification]);
 
   // Fetch jobs
   const fetchJobs = useCallback(async (forceRefresh = false) => {

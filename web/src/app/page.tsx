@@ -107,6 +107,7 @@ function CustomCheckbox({
       type="button"
       role="checkbox"
       tabIndex={-1}
+      data-checkbox="true"
       aria-checked={checked}
       title={title}
       onClick={(e) => {
@@ -359,6 +360,36 @@ export default function InternshipTracker() {
       setSelectedKeys(new Set(jobs.map((j) => j.key)));
     }
   };
+
+  // Deselect multiselect when clicking anywhere other than another checkbox or action button
+  useEffect(() => {
+    if (selectedKeys.size === 0) return;
+
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      // Ignore if user is Shift-clicking (extending range selection)
+      if (e.shiftKey) return;
+
+      // Keep selection if clicking another checkbox
+      if (target.closest('[data-checkbox="true"]')) return;
+
+      // Keep selection if clicking inside batch toolbar or on an item action button
+      if (
+        target.closest('[data-batch-toolbar="true"]') ||
+        target.closest('[data-action="true"]')
+      ) {
+        return;
+      }
+
+      // Clicked anywhere else -> clear multiselect
+      setSelectedKeys(new Set());
+    };
+
+    window.addEventListener('click', handleGlobalClick);
+    return () => window.removeEventListener('click', handleGlobalClick);
+  }, [selectedKeys]);
 
   // Status updates
   const handleUpdateStatus = async (key: string, newStatus: string, actionMsg?: string) => {
@@ -741,7 +772,7 @@ export default function InternshipTracker() {
         <div className="flex items-center gap-1.5 shrink-0">
           {selectedKeys.size > 0 ? (
             /* BATCH ACTION BAR */
-            <div className="flex items-center gap-1 bg-[#171821] border border-[#262734] rounded-lg p-0.5 animate-fadeIn">
+            <div data-batch-toolbar="true" className="flex items-center gap-1 bg-[#171821] border border-[#262734] rounded-lg p-0.5 animate-fadeIn">
               <span className="text-xs font-mono text-indigo-400 font-semibold px-2">
                 {selectedKeys.size}
               </span>
@@ -1275,6 +1306,7 @@ export default function InternshipTracker() {
                               href={job.url}
                               target="_blank"
                               rel="noopener noreferrer"
+                              data-action="true"
                               onClick={(e) => e.stopPropagation()}
                               title="Open application portal (↵ Enter)"
                               className="h-7 px-2 rounded-md bg-indigo-600/15 hover:bg-indigo-600/25 text-indigo-300 border border-indigo-500/30 text-xs font-medium flex items-center gap-1 transition-colors"
@@ -1286,6 +1318,7 @@ export default function InternshipTracker() {
 
                           <button
                             type="button"
+                            data-action="true"
                             title="Mark as Applied (A)"
                             onClick={(e) => {
                               e.stopPropagation();
@@ -1298,6 +1331,7 @@ export default function InternshipTracker() {
 
                           <button
                             type="button"
+                            data-action="true"
                             title="Dismiss (D)"
                             onClick={(e) => {
                               e.stopPropagation();
@@ -1390,6 +1424,7 @@ export default function InternshipTracker() {
                               href={job.url}
                               target="_blank"
                               rel="noopener noreferrer"
+                              data-action="true"
                               onClick={(e) => e.stopPropagation()}
                               title="Open application portal (↵ Enter)"
                               className="w-full h-8 px-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap transition-colors shadow-sm cursor-pointer"
@@ -1401,6 +1436,7 @@ export default function InternshipTracker() {
                             <button
                               type="button"
                               disabled
+                              data-action="true"
                               className="w-full h-8 px-2 rounded-lg bg-indigo-600/30 text-indigo-300/50 text-xs font-medium flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap cursor-not-allowed"
                             >
                               <span>Apply</span>
@@ -1409,6 +1445,7 @@ export default function InternshipTracker() {
 
                           <button
                             type="button"
+                            data-action="true"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleUpdateStatus(job.key, 'applied');
@@ -1422,6 +1459,7 @@ export default function InternshipTracker() {
 
                           <button
                             type="button"
+                            data-action="true"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleUpdateStatus(job.key, 'saved');
@@ -1435,6 +1473,7 @@ export default function InternshipTracker() {
 
                           <button
                             type="button"
+                            data-action="true"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleUpdateStatus(job.key, 'ignored');

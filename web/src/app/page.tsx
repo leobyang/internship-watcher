@@ -65,7 +65,20 @@ function formatRelativeTime(dateStr: string): string {
   return `${diffMonths}mo ago`;
 }
 
-function getLocalOverrides(): Record<string, { status: string; status_at?: string }> {
+interface LocalOverride {
+  status: string;
+  status_at?: string;
+  url?: string;
+  company?: string;
+  title?: string;
+}
+
+function normalizeUrlKey(url?: string): string {
+  if (!url) return '';
+  return url.split('?')[0].replace(/\/+$/, '').toLowerCase();
+}
+
+function getLocalOverrides(): Record<string, LocalOverride> {
   if (typeof window === 'undefined') return {};
   try {
     const raw = localStorage.getItem('internship_tracker_overrides');
@@ -75,15 +88,26 @@ function getLocalOverrides(): Record<string, { status: string; status_at?: strin
   }
 }
 
-function setLocalOverride(key: string, status?: string) {
+function setLocalOverride(key: string, status?: string, url?: string, company?: string, title?: string) {
   if (typeof window === 'undefined') return;
   try {
     const overrides = getLocalOverrides();
-    const existing = overrides[key] || { status: 'none', status_at: '' };
-    overrides[key] = {
+    const norm = normalizeUrlKey(url);
+    const existing = overrides[key] || (url ? overrides[url] : null) || (norm ? overrides[norm] : null) || { status: 'none', status_at: '' };
+    const entry: LocalOverride = {
       status: status !== undefined ? status : existing.status,
       status_at: new Date().toISOString(),
+      url: url || existing.url || '',
+      company: company || existing.company || '',
+      title: title || existing.title || '',
     };
+    overrides[key] = entry;
+    if (url) {
+      overrides[url] = entry;
+    }
+    if (norm) {
+      overrides[norm] = entry;
+    }
     localStorage.setItem('internship_tracker_overrides', JSON.stringify(overrides));
   } catch (e) {
     console.error('Failed to save to localStorage:', e);
@@ -397,9 +421,9 @@ export default function InternshipTracker() {
 
       let loadedData: { jobs: Job[]; counts: Counts } | null = null;
 
-      // 1. Try local API first
+      // 1. Try local API first (with trailing slash)
       try {
-        const res = await fetch(`${BASE_PATH}/api/jobs?${params.toString()}`);
+        const res = await fetch(`${BASE_PATH}/api/jobs/?${params.toString()}`);
         if (res.ok) {
           loadedData = await res.json();
         }
@@ -408,9 +432,22 @@ export default function InternshipTracker() {
       }
 
       if (loadedData) {
+        // Merge any client-side overrides onto API results if present
+        const overrides = getLocalOverrides();
+        if (Object.keys(overrides).length > 0) {
+          loadedData.jobs = loadedData.jobs.map((j) => {
+            const norm = normalizeUrlKey(j.url);
+            const ov = overrides[j.key] || (j.url ? overrides[j.url] : undefined) || (norm ? overrides[norm] : undefined);
+            if (ov && ov.status && ov.status !== 'none') {
+              return { ...j, status: ov.status };
+            }
+            return j;
+          });
+        }
+
         // Ensure background notification check inspects fresh universe of jobs
         if (forceRefresh) {
-          fetch(`${BASE_PATH}/jobs.json?_t=${Date.now()}`)
+          fetch(`${BASE_PATH}/jobs.json?_t=${Date.now()}`, { cache: 'no-store' })
             .then((r) => r.json())
             .then((data) => {
               if (data.jobs) checkForNewJobs(data.jobs);
@@ -422,8 +459,11 @@ export default function InternshipTracker() {
       // 2. Static GitHub Pages fallback
       if (!loadedData) {
         if (!staticJobsCacheRef.current || forceRefresh) {
-          const cacheBuster = forceRefresh ? `?_t=${Date.now()}` : '';
-          const res = await fetch(`${BASE_PATH}/jobs.json${cacheBuster}`);
+          const cacheBuster = `?_t=${Date.now()}`;
+          const res = await fetch(`${BASE_PATH}/jobs.json${cacheBuster}`, {
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' },
+          });
           if (!res.ok) throw new Error('Failed to load static jobs.json');
           const jsonPayload = await res.json();
           staticJobsCacheRef.current = jsonPayload.jobs || [];
@@ -432,11 +472,12 @@ export default function InternshipTracker() {
 
         const overrides = getLocalOverrides();
         const allJobs = (staticJobsCacheRef.current || []).map((j) => {
-          const ov = overrides[j.key];
-          if (ov) {
+          const norm = normalizeUrlKey(j.url);
+          const ov = overrides[j.key] || (j.url ? overrides[j.url] : undefined) || (norm ? overrides[norm] : undefined);
+          if (ov && ov.status && ov.status !== 'none') {
             return {
               ...j,
-              status: ov.status || j.status,
+              status: ov.status,
             };
           }
           return j;
@@ -485,7 +526,11 @@ export default function InternshipTracker() {
           filtered.sort((a, b) => {
             const timeA = new Date(a.posted_at || a.first_seen || 0).getTime();
             const timeB = new Date(b.posted_at || b.first_seen || 0).getTime();
-            return timeB - timeA;
+            if (timeB !== timeA) return timeB - timeA;
+            const seenA = new Date(a.first_seen || 0).getTime();
+            const seenB = new Date(b.first_seen || 0).getTime();
+            if (seenB !== seenA) return seenB - seenA;
+            return a.company.localeCompare(b.company);
           });
         }
 
@@ -723,10 +768,10 @@ export default function InternshipTracker() {
     });
     toastTimeoutRef.current = setTimeout(() => setToast(null), 3500);
 
-    setLocalOverride(key, newStatus);
+    setLocalOverride(key, newStatus, targetJob.url, targetJob.company, targetJob.title);
 
     try {
-      await fetch(`${BASE_PATH}/api/jobs`, {
+      await fetch(`${BASE_PATH}/api/jobs/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key, status: newStatus }),
@@ -746,7 +791,8 @@ export default function InternshipTracker() {
     setSelectedKeys(new Set());
 
     for (const k of keysArray) {
-      setLocalOverride(k, newStatus);
+      const jObj = jobs.find((j) => j.key === k) || (staticJobsCacheRef.current || []).find((j) => j.key === k);
+      setLocalOverride(k, newStatus, jObj?.url, jObj?.company, jObj?.title);
     }
 
     setCounts((prev) => {
@@ -769,7 +815,7 @@ export default function InternshipTracker() {
 
     try {
       for (const k of keysArray) {
-        fetch(`${BASE_PATH}/api/jobs`, {
+        fetch(`${BASE_PATH}/api/jobs/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ key: k, status: newStatus }),
@@ -786,10 +832,11 @@ export default function InternshipTracker() {
     const { lastKey, prevStatus } = toast;
     setToast(null);
 
-    setLocalOverride(lastKey, prevStatus);
+    const targetJob = (staticJobsCacheRef.current || jobs).find((j) => j.key === lastKey);
+    setLocalOverride(lastKey, prevStatus, targetJob?.url, targetJob?.company, targetJob?.title);
 
     try {
-      await fetch(`${BASE_PATH}/api/jobs`, {
+      await fetch(`${BASE_PATH}/api/jobs/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key: lastKey, status: prevStatus }),

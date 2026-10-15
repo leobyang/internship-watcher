@@ -266,23 +266,38 @@ def export_json(conn: sqlite3.Connection, output_path: str | Path = "jobs.json")
 
     rows = conn.execute("""
         SELECT key, source, company, board, external_id, title, location, url,
-               track, region, posted_at, first_seen, last_seen, closed_at, department
+               track, region, posted_at, first_seen, last_seen, closed_at, department,
+               status, status_at, notes
         FROM jobs
         WHERE closed_at = ''
         ORDER BY COALESCE(NULLIF(posted_at, ''), first_seen) DESC, first_seen DESC
     """).fetchall()
 
     tracker = {}
+    tracker_by_url = {}
     tracker_file = Path("tracker.json")
     if tracker_file.exists():
         try:
             tracker = json.loads(tracker_file.read_text(encoding="utf-8"))
+            for k, val in tracker.items():
+                if isinstance(val, dict) and val.get("url"):
+                    clean_u = val["url"].split("?")[0].rstrip("/").lower()
+                    tracker_by_url[clean_u] = val
+                    tracker_by_url[val["url"].strip()] = val
         except Exception:
             pass
 
     jobs_list = []
     for r in rows:
-        t_info = tracker.get(r["key"], {})
+        u_raw = (r["url"] or "").strip()
+        u_norm = u_raw.split("?")[0].rstrip("/").lower() if u_raw else ""
+        t_info = tracker.get(r["key"]) or tracker_by_url.get(u_raw) or tracker_by_url.get(u_norm, {})
+
+        db_status = r["status"] if "status" in r.keys() and r["status"] not in ("none", "", None) else ""
+        final_status = t_info.get("status") or db_status or "new"
+        if final_status == "none":
+            final_status = "new"
+
         jobs_list.append({
             "key": r["key"],
             "source": r["source"] or "",
@@ -299,9 +314,9 @@ def export_json(conn: sqlite3.Connection, output_path: str | Path = "jobs.json")
             "last_seen": r["last_seen"] or "",
             "closed_at": r["closed_at"] or "",
             "department": r["department"] or "",
-            "status": t_info.get("status", "none"),
-            "status_at": t_info.get("status_at", ""),
-            "notes": t_info.get("notes", ""),
+            "status": final_status,
+            "status_at": t_info.get("status_at") or (r["status_at"] if "status_at" in r.keys() else "") or "",
+            "notes": t_info.get("notes") or (r["notes"] if "notes" in r.keys() else "") or "",
         })
 
     payload = {

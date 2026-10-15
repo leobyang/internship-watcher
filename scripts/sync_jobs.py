@@ -68,9 +68,15 @@ def sync():
 
     # Load tracker
     tracker = {}
+    tracker_by_url = {}
     if TRACKER_PATH.exists():
         try:
             tracker = json.loads(TRACKER_PATH.read_text(encoding="utf-8"))
+            for k, val in tracker.items():
+                if isinstance(val, dict) and val.get("url"):
+                    clean_u = val["url"].split("?")[0].rstrip("/").lower()
+                    tracker_by_url[clean_u] = val
+                    tracker_by_url[val["url"].strip()] = val
         except Exception as e:
             print("Tracker read error:", e)
 
@@ -88,8 +94,13 @@ def sync():
         track = item["track"]
         region = item["region"]
         loc = item["location"]
+        clean_url = url.split("?")[0].rstrip("/").lower()
 
-        db_row = existing_by_url.get(url)
+        db_row = existing_by_url.get(url) or existing_by_url.get(clean_url)
+        db_status = db_row.get("status") if db_row else None
+        if db_status in ("none", "", None):
+            db_status = "new"
+
         if db_row:
             key = db_row["key"]
             first_seen = db_row["first_seen"] or (posted_dt + "T00:00:00Z" if posted_dt else now_iso)
@@ -105,6 +116,7 @@ def sync():
             # Check if key already in DB
             if key in existing_by_key:
                 first_seen = existing_by_key[key]["first_seen"] or now_iso
+                db_status = existing_by_key[key].get("status") or "new"
             else:
                 first_seen = posted_dt + "T00:00:00Z" if posted_dt else now_iso
                 # Insert into DB
@@ -125,7 +137,7 @@ def sync():
                     source = 'workday'
 
                 c.execute("""
-                    INSERT OR REPLACE INTO jobs
+                    INSERT OR IGNORE INTO jobs
                     (key, source, company, board, external_id, title, location, url,
                      posted_at, first_seen, last_seen, closed_at, status, dupe_key, track, region)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', 'new', ?, ?, ?)
@@ -134,10 +146,15 @@ def sync():
                       first_seen, now_iso, dupe_key, track, region))
                 new_inserts += 1
 
-        t_info = tracker.get(key, {})
-        status = t_info.get("status", "new")
-        if status == "none":
+        t_info = tracker.get(key) or tracker_by_url.get(url) or tracker_by_url.get(clean_url, {})
+        status = t_info.get("status") or (db_status if db_status and db_status != "new" else "new")
+        if status in ("none", "", None):
             status = "new"
+
+        # Ensure database matches tracked status
+        if status != "new":
+            c.execute("UPDATE jobs SET status = ?, status_at = COALESCE(NULLIF(status_at, ''), ?), notes = COALESCE(NULLIF(notes, ''), ?) WHERE key = ?",
+                      (status, t_info.get("status_at") or now_iso, t_info.get("notes") or "", key))
 
         final_jobs_list.append({
             "key": key,
@@ -161,6 +178,15 @@ def sync():
         })
 
     conn.commit()
+
+    # Re-export tracker to ensure tracker.json is populated with all non-new jobs
+    try:
+        sys.path.append(str(ROOT_DIR))
+        from pmintern import store
+        store.export_tracker(conn)
+    except Exception as e:
+        print("Tracker export warning:", e)
+
     conn.close()
 
     print(f"DB updated: {new_inserts} new jobs inserted, {updated_records} records updated.")

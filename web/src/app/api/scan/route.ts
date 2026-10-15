@@ -22,6 +22,11 @@ export async function POST() {
   lastScanSummary = 'Checking career boards online for new postings...';
 
   try {
+    // Sync any repo changes from JOBS.md / tracker into DB before scanning
+    try {
+      execSync('python3 scripts/sync_jobs.py', { cwd: rootDir, timeout: 15000 });
+    } catch {}
+
     const proc = spawn('python3', ['-u', 'cli.py', 'scan'], {
       cwd: rootDir,
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -46,8 +51,9 @@ export async function POST() {
 
       // Export fresh JSON and markdown directory right after online scan finishes
       try {
-        execSync('python3 cli.py export-json web/public/jobs.json', { cwd: rootDir, timeout: 25000 });
         execSync('python3 cli.py export-md JOBS.md', { cwd: rootDir, timeout: 25000 });
+        execSync('python3 scripts/sync_jobs.py', { cwd: rootDir, timeout: 25000 });
+        execSync('python3 cli.py export-json web/public/jobs.json', { cwd: rootDir, timeout: 25000 });
         console.log(`Live scan finished (${code}): ${lastScanSummary}`);
       } catch (postErr: any) {
         console.error('Post-scan export error:', postErr.message);

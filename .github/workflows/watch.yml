@@ -34,6 +34,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write     # the tracker commit needs push access
+      pages: write        # needed for upload-pages-artifact
+      id-token: write     # needed for upload-pages-artifact
     timeout-minutes: 10    # ~560 boards take ~2.5 min; still capped so a hang can't run away
     steps:
       - uses: actions/checkout@v4
@@ -61,6 +63,7 @@ jobs:
           DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         run: |
+          python3 -c "import sys; sys.path.append('.'); from pmintern import store; conn = store.connect(); store.import_tracker(conn)"
           python3 cli.py scan ${{ inputs.digest && '--digest' || '' }}
           python3 cli.py urlwatch
 
@@ -68,8 +71,10 @@ jobs:
       - name: Generate Directory & Summary
         if: always()
         run: |
+          python3 -c "import sys; sys.path.append('.'); from pmintern import store; conn = store.connect(); store.export_tracker(conn)"
           python3 cli.py export-md JOBS.md
           python3 cli.py export-json web/public/jobs.json
+          python3 scripts/sync_jobs.py
           python3 cli.py summary >> $GITHUB_STEP_SUMMARY
 
       # Upload SQLite database as an Actions artifact for 1-click download

@@ -43,11 +43,31 @@ const REGION_FLAGS: Record<string, string> = {
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
-function formatRelativeTime(dateStr: string): string {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
-  if (isNaN(date.getTime())) return '';
+function formatRelativeTime(dateStr?: string, firstSeenStr?: string): string {
+  if (!dateStr && !firstSeenStr) return '';
+
   const now = new Date();
+
+  // If first_seen provides more precise minute/hour granularity for jobs detected today
+  if (firstSeenStr) {
+    const seenDate = new Date(firstSeenStr);
+    if (!isNaN(seenDate.getTime())) {
+      const diffMs = now.getTime() - seenDate.getTime();
+      const diffSec = Math.floor(diffMs / 1000);
+      const diffMin = Math.floor(diffSec / 60);
+      const diffHours = Math.floor(diffSec / 3600);
+      // If detected in the last 24 hours, show exact time ago from when it was seen!
+      if (diffHours < 24 && diffMs >= 0) {
+        if (diffMin < 60) return diffMin <= 1 ? 'Just now' : `${diffMin}m ago`;
+        return `${diffHours}h ago`;
+      }
+    }
+  }
+
+  const primaryStr = dateStr || firstSeenStr || '';
+  const date = new Date(primaryStr);
+  if (isNaN(date.getTime())) return '';
+
   const diffMs = now.getTime() - date.getTime();
   if (diffMs < 0) return 'Just now';
   const diffSec = Math.floor(diffMs / 1000);
@@ -55,7 +75,12 @@ function formatRelativeTime(dateStr: string): string {
   const diffHours = Math.floor(diffSec / 3600);
   const diffDays = Math.floor(diffSec / 86400);
 
-  if (diffMin < 60) return diffMin <= 1 ? 'Just now' : `${diffMin}m ago`;
+  // If it's the exact same calendar day and ATS gave date granularity (midnight UTC)
+  if (date.toDateString() === now.toDateString()) {
+    if (diffMin < 60) return diffMin <= 1 ? 'Just now' : `${diffMin}m ago`;
+    return 'Today';
+  }
+
   if (diffHours < 24) return `${diffHours}h ago`;
   if (diffDays === 1) return '1d ago';
   if (diffDays < 7) return `${diffDays}d ago`;
@@ -1591,7 +1616,7 @@ export default function InternshipTracker() {
                 const isChecked = selectedKeys.has(job.key);
                 const flag = REGION_FLAGS[job.region] || '📍';
                 const isPM = (job.track || 'pm').toLowerCase() === 'pm';
-                const relativeTime = formatRelativeTime(job.posted_at || job.first_seen);
+                const relativeTime = formatRelativeTime(job.posted_at, job.first_seen);
 
                 return (
                   <div

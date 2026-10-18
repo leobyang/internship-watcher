@@ -1,7 +1,7 @@
 # 🎯 Active Internship Openings
 
 > **Auto-updated by GitHub Actions** • Tracks: Product Management (PM) & Software Engineering (SWE)  
-> **Total Live Openings:** 3,479 (PM: 294 | SWE: 3,185) • *Updated: 2026-10-18 17:50 UTC*  
+> **Total Live Openings:** 3,476 (PM: 294 | SWE: 3,182) • *Updated: 2026-10-18 20:06 UTC*  
 > **Sorted Newest First**: All tables below display the most recently posted openings at the top.  
 > Use `Cmd + F` or `Ctrl + F` to search companies, locations, or keywords.
 
@@ -10,7 +10,7 @@
 - [📊 Regional Summary Table](#-regional-summary)
 - [🔥 Fresh Drops (Latest 30 Roles)](#-fresh-drops-latest-30-roles)
 - [📋 Product Management Internships (294)](#-product-management-internships)
-- [💻 Software Engineering Internships (3,185)](#-software-engineering-internships)
+- [💻 Software Engineering Internships (3,182)](#-software-engineering-internships)
   - [🇺🇸 United States SWE](#-united-states-swe)
   - [🇨🇦 Canada SWE](#-canada-swe)
   - [🇬🇧 United Kingdom SWE](#-united-kingdom-swe)
@@ -23,14 +23,14 @@
 
 | Region | Flag | PM Internships | SWE Internships | Total Live |
 |:---|:---:|:---:|:---:|:---:|
-| United States | 🇺🇸 | 239 | 2,549 | **2,788** |
+| United States | 🇺🇸 | 239 | 2,546 | **2,785** |
 | Canada | 🇨🇦 | 14 | 262 | **276** |
 | United Kingdom | 🇬🇧 | 16 | 157 | **173** |
 | Asia-Pacific (APAC) | 🌏 | 7 | 115 | **122** |
 | Remote | 🌐 | 1 | 1 | **2** |
 | North America (US/CA) | 🇨🇦/🇺🇸 | 0 | 19 | **19** |
 | Other / Unspecified | 📍 | 17 | 82 | **99** |
-| **Grand Total** | 🚀 | **294** | **3,185** | **3,479** |
+| **Grand Total** | 🚀 | **294** | **3,182** | **3,476** |
 
 ---
 
@@ -380,7 +380,7 @@
 
 ### 🇺🇸 United States SWE
 
-*Openings: 2,549 (Sorted Newest First)*
+*Openings: 2,546 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
@@ -483,7 +483,6 @@
 | `2026-10-14` | **Figure** | Embedded Software Engineer Intern - Platform | San Jose, CA | [Apply ↗](https://job-boards.greenhouse.io/figureai/jobs/4722086006) |
 | `2026-10-14` | **General Motors** | AI/ML Engineer Intern - Autonomous Vehicle ML Infrastructure | Sunnyvale, CA | [Apply ↗](https://generalmotors.wd5.myworkdayjobs.com/en-CA/Careers_GM/job/Sunnyvale-California-United-States-of-America/XMLNAME-2027-Intern---AI-ML-Engineer--Autonomous-Vehicle-ML-Infrastructure_JR-202622410) |
 | `2026-10-14` | **Hewlett Packard (HP) (EXTEU-AC-CareerSite)** | Software and Engineering Intern Roles - Imaging and Print | Corvallis, Oregon, United States of America | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/EXTEU-AC-CareerSite/job/Corvallis-Oregon-United-States-of-America/Software-and-Engineering-Intern-Roles---Imaging-and-Print_3168142) |
-| `2026-10-14` | **Hewlett Packard (HP) (EXTEU-AC-CareerSite)** | Engineering & Technical Internship Roles - HP Solutions (HPS) | Spring Texas United States of America | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/EXTEU-AC-CareerSite/job/Spring-Texas-United-States-of-America/Engineering---Technical-Internship-Roles---HP-Solutions--HPS-_3167904) |
 | `2026-10-14` | **Howmet Aerospace** | Engineering Intern - Summer 2027 | Hampton, VA, United States | [Apply ↗](https://fa-exty-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/119830) |
 | `2026-10-14` | **Humana** | Technology Intern - Society of Women Engineers Conference | Louisville, KY | [Apply ↗](https://humana.wd5.myworkdayjobs.com/humana_external_career_site/job/Louisville-KY/Humana-Technology-Internship---Summer-2027---Society-of-Women-Engineers-Conference-2026_R-433228) |
 | `2026-10-14` | **ICF International** | Software Engineer Intern | Reston, VA | [Apply ↗](https://icf.wd5.myworkdayjobs.com/icfexternal_career_site/job/Reston-VA/XMLNAME-2027-Summer-Intern--Software-Engineer--Reston--VA-_R2603522) |
@@ -830,7 +829,6 @@
 | `2026-10-08` | **Badger Meter** | Software Engineering Intern | Escondido, CA | [Apply ↗](https://badgermeter.wd5.myworkdayjobs.com/US_CareerSite/job/US----CA---Escondido-Facility/Software-Engineering-Intern_4645) |
 | `2026-10-08` | **Dell Technologies** | Data Science Undergraduate Intern | TX, United States | [Apply ↗](https://iawmqy.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/careers/job/299978) |
 | `2026-10-08` | **Dell Technologies** | Undergraduate Data Science Intern | Round Rock, TX, Hopkinton, MA | [Apply ↗](https://iawmqy.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/careers/job/299978) |
-| `2026-10-08` | **DocuSign** | Software Engineer Intern - Observability - Platform | Seattle, WA | [Apply ↗](https://careers.docusign.com/jobs/30510?icims=1) |
 | `2026-10-08` | **General Dynamics Mission Systems** | Software/Systems Engineering Intern | Middletown, RI | [Apply ↗](https://careers-gdms.icims.com/jobs/75463/job?mobile=true&needsRedirect=false) |
 | `2026-10-08` | **General Motors** | Autonomous Driving Software Engineer Intern | Sunnyvale, CA | [Apply ↗](https://generalmotors.wd5.myworkdayjobs.com/Careers_GM/job/Sunnyvale-California-United-States-of-America/XMLNAME-2027-Summer-Intern---Autonomous-Driving-Software-Engineer--Bachelor-s---Master-s-_JR-202622064) |
 | `2026-10-08` | **Gordon Food Service** | Software Engineer Intern - Transportation Routing | Wyoming, MI | [Apply ↗](https://gfs.wd5.myworkdayjobs.com/usjobs-gen-gfs/job/Wyoming-Michigan/Software-Engineer-Intern--Transportation-Routing--_R-58374) |
@@ -1127,7 +1125,6 @@
 | `2026-09-30` | **ITT** | Data Analytics / AI Intern - Summer 2027 | Irvine, CA | [Apply ↗](https://careersenus-itt-inc.icims.com/jobs/17657/job?mobile=true&needsRedirect=false) |
 | `2026-09-30` | **KLA** | Software Engineer Intern | Milpitas, CA | [Apply ↗](https://kla.wd1.myworkdayjobs.com/UR/job/Milpitas-CA/Software-Engineering-Intern_2641572) |
 | `2026-09-30` | **KLA Corporation** | Software Engineer Intern | Milpitas, CA | [Apply ↗](https://kla.wd1.myworkdayjobs.com/search/job/Milpitas-CA/Software-Engineering-Intern_2641572-1) |
-| `2026-09-30` | **Marvell** | Test Engineer Intern | Santa Clara, CA | [Apply ↗](https://marvell.wd1.myworkdayjobs.com/MarvellCareers/job/Santa-Clara-CA/Test-Engineering-Intern--MS---Summer-2027_2604002-1) |
 | `2026-09-30` | **MetLife** | Global Technology Intern | Tampa, FL, Hanover, NJ, Cary, NC, NYC | [Apply ↗](https://metlife.avature.net/en_US/ml/JobDetail/20701) |
 | `2026-09-30` | **Muon Space** | Flight Software Engineer Intern | San Jose, CA | [Apply ↗](https://job-boards.greenhouse.io/muonspace/jobs/5247725007) |
 | `2026-09-30` | **Nokia** | Optical System Engineer Co-Op | United States | [Apply ↗](https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/40648) |

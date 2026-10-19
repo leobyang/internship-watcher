@@ -1,7 +1,7 @@
 # 🎯 Active Internship Openings
 
 > **Auto-updated by GitHub Actions** • Tracks: Product Management (PM) & Software Engineering (SWE)  
-> **Total Live Openings:** 3,474 (PM: 294 | SWE: 3,180) • *Updated: 2026-10-18 22:46 UTC*  
+> **Total Live Openings:** 3,475 (PM: 294 | SWE: 3,181) • *Updated: 2026-10-19 00:48 UTC*  
 > **Sorted Newest First**: All tables below display the most recently posted openings at the top.  
 > Use `Cmd + F` or `Ctrl + F` to search companies, locations, or keywords.
 
@@ -10,7 +10,7 @@
 - [📊 Regional Summary Table](#-regional-summary)
 - [🔥 Fresh Drops (Latest 30 Roles)](#-fresh-drops-latest-30-roles)
 - [📋 Product Management Internships (294)](#-product-management-internships)
-- [💻 Software Engineering Internships (3,180)](#-software-engineering-internships)
+- [💻 Software Engineering Internships (3,181)](#-software-engineering-internships)
   - [🇺🇸 United States SWE](#-united-states-swe)
   - [🇨🇦 Canada SWE](#-canada-swe)
   - [🇬🇧 United Kingdom SWE](#-united-kingdom-swe)
@@ -23,14 +23,14 @@
 
 | Region | Flag | PM Internships | SWE Internships | Total Live |
 |:---|:---:|:---:|:---:|:---:|
-| United States | 🇺🇸 | 239 | 2,546 | **2,785** |
+| United States | 🇺🇸 | 239 | 2,547 | **2,786** |
 | Canada | 🇨🇦 | 14 | 262 | **276** |
 | United Kingdom | 🇬🇧 | 16 | 157 | **173** |
 | Asia-Pacific (APAC) | 🌏 | 7 | 115 | **122** |
 | Remote | 🌐 | 1 | 1 | **2** |
 | North America (US/CA) | 🇨🇦/🇺🇸 | 0 | 19 | **19** |
 | Other / Unspecified | 📍 | 17 | 80 | **97** |
-| **Grand Total** | 🚀 | **294** | **3,180** | **3,474** |
+| **Grand Total** | 🚀 | **294** | **3,181** | **3,475** |
 
 ---
 
@@ -380,7 +380,7 @@
 
 ### 🇺🇸 United States SWE
 
-*Openings: 2,546 (Sorted Newest First)*
+*Openings: 2,547 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
@@ -1004,6 +1004,7 @@
 | `2026-10-05` | **Motorola** | Android Applications Developer Intern | Chicago, IL | [Apply ↗](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Chicago-IL/Android-Applications-Developer-Intern---Summer-2027_R69313) |
 | `2026-10-05` | **National Laboratory of the Rockies** | Undergraduate / Graduate Cyber Security Research Intern - 5G | Golden, CO | [Apply ↗](https://nrel.wd5.myworkdayjobs.com/NLR/job/Golden-CO/Undergraduate---Graduate--Spring---Summer--Intern---Cyber-Security-Research---5G_R14555) |
 | `2026-10-05` | **NBCUniversal** | Feature Technical Direction Intern | Glendale, CA | [Apply ↗](https://jobs.smartrecruiters.com/NBCUniversal3/744000153538044) |
+| `2026-10-05` | **NVIDIA** | Software Engineer Intern | Santa Clara, CA | [Apply ↗](https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/NVIDIA-2027-Ignite-Internships--Software-Engineering_JR2026958) |
 | `2026-10-05` | **Quantum Signal AI** | Software Engineer Intern - Tools and Prototypes | Saline, MI | [Apply ↗](https://quantumsignalai.applytojob.com/apply/MWrhQD8Hn9/Software-Engineering-Intern-Tools-And-Prototypes) |
 | `2026-10-05` | **Rivian** | Software Engineer Intern Co-op - Embedded Software | Palo Alto, CA | [Apply ↗](https://careers.rivian.com/jobs/33832?icims=1) |
 | `2026-10-05` | **Sikich** | Intelligence Transformation Intern | Remote in USA | [Apply ↗](https://jobs.jobvite.com/sikichcareers/job/oGOPAfwD?nl=1&nl=1&fr=false) |

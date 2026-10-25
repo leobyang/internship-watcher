@@ -1,7 +1,7 @@
 # 🎯 Active Internship Openings
 
 > **Auto-updated by GitHub Actions** • Tracks: Product Management (PM) & Software Engineering (SWE)  
-> **Total Live Openings:** 3,435 (PM: 309 | SWE: 3,126) • *Updated: 2026-10-24 22:54 UTC*  
+> **Total Live Openings:** 3,435 (PM: 309 | SWE: 3,126) • *Updated: 2026-10-25 00:49 UTC*  
 > **Sorted Newest First**: All tables below display the most recently posted openings at the top.  
 > Use `Cmd + F` or `Ctrl + F` to search companies, locations, or keywords.
 

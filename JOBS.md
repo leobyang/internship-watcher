@@ -1,7 +1,7 @@
 # 🎯 Active Internship Openings
 
 > **Auto-updated by GitHub Actions** • Tracks: Product Management (PM) & Software Engineering (SWE)  
-> **Total Live Openings:** 3,591 (PM: 327 | SWE: 3,264) • *Updated: 2026-10-31 19:44 UTC*  
+> **Total Live Openings:** 3,590 (PM: 327 | SWE: 3,263) • *Updated: 2026-10-31 23:05 UTC*  
 > **Sorted Newest First**: All tables below display the most recently posted openings at the top.  
 > Use `Cmd + F` or `Ctrl + F` to search companies, locations, or keywords.
 
@@ -10,7 +10,7 @@
 - [📊 Regional Summary Table](#-regional-summary)
 - [🔥 Fresh Drops (Latest 30 Roles)](#-fresh-drops-latest-30-roles)
 - [📋 Product Management Internships (327)](#-product-management-internships)
-- [💻 Software Engineering Internships (3,264)](#-software-engineering-internships)
+- [💻 Software Engineering Internships (3,263)](#-software-engineering-internships)
   - [🇺🇸 United States SWE](#-united-states-swe)
   - [🇨🇦 Canada SWE](#-canada-swe)
   - [🇬🇧 United Kingdom SWE](#-united-kingdom-swe)
@@ -29,8 +29,8 @@
 | Asia-Pacific (APAC) | 🌏 | 4 | 126 | **130** |
 | Remote | 🌐 | 1 | 2 | **3** |
 | North America (US/CA) | 🇨🇦/🇺🇸 | 5 | 43 | **48** |
-| Other / Unspecified | 📍 | 22 | 64 | **86** |
-| **Grand Total** | 🚀 | **327** | **3,264** | **3,591** |
+| Other / Unspecified | 📍 | 22 | 63 | **85** |
+| **Grand Total** | 🚀 | **327** | **3,263** | **3,590** |
 
 ---
 
@@ -2192,6 +2192,7 @@
 | `2026-09-03` | **Hadrian** | Data Science/Data Engineer Intern | LA, Torrance, CA | [Apply ↗](https://jobs.ashbyhq.com/hadrian-automation/f718bcfe-3f5b-4682-a294-697499caf813/application?embed=true) |
 | `2026-09-03` | **Hermeus** | Software Engineer Intern - Command & Control | Atlanta, GA | [Apply ↗](https://jobs.lever.co/hermeus/5b08e2df-c9db-4831-aece-67d89e744796/apply) |
 | `2026-09-03` | **ID.me** | Summer Intern 2027 - Software Development Engineer Intern | Mountain View, CA | [Apply ↗](https://job-boards.greenhouse.io/idmeuniversityrecruiting/jobs/7980429003) |
+| `2026-09-03` | **InfiniteQuant** | Quantitative Developer Intern | Dubai - United Arab Emirates, NYC | [Apply ↗](https://jobs.smartrecruiters.com/InfiniteQuant/744000147163879) |
 | `2026-09-03` | **Innovative Systems** | Software Engineer Intern/Co-op | Pittsburgh, PA | [Apply ↗](http://innovativesystems.applytojob.com/apply/nPMqeNSQOo/InternCoop-Summer-2027-Software-Engineering) |
 | `2026-09-03` | **Johns Hopkins Applied Physics Laboratory** | Acoustic Algorithm Development Engineer Intern | Laurel, MD | [Apply ↗](https://careers.jhuapl.edu/jobs/59784?icims=1) |
 | `2026-09-03` | **Momentive** | Data Science Intern - Enterprise Reporting & Analytics | Niskayuna, NY | [Apply ↗](https://momentive.wd1.myworkdayjobs.com/MC/job/US-NY-Niskayuna/Summer-2027-Intern---Enterprise-Reporting---Analytics---Data-Science_R9807-1) |
@@ -2488,7 +2489,6 @@
 | `2026-08-24` | **Fannie Mae** | Technology Program Intern | Plano, TX, Reston, VA | [Apply ↗](https://fanniemae.wd1.myworkdayjobs.com/FannieMaeCareers/job/Reston-VA/Campus---Technology-Program-Intern_JR2810) |
 | `2026-08-24` | **Garmin** | Software Engineer Intern | Olathe, KS | [Apply ↗](https://careers.garmin.com/jobs/19693?icims=1) |
 | `2026-08-24` | **Google** | Software Engineer Intern | Palo Alto, CA, Cambridge, MA, Madison, WI, Seattle, WA, Washington, DC, SF, Austin, TX, LA, San Jose, CA, Irvine, CA, South SF, Redwood City, CA, Raleigh, NC, San Bruno, CA, Redmond, WA, Durham, NC, Santa Cruz, CA, Chicago, IL, Goleta, CA, Pittsburgh, PA, Kirkland, WA, Reston, VA, NYC, Bellevue, WA, Sunnyvale, CA, Mountain View, CA, Portland, OR, Boulder, CO, Atlanta, GA, San Diego, CA | [Apply ↗](https://www.google.com/about/careers/applications/jobs/results/91436104816698054) |
-| `2026-08-24` | **InfiniteQuant** | Quantitative Developer Internship - Summer 2027 | Dubai - United Arab Emirates, NYC | [Apply ↗](https://jobs.smartrecruiters.com/InfiniteQuant/744000145263134) |
 | `2026-08-24` | **Medpace** | Python Intern - Summer 2027 | Cincinnati, OH | [Apply ↗](https://careers.medpace.com/jobs/12962?icims=1) |
 | `2026-08-24` | **Motorola** | Android Application Developer Intern - Summer 2027 | Chicago, IL | [Apply ↗](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Chicago-IL/Android-Applications-Developer-Intern---Summer-2027_R67740) |
 | `2026-08-24` | **MSA Safety** | Software Engineer Intern - Product Development - Summer 2027 | Cranberry Township, PA | [Apply ↗](https://careers.msasafety.com/jobs/9993?icims=1) |
@@ -3655,7 +3655,7 @@
 
 ### 📍 Other / Unspecified SWE
 
-*Openings: 64 (Sorted Newest First)*
+*Openings: 63 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
@@ -3720,7 +3720,6 @@
 | `2026-08-20` | **General Matter** | Software Engineering Intern | LA | [Apply ↗](https://job-boards.greenhouse.io/generalmatter/jobs/5377118008) |
 | `2026-08-15` | **Freeform** | Software Engineer Intern - Summer 2027 | LA | [Apply ↗](https://job-boards.greenhouse.io/freeformfuturecorp/jobs/7872198003) |
 | `2026-04-23` | **Tencent** | Game Research & Development Intern - Engine Research | LA | [Apply ↗](https://tencent.wd1.myworkdayjobs.com/Lightspeed/job/US-California-Los-Angeles/Game-Research---Development-Intern--Engine-Research_R107344) |
-| `2026-03-05` | **Mantari** | Software Engineering Intern | LA | [Apply ↗](https://job-boards.greenhouse.io/mantari/jobs/4173646009) |
 | `2026-01-13` | **Perplexity** | Internship - Search Machine Learning Engineer | Belgrade | [Apply ↗](https://jobs.ashbyhq.com/perplexity/9246cf02-26fd-4ae8-90c5-639c6e85e9e2) |
 | `2024-09-27` | **Databricks** | Software Engineering Intern (2027 Start) - Belgrade | Belgrade, Serbia | [Apply ↗](https://databricks.com/company/careers/open-positions/job?gh_jid=7640764002) |
 

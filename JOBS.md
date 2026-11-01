@@ -1,7 +1,7 @@
 # 🎯 Active Internship Openings
 
 > **Auto-updated by GitHub Actions** • Tracks: Product Management (PM) & Software Engineering (SWE)  
-> **Total Live Openings:** 3,590 (PM: 327 | SWE: 3,263) • *Updated: 2026-10-31 23:05 UTC*  
+> **Total Live Openings:** 3,568 (PM: 320 | SWE: 3,248) • *Updated: 2026-11-01 04:19 UTC*  
 > **Sorted Newest First**: All tables below display the most recently posted openings at the top.  
 > Use `Cmd + F` or `Ctrl + F` to search companies, locations, or keywords.
 
@@ -9,8 +9,8 @@
 
 - [📊 Regional Summary Table](#-regional-summary)
 - [🔥 Fresh Drops (Latest 30 Roles)](#-fresh-drops-latest-30-roles)
-- [📋 Product Management Internships (327)](#-product-management-internships)
-- [💻 Software Engineering Internships (3,263)](#-software-engineering-internships)
+- [📋 Product Management Internships (320)](#-product-management-internships)
+- [💻 Software Engineering Internships (3,248)](#-software-engineering-internships)
   - [🇺🇸 United States SWE](#-united-states-swe)
   - [🇨🇦 Canada SWE](#-canada-swe)
   - [🇬🇧 United Kingdom SWE](#-united-kingdom-swe)
@@ -23,14 +23,14 @@
 
 | Region | Flag | PM Internships | SWE Internships | Total Live |
 |:---|:---:|:---:|:---:|:---:|
-| United States | 🇺🇸 | 268 | 2,571 | **2,839** |
+| United States | 🇺🇸 | 261 | 2,557 | **2,818** |
 | Canada | 🇨🇦 | 13 | 275 | **288** |
-| United Kingdom | 🇬🇧 | 14 | 183 | **197** |
+| United Kingdom | 🇬🇧 | 14 | 182 | **196** |
 | Asia-Pacific (APAC) | 🌏 | 4 | 126 | **130** |
 | Remote | 🌐 | 1 | 2 | **3** |
 | North America (US/CA) | 🇨🇦/🇺🇸 | 5 | 43 | **48** |
 | Other / Unspecified | 📍 | 22 | 63 | **85** |
-| **Grand Total** | 🚀 | **327** | **3,263** | **3,590** |
+| **Grand Total** | 🚀 | **320** | **3,248** | **3,568** |
 
 ---
 
@@ -75,7 +75,7 @@
 
 ## 📋 Product Management Internships
 
-*Total PM Openings: 327 (Sorted Newest First)*
+*Total PM Openings: 320 (Sorted Newest First)*
 
 | Date Posted | Region | Company | Title | Location | Direct Link |
 |:---:|:---:|:---|:---|:---|:---:|
@@ -320,13 +320,6 @@
 | `2026-09-03` | 🇺🇸 | **TikTok** | AI Governance Strategy Product Manager Intern - Platform Trust and Ecosystem | San Jose, CA | [Apply ↗](https://lifeattiktok.com/search/7677493272788683013) |
 | `2026-09-02` | 🇺🇸 | **Roblox** | [2027] Associate Product Manager, Early Career | San Mateo, CA, United States | [Apply ↗](https://careers.roblox.com/jobs/8143976?gh_jid=8143976) |
 | `2026-09-01` | 🇨🇦 | **AMD** | Product Management Intern/Co-op - Multiple Teams | Calgary, AB, Canada | [Apply ↗](https://careers.amd.com/jobs/90411?icims=1) |
-| `2026-09-01` | 🇺🇸 | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 Product Management, Global Merchant & Network Services - Phoenix, AZ | Phoenix, AZ, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012638) |
-| `2026-09-01` | 🇺🇸 | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 Digital Product Management, Enterprise Technology Services- Sunrise, FL | Sunrise, FL, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012145) |
-| `2026-09-01` | 🇺🇸 | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 Digital Product Management, Enterprise Technology Services- Phoenix, AZ | Phoenix, AZ, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012681) |
-| `2026-09-01` | 🇺🇸 | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 Product Management, Global Merchant & Network Services - New York, NY | New York, NY, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012636) |
-| `2026-09-01` | 🇺🇸 | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 Digital Product Management, Enterprise Technology Services- New York, NY | New York, NY, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012057) |
-| `2026-09-01` | 🇺🇸 | **American Express** | Campus Undergraduate Summer Internship Program - 2027 Digital Product Management, Enterprise Technology Services- New York, NY | New York, NY, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26011143) |
-| `2026-09-01` | 🇺🇸 | **American Express** | Campus Undergraduate Full-Time Associate - 2027 Digital Product Management, Enterprise Technology Services- New York, NY | New York, NY, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012956) |
 | `2026-09-01` | 🇺🇸 | **American Express** | Digital Product Management Intern - Enterprise Technology Services | NYC | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012057) |
 | `2026-09-01` | 🇺🇸 | **American Express** | Product Development Intern - 2027 Product Development - US Consumer Services | NYC | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26011605) |
 | `2026-09-01` | 🇺🇸 | **Clearwater Analytics** | Technical Product Management Intern | NYC | [Apply ↗](https://clearwateranalytics.wd1.myworkdayjobs.com/Clearwater_Analytics_Careers/job/Office---New-York/Technical-Product-Management-Intern_R12198) |
@@ -413,7 +406,7 @@
 
 ### 🇺🇸 United States SWE
 
-*Openings: 2,571 (Sorted Newest First)*
+*Openings: 2,557 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
@@ -2192,7 +2185,6 @@
 | `2026-09-03` | **Hadrian** | Data Science/Data Engineer Intern | LA, Torrance, CA | [Apply ↗](https://jobs.ashbyhq.com/hadrian-automation/f718bcfe-3f5b-4682-a294-697499caf813/application?embed=true) |
 | `2026-09-03` | **Hermeus** | Software Engineer Intern - Command & Control | Atlanta, GA | [Apply ↗](https://jobs.lever.co/hermeus/5b08e2df-c9db-4831-aece-67d89e744796/apply) |
 | `2026-09-03` | **ID.me** | Summer Intern 2027 - Software Development Engineer Intern | Mountain View, CA | [Apply ↗](https://job-boards.greenhouse.io/idmeuniversityrecruiting/jobs/7980429003) |
-| `2026-09-03` | **InfiniteQuant** | Quantitative Developer Intern | Dubai - United Arab Emirates, NYC | [Apply ↗](https://jobs.smartrecruiters.com/InfiniteQuant/744000147163879) |
 | `2026-09-03` | **Innovative Systems** | Software Engineer Intern/Co-op | Pittsburgh, PA | [Apply ↗](http://innovativesystems.applytojob.com/apply/nPMqeNSQOo/InternCoop-Summer-2027-Software-Engineering) |
 | `2026-09-03` | **Johns Hopkins Applied Physics Laboratory** | Acoustic Algorithm Development Engineer Intern | Laurel, MD | [Apply ↗](https://careers.jhuapl.edu/jobs/59784?icims=1) |
 | `2026-09-03` | **Momentive** | Data Science Intern - Enterprise Reporting & Analytics | Niskayuna, NY | [Apply ↗](https://momentive.wd1.myworkdayjobs.com/MC/job/US-NY-Niskayuna/Summer-2027-Intern---Enterprise-Reporting---Analytics---Data-Science_R9807-1) |
@@ -2228,9 +2220,7 @@
 | `2026-09-03` | **Texas Instruments** | Product/Test Engineering Intern - TMG | Dallas, TX, United States | [Apply ↗](https://edbz.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/25017571) |
 | `2026-09-03` | **Transcard Payments** | Software Engineer Intern | Chattanooga, TN | [Apply ↗](https://recruiting.paylocity.com/Recruiting/Jobs/Details/4476288) |
 | `2026-09-03` | **Waymo** | 2027 Summer Intern, MS, Software Engineering, Behavior Test | San Francisco, California, USA | [Apply ↗](https://careers.withwaymo.com/jobs?gh_jid=8174504) |
-| `2026-09-02` | **American Express** | Campus Undergraduate Full-Time Engineer - 2027 Software Engineer I, Enterprise Technology Services- Sunrise, FL | Sunrise, FL, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012801) |
 | `2026-09-02` | **American Express** | Campus Undergraduate Full-Time Engineer - 2027 Software Engineer I, Enterprise Technology Services- Charlotte, NC | Charlotte, NC, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012869) |
-| `2026-09-02` | **American Express** | Campus Undergraduate Full-Time Engineer - 2027 Software Engineer I, Enterprise Technology Services- New York, NY | New York, NY, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012796) |
 | `2026-09-02` | **Armadin** | Software Engineer Intern - Agent Systems | Palo Alto, CA | [Apply ↗](https://jobs.ashbyhq.com/armadin/8ddb9c3a-3031-42d4-ad68-adcc865e32cf/application?embed=true) |
 | `2026-09-02` | **ByteDance** | Research Intern - AI-Native Databases | San Jose, CA | [Apply ↗](https://jobs.bytedance.com/en/position/7678450462765254965/detail) |
 | `2026-09-02` | **Cheiron** | Agent Engineer Intern | Los Altos, CA | [Apply ↗](https://jobs.ashbyhq.com/cheiron/36763c16-8996-4c66-b693-d48329413678/application?embed=true) |
@@ -2259,13 +2249,7 @@
 | `2026-09-01` | **AMD** | Compiler Engineer Intern/Co-op | Austin, TX, Longmont, CO, Fishkill, NY, Fort Collins, CO, Boxborough, MA | [Apply ↗](https://careers.amd.com/jobs/91864?icims=1) |
 | `2026-09-01` | **AMD** | Compiler Engineer Intern/Co-op - Masters | Austin, TX, Longmont, CO, Fishkill, NY, Fort Collins, CO, Boxborough, MA | [Apply ↗](https://careers.amd.com/jobs/91867?icims=1) |
 | `2026-09-01` | **American Bureau of Shipping** | Engineering Intern (Summer 2027) | Houston, TX, United States | [Apply ↗](https://hbbq.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/4767) |
-| `2026-09-01` | **American Express** | Campus Undergraduate Full-Time Engineer - 2027 AI Engineer I, Enterprise Technology Services- Sunrise, FL | Sunrise, FL, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012985) |
-| `2026-09-01` | **American Express** | Campus Undergraduate Full-Time Engineer - 2027 AI Engineer I, Enterprise Technology Services- Atlanta, GA | Atlanta, GA, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26013252) |
 | `2026-09-01` | **American Express** | Campus Undergraduate Full-Time Engineer - 2027 AI Engineer I, Enterprise Technology Services- Phoenix, AZ | Phoenix, AZ, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26013254) |
-| `2026-09-01` | **American Express** | Campus Undergraduate Full-Time Engineer - 2027 Software Engineer I, Enterprise Technology Services- Phoenix, AZ | Phoenix, AZ, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26013259) |
-| `2026-09-01` | **American Express** | Campus Undergraduate Full-Time Analyst - 2027 Data Engineer I, Enterprise Technology Services- Phoenix, AZ | Phoenix, AZ, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26013286) |
-| `2026-09-01` | **American Express** | Campus Undergraduate Full-Time Engineer - 2027 AI Engineer I, Enterprise Technology Services- New York, NY | New York, NY, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012982) |
-| `2026-09-01` | **American Express** | Campus Undergraduate Full-Time Engineer - 2027 AI Engineer I, Enterprise Technology Services- Palo Alto, CA | Palo Alto, CA, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26013253) |
 | `2026-09-01` | **Blue Origin** | Software Developer Intern - Avionics Software | Washington, LA, Longmont, CO, Denver, CO | [Apply ↗](https://blueorigin.wd5.myworkdayjobs.com/blueorigin/job/Greater-Seattle-Area/Summer-2027-Software-Developer-Internship---Graduate_R71434) |
 | `2026-09-01` | **Blue Origin** | Avionics Software Intern - Undergraduate | Seattle, WA, LA, Longmont, CO, Denver, CO | [Apply ↗](https://blueorigin.wd5.myworkdayjobs.com/blueorigin/job/Greater-Seattle-Area/Summer-2027-Avionics-Software-Internship---Undergraduate_R71424) |
 | `2026-09-01` | **Blue Origin** | Software Developer Intern - Undergraduate | Seattle, WA, LA, Denver, CO | [Apply ↗](https://blueorigin.wd5.myworkdayjobs.com/blueorigin/job/Greater-Seattle-Area/Summer-2027-Software-Developer-Internship---Undergraduate_R71425) |
@@ -2489,6 +2473,7 @@
 | `2026-08-24` | **Fannie Mae** | Technology Program Intern | Plano, TX, Reston, VA | [Apply ↗](https://fanniemae.wd1.myworkdayjobs.com/FannieMaeCareers/job/Reston-VA/Campus---Technology-Program-Intern_JR2810) |
 | `2026-08-24` | **Garmin** | Software Engineer Intern | Olathe, KS | [Apply ↗](https://careers.garmin.com/jobs/19693?icims=1) |
 | `2026-08-24` | **Google** | Software Engineer Intern | Palo Alto, CA, Cambridge, MA, Madison, WI, Seattle, WA, Washington, DC, SF, Austin, TX, LA, San Jose, CA, Irvine, CA, South SF, Redwood City, CA, Raleigh, NC, San Bruno, CA, Redmond, WA, Durham, NC, Santa Cruz, CA, Chicago, IL, Goleta, CA, Pittsburgh, PA, Kirkland, WA, Reston, VA, NYC, Bellevue, WA, Sunnyvale, CA, Mountain View, CA, Portland, OR, Boulder, CO, Atlanta, GA, San Diego, CA | [Apply ↗](https://www.google.com/about/careers/applications/jobs/results/91436104816698054) |
+| `2026-08-24` | **InfiniteQuant** | Quantitative Developer Internship - Summer 2027 | Dubai - United Arab Emirates, NYC | [Apply ↗](https://jobs.smartrecruiters.com/InfiniteQuant/744000145263134) |
 | `2026-08-24` | **Medpace** | Python Intern - Summer 2027 | Cincinnati, OH | [Apply ↗](https://careers.medpace.com/jobs/12962?icims=1) |
 | `2026-08-24` | **Motorola** | Android Application Developer Intern - Summer 2027 | Chicago, IL | [Apply ↗](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Chicago-IL/Android-Applications-Developer-Intern---Summer-2027_R67740) |
 | `2026-08-24` | **MSA Safety** | Software Engineer Intern - Product Development - Summer 2027 | Cranberry Township, PA | [Apply ↗](https://careers.msasafety.com/jobs/9993?icims=1) |
@@ -2555,14 +2540,8 @@
 | `2026-08-18` | **Vertiv** | Engineering Internship - Lab Focus (Summer 2027) | Columbus, OH, United States | [Apply ↗](https://egup.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/20279601) |
 | `2026-08-18` | **Vertiv** | Mechanical Design Engineering Internship (Summer 2027) | Westerville, OH, United States | [Apply ↗](https://egup.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/20279563) |
 | `2026-08-18` | **Zoomifier** | Software Development Intern | NYC | [Apply ↗](https://jobs.smartrecruiters.com/CustomShow/75886593) |
-| `2026-08-17` | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 Software Engineer, Enterprise Technology Services- Sunrise, FL | Sunrise, FL, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26011084) |
 | `2026-08-17` | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 Software Engineer, Enterprise Technology Services- Phoenix, AZ | Phoenix, AZ, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26011784) |
-| `2026-08-17` | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 Software Engineer, Enterprise Technology Services- Charlotte, NC | Charlotte, NC, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26011987) |
-| `2026-08-17` | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 Software Engineer, Enterprise Technology Services- New York, NY | New York, NY, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26011082) |
-| `2026-08-17` | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 AI Engineer, Enterprise Technology Services- Sunrise, FL | Sunrise, FL, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26011999) |
-| `2026-08-17` | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 AI Engineer, Enterprise Technology Services- Atlanta, GA | Atlanta, GA, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012000) |
 | `2026-08-17` | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 AI Engineer, Enterprise Technology Services- Phoenix, AZ | Phoenix, AZ, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26012392) |
-| `2026-08-17` | **American Express** | Campus Graduate Masters Summer Internship Program - 2027 AI Engineer, Enterprise Technology Services- New York, NY | New York, NY, United States | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26011991) |
 | `2026-08-17` | **American Express** | Software Engineer Intern - Enterprise Technology Services | Charlotte, NC | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26011987) |
 | `2026-08-17` | **American Express** | AI Engineer Intern - Enterprise Technology Services | NYC | [Apply ↗](https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26011698) |
 | `2026-08-17` | **ByteDance** | Software Engineer Intern - Global Payment | San Jose, CA | [Apply ↗](https://jobs.bytedance.com/en/position/7668650945276168453/detail) |
@@ -3273,7 +3252,7 @@
 
 ### 🇬🇧 United Kingdom SWE
 
-*Openings: 183 (Sorted Newest First)*
+*Openings: 182 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
@@ -3373,7 +3352,6 @@
 | `2026-10-01` | **Cambridge Consultants** | PhD Robotics Engineering Intern | United Kingdom | [Apply ↗](https://job-boards.eu.greenhouse.io/cambridgeconsultantslimited/jobs/4995823101) |
 | `2026-10-01` | **Certara** | Junior Software Developer Intern | Sheffield, UK | [Apply ↗](https://careers.certara.com/jobs/2609?icims=1) |
 | `2026-10-01` | **Cummins** | Service Engineer Intern - Service Engineering - Digital and Data Analytics | Huddersfield, UK | [Apply ↗](https://fa-espx-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/2438342) |
-| `2026-09-28` | **Monzo** | Associate Data Scientist - Intern | London | [Apply ↗](https://job-boards.greenhouse.io/monzo/jobs/8232726) |
 | `2026-09-28` | **Monzo** | Associate Software Engineer - Intern | London | [Apply ↗](https://job-boards.greenhouse.io/monzo/jobs/8156261) |
 | `2026-09-28` | **NatWest Group** | Engineering Intern | Bristol, UK | [Apply ↗](https://rbs.wd3.myworkdayjobs.com/rbs/job/Bristol/Engineering----Internship_R-00285732) |
 | `2026-09-28` | **The Focusrite Group** | Software Developer Placement Intern | Letchworth Garden City, UK | [Apply ↗](https://apply.workable.com/focusrite/j/BFA6731604/apply) |

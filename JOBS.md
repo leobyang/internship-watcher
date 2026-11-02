@@ -1,7 +1,7 @@
 # 🎯 Active Internship Openings
 
 > **Auto-updated by GitHub Actions** • Tracks: Product Management (PM) & Software Engineering (SWE)  
-> **Total Live Openings:** 3,555 (PM: 319 | SWE: 3,236) • *Updated: 2026-11-01 21:42 UTC*  
+> **Total Live Openings:** 3,552 (PM: 320 | SWE: 3,232) • *Updated: 2026-11-02 01:16 UTC*  
 > **Sorted Newest First**: All tables below display the most recently posted openings at the top.  
 > Use `Cmd + F` or `Ctrl + F` to search companies, locations, or keywords.
 
@@ -9,8 +9,8 @@
 
 - [📊 Regional Summary Table](#-regional-summary)
 - [🔥 Fresh Drops (Latest 30 Roles)](#-fresh-drops-latest-30-roles)
-- [📋 Product Management Internships (319)](#-product-management-internships)
-- [💻 Software Engineering Internships (3,236)](#-software-engineering-internships)
+- [📋 Product Management Internships (320)](#-product-management-internships)
+- [💻 Software Engineering Internships (3,232)](#-software-engineering-internships)
   - [🇺🇸 United States SWE](#-united-states-swe)
   - [🇨🇦 Canada SWE](#-canada-swe)
   - [🇬🇧 United Kingdom SWE](#-united-kingdom-swe)
@@ -23,14 +23,14 @@
 
 | Region | Flag | PM Internships | SWE Internships | Total Live |
 |:---|:---:|:---:|:---:|:---:|
-| United States | 🇺🇸 | 260 | 2,547 | **2,807** |
-| Canada | 🇨🇦 | 13 | 275 | **288** |
-| United Kingdom | 🇬🇧 | 14 | 181 | **195** |
-| Asia-Pacific (APAC) | 🌏 | 4 | 125 | **129** |
+| United States | 🇺🇸 | 261 | 2,546 | **2,807** |
+| Canada | 🇨🇦 | 13 | 274 | **287** |
+| United Kingdom | 🇬🇧 | 14 | 177 | **191** |
+| Asia-Pacific (APAC) | 🌏 | 4 | 127 | **131** |
 | Remote | 🌐 | 1 | 2 | **3** |
 | North America (US/CA) | 🇨🇦/🇺🇸 | 5 | 43 | **48** |
 | Other / Unspecified | 📍 | 22 | 63 | **85** |
-| **Grand Total** | 🚀 | **319** | **3,236** | **3,555** |
+| **Grand Total** | 🚀 | **320** | **3,232** | **3,552** |
 
 ---
 
@@ -40,8 +40,12 @@
 
 | Date Posted | Track | Reg | Company | Title | Location | Direct Link |
 |:---:|:---:|:---:|:---|:---|:---|:---:|
+| `2026-11-02` | `SWE` | 🌏 | **Hewlett Packard (HP) (externalcareersite)** | College Intern – NPI Writing System Engineer | Singapore, South West, Singapore | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/externalcareersite/job/Singapore-South-West-Singapore/College-Intern---NPI-Writing-System-Engineer_UNI4588-1) |
+| `2026-11-02` | `SWE` | 🌏 | **Hewlett Packard (HP) (EXTEU-AC-CareerSite)** | College Intern – NPI Writing System Engineer | Singapore, South West, Singapore | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/EXTEU-AC-CareerSite/job/Singapore-South-West-Singapore/College-Intern---NPI-Writing-System-Engineer_UNI4588) |
 | `2026-11-01` | `PM` | 🇺🇸 | **KnowBe4** | Associate Product Manager Summer Internship (Hybrid) | Clearwater, Florida | [Apply ↗](https://job-boards.greenhouse.io/knowbe4/jobs/8919274002) |
 | `2026-11-01` | `SWE` | 🇺🇸 | **KnowBe4** | Software Engineer Summer Internship | Clearwater, Florida | [Apply ↗](https://job-boards.greenhouse.io/knowbe4/jobs/8919280002) |
+| `2026-11-01` | `SWE` | 🇺🇸 | **KnowBe4** | Software Engineer Intern | Clearwater, FL | [Apply ↗](https://job-boards.greenhouse.io/knowbe4/jobs/8919280002) |
+| `2026-11-01` | `PM` | 🇺🇸 | **KnowBe4** | Associate Product Manager Intern | Clearwater, FL | [Apply ↗](https://job-boards.greenhouse.io/knowbe4/jobs/8919274002) |
 | `2026-11-01` | `SWE` | 🇺🇸 | **RTX (Private_Posting_No_TMP)** | Software Engineering Intern (Summer 2027) | US-IA-CEDAR RAPIDS-105 ~ 400 Collins Rd NE ~ BLDG 105 | [Apply ↗](https://globalhr.wd5.myworkdayjobs.com/en-US/Private_Posting_No_TMP/job/US-IA-CEDAR-RAPIDS-105--400-Collins-Rd-NE--BLDG-105/Software-Engineering-Intern--Summer-2027-_01867129) |
 | `2026-11-01` | `SWE` | 🇺🇸 | **TRG** | Full Stack Application Developer Intern | Dallas, TX | [Apply ↗](https://secure7.saashr.com/ta/6203759.careers?ShowJob=638057422&lang=en-US) |
 | `2026-10-31` | `SWE` | 🇺🇸 | **Applied Materials** | Summer 2027 Electrical Radio Frequency Engineer Intern- Master's/PhD (Santa Clara, CA) | Santa Clara,CA | [Apply ↗](https://amat.wd1.myworkdayjobs.com/en-US/External/job/Santa-ClaraCA/Summer-2027-Electrical-Radio-Frequency-Engineer-Intern--Master-s-PhD--Santa-Clara--CA-_R2629753) |
@@ -66,20 +70,17 @@
 | `2026-10-30` | `SWE` | 🇺🇸 | **GlobalFoundries** | Device Engineering Intern - Silicon Photonics | Malta, NY | [Apply ↗](https://globalfoundries.wd1.myworkdayjobs.com/External/job/USA---New-York---Malta/Device-Engineering-Intern--Silicon-Photonics--Summer-2027-_JR-2604263) |
 | `2026-10-30` | `SWE` | 🇺🇸 | **Hewlett Packard (HP) (externalcareersite)** | Software Engineering Intern, Connectivity - HP IQ | San Francisco, California, United States of America | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/externalcareersite/job/San-Francisco-California-United-States-of-America/Software-Engineering-Intern--Connectivity---HP-IQ_UNI4812-1) |
 | `2026-10-30` | `SWE` | 🇺🇸 | **Hewlett Packard (HP) (externalcareersite)** | Software Engineering Intern - HP IQ | San Francisco, California, United States of America | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/externalcareersite/job/San-Francisco-California-United-States-of-America/Software-Engineering-Intern---HP-IQ_UNI4806-1) |
-| `2026-10-30` | `SWE` | 🌏 | **Hewlett Packard (HP) (externalcareersite)** | College Intern - Data Science | Singapore, South West, Singapore | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/externalcareersite/job/Singapore-South-West-Singapore/College-Intern---Data-Science_UNI4644-2) |
-| `2026-10-30` | `SWE` | 🌏 | **Hewlett Packard (HP) (externalcareersite)** | College Intern – Hardware Test Automation & AI Engineer | Singapore, South West, Singapore | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/externalcareersite/job/Singapore-South-West-Singapore/College-Intern---Hardware-Test-Automation---AI-Engineer_UNI4954-1) |
-| `2026-10-30` | `SWE` | 🌏 | **Hewlett Packard (HP) (EXTEU-AC-CareerSite)** | College Intern - Data Science | Singapore, South West, Singapore | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/EXTEU-AC-CareerSite/job/Singapore-South-West-Singapore/College-Intern---Data-Science_UNI4644-1) |
-| `2026-10-30` | `SWE` | 🌏 | **Hewlett Packard (HP) (EXTEU-AC-CareerSite)** | College Intern – Hardware Test Automation & AI Engineer | Singapore, South West, Singapore | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/EXTEU-AC-CareerSite/job/Singapore-South-West-Singapore/College-Intern---Hardware-Test-Automation---AI-Engineer_UNI4954) |
 
 ---
 
 ## 📋 Product Management Internships
 
-*Total PM Openings: 319 (Sorted Newest First)*
+*Total PM Openings: 320 (Sorted Newest First)*
 
 | Date Posted | Region | Company | Title | Location | Direct Link |
 |:---:|:---:|:---|:---|:---|:---:|
 | `2026-11-01` | 🇺🇸 | **KnowBe4** | Associate Product Manager Summer Internship (Hybrid) | Clearwater, Florida | [Apply ↗](https://job-boards.greenhouse.io/knowbe4/jobs/8919274002) |
+| `2026-11-01` | 🇺🇸 | **KnowBe4** | Associate Product Manager Intern | Clearwater, FL | [Apply ↗](https://job-boards.greenhouse.io/knowbe4/jobs/8919274002) |
 | `2026-10-31` | 🇺🇸 | **Hewlett Packard (HP) (externalcareersite)** | Product Management Intern | Spring, Texas, United States of America | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/externalcareersite/job/Spring-Texas-United-States-of-America/Product-Management-Intern_UNI4358-1) |
 | `2026-10-31` | 🇺🇸 | **Hewlett Packard (HP) (EXTEU-AC-CareerSite)** | Product Management Intern | Spring, Texas, United States of America | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/EXTEU-AC-CareerSite/job/Spring-Texas-United-States-of-America/Product-Management-Intern_UNI4358) |
 | `2026-10-30` | 🇺🇸 | **Astera Labs** | AI Product Management Intern | San Jose, CA | [Apply ↗](https://job-boards.greenhouse.io/asteraearlycareer2027/jobs/4749404005) |
@@ -405,11 +406,12 @@
 
 ### 🇺🇸 United States SWE
 
-*Openings: 2,547 (Sorted Newest First)*
+*Openings: 2,546 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
 | `2026-11-01` | **KnowBe4** | Software Engineer Summer Internship | Clearwater, Florida | [Apply ↗](https://job-boards.greenhouse.io/knowbe4/jobs/8919280002) |
+| `2026-11-01` | **KnowBe4** | Software Engineer Intern | Clearwater, FL | [Apply ↗](https://job-boards.greenhouse.io/knowbe4/jobs/8919280002) |
 | `2026-11-01` | **RTX (Private_Posting_No_TMP)** | Software Engineering Intern (Summer 2027) | US-IA-CEDAR RAPIDS-105 ~ 400 Collins Rd NE ~ BLDG 105 | [Apply ↗](https://globalhr.wd5.myworkdayjobs.com/en-US/Private_Posting_No_TMP/job/US-IA-CEDAR-RAPIDS-105--400-Collins-Rd-NE--BLDG-105/Software-Engineering-Intern--Summer-2027-_01867129) |
 | `2026-11-01` | **TRG** | Full Stack Application Developer Intern | Dallas, TX | [Apply ↗](https://secure7.saashr.com/ta/6203759.careers?ShowJob=638057422&lang=en-US) |
 | `2026-10-31` | **Applied Materials** | Summer 2027 Electrical Radio Frequency Engineer Intern- Master's/PhD (Santa Clara, CA) | Santa Clara,CA | [Apply ↗](https://amat.wd1.myworkdayjobs.com/en-US/External/job/Santa-ClaraCA/Summer-2027-Electrical-Radio-Frequency-Engineer-Intern--Master-s-PhD--Santa-Clara--CA-_R2629753) |
@@ -798,7 +800,6 @@
 | `2026-10-20` | **GM financial** | Intern - Software Development Engineer | Arlington, TX, United States | [Apply ↗](https://fa-exvu-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/260795) |
 | `2026-10-20` | **Heidelberg Materials** | Digital Growth Intern | Irving, TX | [Apply ↗](https://heidelbergmaterials.wd3.myworkdayjobs.com/global_hm_career_site/job/Irving-TX/Digital-Growth-Intern_JR10018997-1) |
 | `2026-10-20` | **Hewlett Packard (HP) (externalcareersite)** | Audio and DSP Development Engineering Intern | Scotts Valley, California, United States of America | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/externalcareersite/job/Scotts-Valley-California-United-States-of-America/Audio-and-DSP-Development-Engineering-Intern_UNI4508-2) |
-| `2026-10-20` | **Hewlett Packard (HP) (EXTEU-AC-CareerSite)** | Audio and DSP Development Engineering Intern | Scotts Valley, California, United States of America | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/EXTEU-AC-CareerSite/job/Scotts-Valley-California-United-States-of-America/Audio-and-DSP-Development-Engineering-Intern_UNI4508-1) |
 | `2026-10-20` | **Hewlett Packard Enterprise** | Embedded Software Engineer Intern | Roseville, CA | [Apply ↗](https://hpe.wd5.myworkdayjobs.com/jobsathpe/job/Roseville-California-United-States-of-America/Embedded-Software-Engineering-Intern_1214088) |
 | `2026-10-20` | **Humble Robotics** | Embedded Software Engineer Intern | SF | [Apply ↗](https://jobs.lever.co/humble-robotics/8d1fb5d7-9b07-4fac-8c39-e395dca7f2b3/apply) |
 | `2026-10-20` | **Illumio** | Security Research, Intern | Sunnyvale, California - HQ | [Apply ↗](https://jobs.ashbyhq.com/illumio/09d4895b-6de4-4d22-bbc3-aa45f2b24260) |
@@ -2543,7 +2544,6 @@
 | `2026-08-15` | **ByteDance** | Software Engineer Intern - Global Payment Infra and SRE | San Jose, CA | [Apply ↗](https://jobs.bytedance.com/en/position/7668315137242351925/detail) |
 | `2026-08-15` | **ByteDance** | Software Engineer Intern - Global Traffic Architecture | San Jose, CA | [Apply ↗](https://jobs.bytedance.com/en/position/7672557061679483189/detail) |
 | `2026-08-15` | **Dedalus Labs** | Infrastructure Engineer Intern | San Francisco | [Apply ↗](https://jobs.ashbyhq.com/dedalus-labs/fab1accf-2b21-453b-869f-a08759fa605c) |
-| `2026-08-15` | **Goldman Sachs** | Summer Analyst Intern - Americas - Engineering | Salt Lake City, UT | [Apply ↗](https://higher.gs.com/roles/171565?type=students) |
 | `2026-08-14` | **AARP** | Data Science and Advanced Analytics Intern | Washington, DC | [Apply ↗](https://careers.aarp.org/jobs/7437?icims=1) |
 | `2026-08-14` | **ByteDance** | Multi-Cloud CDN Scheduling Platform Engineer Intern - CDN Platform | San Jose, CA | [Apply ↗](https://jobs.bytedance.com/en/position/7673636205233490181/detail) |
 | `2026-08-14` | **Composio** | Fullstack Engineer Intern - Product Team | SF | [Apply ↗](https://jobs.ashbyhq.com/composio/eea3c0be-8589-4e3d-a684-de29a9eada0d/application?embed=true) |
@@ -2959,7 +2959,7 @@
 
 ### 🇨🇦 Canada SWE
 
-*Openings: 275 (Sorted Newest First)*
+*Openings: 274 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
@@ -3178,7 +3178,6 @@
 | `2026-09-11` | **Lyft** | Data Science Intern - Algorithms | Toronto, ON, Canada | [Apply ↗](https://app.careerpuck.com/job-board/lyft/job/8767697002?gh_jid=8767697002) |
 | `2026-09-11` | **Lyft** | Data Engineer Intern | Toronto, ON, Canada | [Apply ↗](https://app.careerpuck.com/job-board/lyft/job/8797376002?gh_jid=8797376002) |
 | `2026-09-11` | **Lyft** | Software Developer Intern - Backend | Montreal, QC, Canada | [Apply ↗](https://app.careerpuck.com/job-board/lyft/job/8796052002?gh_jid=8796052002) |
-| `2026-09-11` | **Nokia** | Data Science Co-op/Intern | Canada | [Apply ↗](https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/39965) |
 | `2026-09-11` | **Nokia** | Data Scientist Co-op/Intern | Ottawa, ON, Canada | [Apply ↗](https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/39965) |
 | `2026-09-11` | **Qualcomm** | Machine Learning Compiler & Performance Engineering Intern - Systems | Markham, ON, Canada | [Apply ↗](https://qualcomm.eightfold.ai/careers/job/446721064018) |
 | `2026-09-10` | **Exegy** | Software Developer Intern | Montreal, QC, Canada | [Apply ↗](https://jobs.ashbyhq.com/exegy/2a066cc1-ff4c-4d1c-9559-68f390b91afb/application?embed=true) |
@@ -3241,7 +3240,7 @@
 
 ### 🇬🇧 United Kingdom SWE
 
-*Openings: 181 (Sorted Newest First)*
+*Openings: 177 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
@@ -3387,9 +3386,6 @@
 | `2026-09-01` | **JP Morgan Chase** | Software Engineer Intern - Immersion Program | Glasgow, UK | [Apply ↗](https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210774813) |
 | `2026-09-01` | **Stripe** | Software Engineer Intern | London, UK | [Apply ↗](https://stripe.com/jobs/search?gh_jid=8130867) |
 | `2026-09-01` | **TWG Global** | AI Data Science Intern - AI/ML Center of Excellence | London, UK, Remote in UK | [Apply ↗](https://apply.workable.com/twgai/j/1206BF981C/apply) |
-| `2026-08-31` | **JP Morgan Chase** | 2027 Software Engineer Program - Summer Internship - Glasgow, London | LONDON, LONDON, United Kingdom / GLASGOW, LANARKSHIRE, United Kingdom | [Apply ↗](https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210774716) |
-| `2026-08-31` | **JP Morgan Chase** | 2027 Software Engineer Immersion Program - Summer Internship - Glasgow | GLASGOW, LANARKSHIRE, United Kingdom | [Apply ↗](https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210774813) |
-| `2026-08-31` | **JP Morgan Chase** | 2027 Software Engineer Program - 12 Month Industrial Placement - Glasgow | GLASGOW, LANARKSHIRE, United Kingdom | [Apply ↗](https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210774738) |
 | `2026-08-29` | **Epic Games** | Web Engineer Intern - Tools & Portals | London, UK | [Apply ↗](https://epicgames.com/careers/jobs/6163851004?gh_jid=6163851004) |
 | `2026-08-24` | **BNY** | 2027 BNY Internship Program -Engineering (Data Science) (Manchester) | Greater Manchester, United Kingdom | [Apply ↗](https://eofe.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/81322) |
 | `2026-08-24` | **BNY** | Engineering Intern - Data Science | Manchester, UK | [Apply ↗](https://eofe.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/81322) |
@@ -3400,7 +3396,6 @@
 | `2026-08-17` | **Google** | Software Engineering or Site Reliability Engineering PhD Intern | London, UK | [Apply ↗](https://www.google.com/about/careers/applications/jobs/results/80037545080955590) |
 | `2026-08-17` | **NXP Semiconductors** | AI and Software Engineer Intern - Automotive MPUs | Glasgow, UK | [Apply ↗](https://nxp.wd3.myworkdayjobs.com/en-US/careers/job/Glasgow/Intern-AI-and-Software-Engineer---Automotive-MPUs_R-10065882-1) |
 | `2026-08-17` | **Optiver** | Software Engineer Intern | London, UK | [Apply ↗](https://www.optiver.com/join-us/jobs/8713435002/?gh_jid=8713435002) |
-| `2026-08-15` | **Goldman Sachs** | Summer Analyst Intern - Engineering | London, UK | [Apply ↗](https://higher.gs.com/roles/170644?type=students) |
 | `2026-08-14` | **Jane Street** | Trading Desk Operations Engineer Intern | London, UK | [Apply ↗](https://www.janestreet.com/join-jane-street/apply/8700980002?gh_jid=8700980002) |
 | `2026-08-11` | **DV Trading** | Software Engineer Intern - DV Commodities | London, UK | [Apply ↗](https://job-boards.greenhouse.io/dvtrading/jobs/4719125005) |
 | `2026-08-10` | **blp** | Engineering Intern | London, UK, Barcelona, Spain | [Apply ↗](https://jobs.ashbyhq.com/blp-digital/7c93c32d-f2e6-40be-a02e-b3a9ff0ff40e/application?embed=true) |
@@ -3429,10 +3424,12 @@
 
 ### 🌏 Asia-Pacific (APAC) SWE
 
-*Openings: 125 (Sorted Newest First)*
+*Openings: 127 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
+| `2026-11-02` | **Hewlett Packard (HP) (externalcareersite)** | College Intern – NPI Writing System Engineer | Singapore, South West, Singapore | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/externalcareersite/job/Singapore-South-West-Singapore/College-Intern---NPI-Writing-System-Engineer_UNI4588-1) |
+| `2026-11-02` | **Hewlett Packard (HP) (EXTEU-AC-CareerSite)** | College Intern – NPI Writing System Engineer | Singapore, South West, Singapore | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/EXTEU-AC-CareerSite/job/Singapore-South-West-Singapore/College-Intern---NPI-Writing-System-Engineer_UNI4588) |
 | `2026-10-30` | **DNV** | Data Science Intern | Pune, India | [Apply ↗](https://ecyq.fa.em2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/7950) |
 | `2026-10-30` | **Hewlett Packard (HP) (externalcareersite)** | College Intern - Data Science | Singapore, South West, Singapore | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/externalcareersite/job/Singapore-South-West-Singapore/College-Intern---Data-Science_UNI4644-2) |
 | `2026-10-30` | **Hewlett Packard (HP) (externalcareersite)** | College Intern – Hardware Test Automation & AI Engineer | Singapore, South West, Singapore | [Apply ↗](https://hp.wd5.myworkdayjobs.com/en-US/externalcareersite/job/Singapore-South-West-Singapore/College-Intern---Hardware-Test-Automation---AI-Engineer_UNI4954-1) |

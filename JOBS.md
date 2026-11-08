@@ -1,7 +1,7 @@
 # 🎯 Active Internship Openings
 
 > **Auto-updated by GitHub Actions** • Tracks: Product Management (PM) & Software Engineering (SWE)  
-> **Total Live Openings:** 3,659 (PM: 326 | SWE: 3,333) • *Updated: 2026-11-08 15:48 UTC*  
+> **Total Live Openings:** 3,658 (PM: 326 | SWE: 3,332) • *Updated: 2026-11-08 20:11 UTC*  
 > **Sorted Newest First**: All tables below display the most recently posted openings at the top.  
 > Use `Cmd + F` or `Ctrl + F` to search companies, locations, or keywords.
 
@@ -10,7 +10,7 @@
 - [📊 Regional Summary Table](#-regional-summary)
 - [🔥 Fresh Drops (Latest 30 Roles)](#-fresh-drops-latest-30-roles)
 - [📋 Product Management Internships (326)](#-product-management-internships)
-- [💻 Software Engineering Internships (3,333)](#-software-engineering-internships)
+- [💻 Software Engineering Internships (3,332)](#-software-engineering-internships)
   - [🇺🇸 United States SWE](#-united-states-swe)
   - [🇨🇦 Canada SWE](#-canada-swe)
   - [🇬🇧 United Kingdom SWE](#-united-kingdom-swe)
@@ -25,12 +25,12 @@
 |:---|:---:|:---:|:---:|:---:|
 | United States | 🇺🇸 | 269 | 2,680 | **2,949** |
 | Canada | 🇨🇦 | 13 | 275 | **288** |
-| United Kingdom | 🇬🇧 | 10 | 173 | **183** |
+| United Kingdom | 🇬🇧 | 10 | 172 | **182** |
 | Asia-Pacific (APAC) | 🌏 | 6 | 112 | **118** |
 | Remote | 🌐 | 1 | 3 | **4** |
 | North America (US/CA) | 🇨🇦/🇺🇸 | 5 | 25 | **30** |
 | Other / Unspecified | 📍 | 22 | 65 | **87** |
-| **Grand Total** | 🚀 | **326** | **3,333** | **3,659** |
+| **Grand Total** | 🚀 | **326** | **3,332** | **3,658** |
 
 ---
 
@@ -3381,7 +3381,7 @@
 
 ### 🇬🇧 United Kingdom SWE
 
-*Openings: 173 (Sorted Newest First)*
+*Openings: 172 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
@@ -3469,7 +3469,6 @@
 | `2026-10-12` | **SailPoint** | Software Engineer Intern - Platform Engines | Remote (United Kingdom) | [Apply ↗](https://sailpoint.wd1.myworkdayjobs.com/en-US/SailPoint/job/Remote-United-Kingdom/Software-Engineer-Intern---Platform-Engines_R014164) |
 | `2026-10-12` | **TJX** | IT Engineer Intern | Watford, UK | [Apply ↗](https://tjx.wd1.myworkdayjobs.com/tjx_external/job/Watford-HER-WD17-1TX/IT-Engineer-Placement_REQ156551) |
 | `2026-10-09` | **Riverlane** | Software Engineering Intern | Cambridge, UK | [Apply ↗](https://www.riverlane.com/jobs?gh_jid=5000786101#vacancies) |
-| `2026-10-09` | **Riverlane** | PhD Research Intern | Cambridge, UK | [Apply ↗](https://www.riverlane.com/jobs?gh_jid=5001381101#vacancies) |
 | `2026-10-09` | **WTW** | Software Developer Intern | Reigate, UK | [Apply ↗](https://eedu.fa.em3.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1003/job/202605435) |
 | `2026-10-09` | **WTW** | 2027 Software Developer Internship – Reigate | Reigate, Surrey, United Kingdom | [Apply ↗](https://eedu.fa.em3.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1003/job/202605435) |
 | `2026-10-08` | **Cambridge Consultants** | Software Engineering Intern - Healthcare | United Kingdom | [Apply ↗](https://job-boards.eu.greenhouse.io/cambridgeconsultantslimited/jobs/4971704101) |

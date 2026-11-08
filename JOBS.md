@@ -1,7 +1,7 @@
 # 🎯 Active Internship Openings
 
 > **Auto-updated by GitHub Actions** • Tracks: Product Management (PM) & Software Engineering (SWE)  
-> **Total Live Openings:** 3,671 (PM: 326 | SWE: 3,345) • *Updated: 2026-11-08 01:05 UTC*  
+> **Total Live Openings:** 3,664 (PM: 325 | SWE: 3,339) • *Updated: 2026-11-08 08:35 UTC*  
 > **Sorted Newest First**: All tables below display the most recently posted openings at the top.  
 > Use `Cmd + F` or `Ctrl + F` to search companies, locations, or keywords.
 
@@ -9,8 +9,8 @@
 
 - [📊 Regional Summary Table](#-regional-summary)
 - [🔥 Fresh Drops (Latest 30 Roles)](#-fresh-drops-latest-30-roles)
-- [📋 Product Management Internships (326)](#-product-management-internships)
-- [💻 Software Engineering Internships (3,345)](#-software-engineering-internships)
+- [📋 Product Management Internships (325)](#-product-management-internships)
+- [💻 Software Engineering Internships (3,339)](#-software-engineering-internships)
   - [🇺🇸 United States SWE](#-united-states-swe)
   - [🇨🇦 Canada SWE](#-canada-swe)
   - [🇬🇧 United Kingdom SWE](#-united-kingdom-swe)
@@ -23,14 +23,14 @@
 
 | Region | Flag | PM Internships | SWE Internships | Total Live |
 |:---|:---:|:---:|:---:|:---:|
-| United States | 🇺🇸 | 268 | 2,683 | **2,951** |
-| Canada | 🇨🇦 | 14 | 277 | **291** |
+| United States | 🇺🇸 | 268 | 2,682 | **2,950** |
+| Canada | 🇨🇦 | 13 | 275 | **288** |
 | United Kingdom | 🇬🇧 | 10 | 174 | **184** |
 | Asia-Pacific (APAC) | 🌏 | 6 | 113 | **119** |
-| Remote | 🌐 | 1 | 4 | **5** |
+| Remote | 🌐 | 1 | 3 | **4** |
 | North America (US/CA) | 🇨🇦/🇺🇸 | 5 | 25 | **30** |
-| Other / Unspecified | 📍 | 22 | 69 | **91** |
-| **Grand Total** | 🚀 | **326** | **3,345** | **3,671** |
+| Other / Unspecified | 📍 | 22 | 67 | **89** |
+| **Grand Total** | 🚀 | **325** | **3,339** | **3,664** |
 
 ---
 
@@ -41,9 +41,6 @@
 | Date Posted | Track | Reg | Company | Title | Location | Direct Link |
 |:---:|:---:|:---:|:---|:---|:---|:---:|
 | `2026-11-07` | `SWE` | 🇺🇸 | **Category Labs** | Research Intern | NYC | [Apply ↗](https://jobs.ashbyhq.com/category-labs/248a6400-c18e-4627-9c8c-1b1054869075/application?embed=true) |
-| `2026-11-07` | `SWE` | 🌐 | **GE Vernova (only_confidential_executive_recruiting)** | Field Engineer Intern | Remote | [Apply ↗](https://gevernova.wd5.myworkdayjobs.com/en-US/only_confidential_executive_recruiting/job/Remote/Field-Engineer-Intern_R5058374-2) |
-| `2026-11-07` | `SWE` | 📍 | **GE Vernova (only_confidential_executive_recruiting)** | GE Vernova Power Conversion & Storage Engineering Intern/Co-Op - Summer 2027-2 | Findlay Township | [Apply ↗](https://gevernova.wd5.myworkdayjobs.com/en-US/only_confidential_executive_recruiting/job/Findlay-Township/GE-Vernova-Power-Conversion---Storage-Engineering-Intern-Co-Op---Summer-2027-2_R5057782-2) |
-| `2026-11-07` | `SWE` | 📍 | **GE Vernova (only_confidential_executive_recruiting)** | PCS Application Engineering Co-Op/Intern - Summer 2027 | Findlay Township | [Apply ↗](https://gevernova.wd5.myworkdayjobs.com/en-US/only_confidential_executive_recruiting/job/Findlay-Township/PCS-Application-Engineering-Co-Op-Intern---Summer-2027_R5050417-1) |
 | `2026-11-07` | `SWE` | 📍 | **GE Vernova (vernova_externalsite)** | GE Vernova Power Conversion & Storage Engineering Intern/Co-Op - Summer 2027-2 | Findlay Township | [Apply ↗](https://gevernova.wd5.myworkdayjobs.com/en-US/vernova_externalsite/job/Findlay-Township/GE-Vernova-Power-Conversion---Storage-Engineering-Intern-Co-Op---Summer-2027-2_R5057782-3) |
 | `2026-11-07` | `SWE` | 📍 | **GE Vernova (vernova_externalsite)** | PCS Application Engineering Co-Op/Intern - Summer 2027 | Findlay Township | [Apply ↗](https://gevernova.wd5.myworkdayjobs.com/en-US/vernova_externalsite/job/Findlay-Township/PCS-Application-Engineering-Co-Op-Intern---Summer-2027_R5050417-2) |
 | `2026-11-07` | `SWE` | 🇺🇸 | **NVIDIA** | Research and Engineering Intern, Agentic Systems Intelligence – Summer 2027 | US CA Santa Clara | [Apply ↗](https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Research-and-Engineering-Intern--Agentic-Systems-Intelligence---Summer-2027_JR2028260) |
@@ -70,12 +67,15 @@
 | `2026-11-06` | `SWE` | 🇺🇸 | **CACI** | Software Engineering Co-op | King of Prussia, PA | [Apply ↗](https://caci.wd1.myworkdayjobs.com/external/job/King-of-Prussia-PA-US/Software-Engineering-Co-op---Spring-2027_334665) |
 | `2026-11-06` | `SWE` | 🇺🇸 | **CACI** | AI/ML Engineering Co-op | King of Prussia, PA | [Apply ↗](https://caci.wd1.myworkdayjobs.com/external/job/King-of-Prussia-PA-US/AI-ML-Engineering-Co-op---Spring-2027_334662-1) |
 | `2026-11-06` | `PM` | 🇬🇧 | **Cummins** | Product Manager Intern | Peterborough, UK | [Apply ↗](https://fa-espx-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/2441495) |
+| `2026-11-06` | `SWE` | 🇺🇸 | **Danaher** | Firmware Engineer Co-op | Indianapolis, IN | [Apply ↗](https://danaher.wd1.myworkdayjobs.com/DanaherJobs/job/Indianapolis-Indiana-United-States/Firmware-Engineer-Co-op_R1321509) |
+| `2026-11-06` | `SWE` | 🇨🇦/🇺🇸 | **DataRobot** | Software Design Engineer Intern | Boston, MA, Seattle, WA, SF, Ontario, Canada | [Apply ↗](https://datarobot.wd1.myworkdayjobs.com/en-US/DataRobot_External_Careers/job/Boston-Massachusetts-US/Software-Design-Engineer-Intern_R-102764) |
+| `2026-11-06` | `SWE` | 🇺🇸 | **Deeplocal** | Creative Technology Intern | Pittsburgh, PA | [Apply ↗](https://job-boards.greenhouse.io/deeplocal/jobs/8360330) |
 
 ---
 
 ## 📋 Product Management Internships
 
-*Total PM Openings: 326 (Sorted Newest First)*
+*Total PM Openings: 325 (Sorted Newest First)*
 
 | Date Posted | Region | Company | Title | Location | Direct Link |
 |:---:|:---:|:---|:---|:---|:---:|
@@ -226,7 +226,6 @@
 | `2026-10-09` | 🇺🇸 | **TikTok** | Creative Product Operations Intern - Multiple Teams | San Jose, CA | [Apply ↗](https://lifeattiktok.com/search/7693727532178229509) |
 | `2026-10-09` | 🇺🇸 | **Vertiv** | Energy Storage Product Management Intern | Delaware, OH | [Apply ↗](https://egup.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/20279379) |
 | `2026-10-09` | 🇺🇸 | **Vertiv** | Energy Storage Product Management Intern (Summer 2027) | Delaware, OH, United States | [Apply ↗](https://egup.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/20279379) |
-| `2026-10-09` | 🇨🇦 | **Workday** | Product Manager Intern | Vancouver, BC, Canada | [Apply ↗](https://workday.wd5.myworkdayjobs.com/Workday_Early_Career/job/Canada-BC-Vancouver/Product-Manager-Intern_JR-0110808) |
 | `2026-10-07` | 🌏 | **BNY** | 2027 BNY Summer Internship Program - Product Management - Singapore | Singapore, Singapore | [Apply ↗](https://eofe.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/82920) |
 | `2026-10-07` | 🇺🇸 | **Hewlett Packard** | Software Product Manager Intern | Austin, TX, Fort Collins, CO | [Apply ↗](https://hp.wd5.myworkdayjobs.com/externalcareersite/job/Austin-Texas-United-States-of-America/Software-Product-Management-Intern_UNI4516-1) |
 | `2026-10-07` | 🇺🇸 | **Nissan Global** | Connected Car Business Development Intern | Franklin, TN | [Apply ↗](https://alliance.wd3.myworkdayjobs.com/en-US/nissanjobs/job/Franklin-Tennessee---United-States-of-America/Connected-Car-Business-Development-Intern---Summer-2027---Franklin--TN_R00214270) |
@@ -412,7 +411,7 @@
 
 ### 🇺🇸 United States SWE
 
-*Openings: 2,683 (Sorted Newest First)*
+*Openings: 2,682 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
@@ -1453,7 +1452,6 @@
 | `2026-10-07` | **John Deere** | Part-Time Student Intern | Champaign, IL | [Apply ↗](https://johndeere.eightfold.ai/careers/job/137483757988) |
 | `2026-10-07` | **KLA** | Applications Development Engineer Intern | Milpitas, CA | [Apply ↗](https://kla.wd1.myworkdayjobs.com/search/job/Milpitas-CA/Applications-Development-Engineering-Intern---BBP_2641507-1) |
 | `2026-10-07` | **Nissan Global** | Systems Engineer Intern - Summer 2027 | Canton, MS | [Apply ↗](https://alliance.wd3.myworkdayjobs.com/en-US/nissanjobs/job/Canton-Mississippi---United-States-of-America/Systems-Engineer-Intern---Summer-2027---Canton--MS_R00214882) |
-| `2026-10-07` | **S&C Electric Company** | Tool Design Engineer Intern | Chicago, IL, United States | [Apply ↗](https://ejia.fa.us6.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/107356) |
 | `2026-10-07` | **Sigma Computing** | Software Engineer Intern - Summer 2027 | SF, NYC | [Apply ↗](https://job-boards.greenhouse.io/sigmacomputing/jobs/7850795003) |
 | `2026-10-07` | **Sigma Computing** | Software Engineer Intern | NYC | [Apply ↗](https://job-boards.greenhouse.io/sigmacomputing/jobs/8001295003) |
 | `2026-10-07` | **Skyband Systems** | Avionics Hardware & Test Engineer Intern | Kirkland, WA | [Apply ↗](https://jobs.ashbyhq.com/skyband%20systems/74d42f88-5265-4879-9c6d-61f532e89b20/application?embed=true) |
@@ -3102,7 +3100,7 @@
 
 ### 🇨🇦 Canada SWE
 
-*Openings: 277 (Sorted Newest First)*
+*Openings: 275 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
@@ -3229,7 +3227,6 @@
 | `2026-10-13` | **Astera Labs** | Analog/Mixed-Signal IC Design Engineer Intern | Toronto, ON, Canada | [Apply ↗](https://job-boards.greenhouse.io/asteraearlycareer2027/jobs/4739756005) |
 | `2026-10-13` | **Manulife Financial** | Winter Co-op 2027 - Data Engineering | Waterloo, Ontario | [Apply ↗](https://manulife.wd3.myworkdayjobs.com/en-US/MFCJH_adminJobs/job/Waterloo-Ontario/Winter-Co-op-2027---Data-Engineering_JR26081660-1) |
 | `2026-10-13` | **Manulife Financial** | Winter Co-op 2027 - Software Engineering (8 Months) | Toronto, Ontario | [Apply ↗](https://manulife.wd3.myworkdayjobs.com/en-US/MFCJH_adminJobs/job/Toronto-Ontario/Winter-Co-op-2027---Software-Engineering--8-Months-_JR26081664-1) |
-| `2026-10-13` | **Pebl** | Software Engineering Intern | Toronto, ON, Canada | [Apply ↗](https://jobs.ashbyhq.com/pebl/49d8b355-620b-4dde-be4b-5489abf4c9cf/application?embed=true) |
 | `2026-10-13` | **SOTI** | Software Developer Intern | Mississauga, ON, Canada | [Apply ↗](https://soti.wd3.myworkdayjobs.com/SOTI-Next-Gen/job/Mississauga-Canada--Meadowvale-Office-HQ/Software-Developer-Intern---SOTI-MobiControl-Apple-HQ--January-2027-12-Months-_R10551-2) |
 | `2026-10-13` | **SOTI** | Software Developer Intern - SOTI MobiControl Apple HQ (January 2027 12 Months) | Mississauga, Canada – Meadowvale Office (HQ) | [Apply ↗](https://soti.wd3.myworkdayjobs.com/en-US/SOTI-Next-Gen/job/Mississauga-Canada--Meadowvale-Office-HQ/Software-Developer-Intern---SOTI-MobiControl-Apple-HQ--January-2027-12-Months-_R10551-2) |
 | `2026-10-13` | **SOTI** | Performance Test Engineer Intern (January 2027 12 Months) | Mississauga, Canada – Meadowvale Office (HQ) | [Apply ↗](https://soti.wd3.myworkdayjobs.com/en-US/SOTI-Next-Gen/job/Mississauga-Canada--Meadowvale-Office-HQ/Performance-Test-Engineer-Intern--January-2027-12-Months-_R10437) |
@@ -3254,7 +3251,6 @@
 | `2026-10-09` | **Electronic Arts** | C++ Software Engineer Intern | Vancouver, BC, Canada | [Apply ↗](https://jobs.ea.com/en_US/careers/JobDetail/Software-Engineer-Intern-Summer-2027-8-months-UFC/216226) |
 | `2026-10-09` | **Electronic Arts** | Gameplay Software Engineer Co-op | Vancouver, BC, Canada | [Apply ↗](https://jobs.ea.com/en_US/careers/JobDetail/Software-Engineer-Co-op/216230) |
 | `2026-10-09` | **ProCogia** | AI Applied & Agentic AI Intern | Vancouver, BC, Canada | [Apply ↗](https://procogia.com/about-us/careers/?gh_jid=5448664008) |
-| `2026-10-09` | **Workday** | Software Development Engineer Intern | Vancouver, BC, Canada | [Apply ↗](https://workday.wd5.myworkdayjobs.com/Workday_Early_Career/job/Canada-BC-Vancouver/Software-Development-Engineer-Intern_JR-0110807) |
 | `2026-10-08` | **Equitable Bank** | Software Engineer Intern | Toronto, ON, Canada | [Apply ↗](https://jobs.lever.co/eqbank/c924506b-22ad-4906-aea5-61d9b79163f3/apply) |
 | `2026-10-08` | **PSP Investments** | GenAI and Digital Workplace Intern | Montreal, QC, Canada | [Apply ↗](https://investpsp.wd3.myworkdayjobs.com/psp_careers/job/Montreal/Intern--GenAI-and-Digital-Workplace--January---April-2027-_R5003) |
 | `2026-10-08` | **Tenstorrent (university)** | AI Software Intern (Canada) | Toronto, Ontario, Canada | [Apply ↗](https://job-boards.greenhouse.io/tenstorrentuniversity/jobs/5259347007) |
@@ -3687,11 +3683,10 @@
 
 ### 🌐 Remote SWE
 
-*Openings: 4 (Sorted Newest First)*
+*Openings: 3 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
-| `2026-11-07` | **GE Vernova (only_confidential_executive_recruiting)** | Field Engineer Intern | Remote | [Apply ↗](https://gevernova.wd5.myworkdayjobs.com/en-US/only_confidential_executive_recruiting/job/Remote/Field-Engineer-Intern_R5058374-2) |
 | `2026-11-06` | **GE Vernova (vernova_externalsite)** | Field Engineer Intern | Remote | [Apply ↗](https://gevernova.wd5.myworkdayjobs.com/en-US/vernova_externalsite/job/Remote/Field-Engineer-Intern_R5058374-3) |
 | `2026-10-30` | **Revvity** | Full-stack AI Developer Intern | CAD Remote – ON | [Apply ↗](https://revvity.wd103.myworkdayjobs.com/en-US/External/job/CAD-Remote--ON/Full-stack-AI-Developer-Intern_JR-045792) |
 | `2023-11-07` | **Ritual** | Software Engineer Intern | Remote | [Apply ↗](https://job-boards.greenhouse.io/ritual/jobs/4068271007) |
@@ -3730,12 +3725,10 @@
 
 ### 📍 Other / Unspecified SWE
 
-*Openings: 69 (Sorted Newest First)*
+*Openings: 67 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
-| `2026-11-07` | **GE Vernova (only_confidential_executive_recruiting)** | GE Vernova Power Conversion & Storage Engineering Intern/Co-Op - Summer 2027-2 | Findlay Township | [Apply ↗](https://gevernova.wd5.myworkdayjobs.com/en-US/only_confidential_executive_recruiting/job/Findlay-Township/GE-Vernova-Power-Conversion---Storage-Engineering-Intern-Co-Op---Summer-2027-2_R5057782-2) |
-| `2026-11-07` | **GE Vernova (only_confidential_executive_recruiting)** | PCS Application Engineering Co-Op/Intern - Summer 2027 | Findlay Township | [Apply ↗](https://gevernova.wd5.myworkdayjobs.com/en-US/only_confidential_executive_recruiting/job/Findlay-Township/PCS-Application-Engineering-Co-Op-Intern---Summer-2027_R5050417-1) |
 | `2026-11-07` | **GE Vernova (vernova_externalsite)** | GE Vernova Power Conversion & Storage Engineering Intern/Co-Op - Summer 2027-2 | Findlay Township | [Apply ↗](https://gevernova.wd5.myworkdayjobs.com/en-US/vernova_externalsite/job/Findlay-Township/GE-Vernova-Power-Conversion---Storage-Engineering-Intern-Co-Op---Summer-2027-2_R5057782-3) |
 | `2026-11-07` | **GE Vernova (vernova_externalsite)** | PCS Application Engineering Co-Op/Intern - Summer 2027 | Findlay Township | [Apply ↗](https://gevernova.wd5.myworkdayjobs.com/en-US/vernova_externalsite/job/Findlay-Township/PCS-Application-Engineering-Co-Op-Intern---Summer-2027_R5050417-2) |
 | `2026-11-06` | **Tinder** | Android Engineer Intern | LA | [Apply ↗](https://jobs.lever.co/matchgroup/f0e29495-4dd2-4bc5-9ceb-31d36f0b5a9d/apply) |

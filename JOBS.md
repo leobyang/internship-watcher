@@ -1,7 +1,7 @@
 # 🎯 Active Internship Openings
 
 > **Auto-updated by GitHub Actions** • Tracks: Product Management (PM) & Software Engineering (SWE)  
-> **Total Live Openings:** 3,658 (PM: 326 | SWE: 3,332) • *Updated: 2026-11-08 20:11 UTC*  
+> **Total Live Openings:** 3,657 (PM: 326 | SWE: 3,331) • *Updated: 2026-11-09 00:31 UTC*  
 > **Sorted Newest First**: All tables below display the most recently posted openings at the top.  
 > Use `Cmd + F` or `Ctrl + F` to search companies, locations, or keywords.
 
@@ -10,7 +10,7 @@
 - [📊 Regional Summary Table](#-regional-summary)
 - [🔥 Fresh Drops (Latest 30 Roles)](#-fresh-drops-latest-30-roles)
 - [📋 Product Management Internships (326)](#-product-management-internships)
-- [💻 Software Engineering Internships (3,332)](#-software-engineering-internships)
+- [💻 Software Engineering Internships (3,331)](#-software-engineering-internships)
   - [🇺🇸 United States SWE](#-united-states-swe)
   - [🇨🇦 Canada SWE](#-canada-swe)
   - [🇬🇧 United Kingdom SWE](#-united-kingdom-swe)
@@ -23,14 +23,14 @@
 
 | Region | Flag | PM Internships | SWE Internships | Total Live |
 |:---|:---:|:---:|:---:|:---:|
-| United States | 🇺🇸 | 269 | 2,680 | **2,949** |
+| United States | 🇺🇸 | 269 | 2,679 | **2,948** |
 | Canada | 🇨🇦 | 13 | 275 | **288** |
 | United Kingdom | 🇬🇧 | 10 | 172 | **182** |
 | Asia-Pacific (APAC) | 🌏 | 6 | 112 | **118** |
 | Remote | 🌐 | 1 | 3 | **4** |
 | North America (US/CA) | 🇨🇦/🇺🇸 | 5 | 25 | **30** |
 | Other / Unspecified | 📍 | 22 | 65 | **87** |
-| **Grand Total** | 🚀 | **326** | **3,332** | **3,658** |
+| **Grand Total** | 🚀 | **326** | **3,331** | **3,657** |
 
 ---
 
@@ -412,7 +412,7 @@
 
 ### 🇺🇸 United States SWE
 
-*Openings: 2,680 (Sorted Newest First)*
+*Openings: 2,679 (Sorted Newest First)*
 
 | Date Posted | Company | Title | Location | Direct Link |
 |:---:|:---|:---|:---|:---:|
@@ -827,7 +827,6 @@
 | `2026-10-27` | **Waymo** | 2027 Summer Intern, MS/PhD, Sensor Performance Engineer Intern | Mountain View, CA, USA | [Apply ↗](https://careers.withwaymo.com/jobs?gh_jid=8319171) |
 | `2026-10-27` | **Waymo** | Sensor Performance Engineer Intern | Mountain View, CA | [Apply ↗](https://careers.withwaymo.com/jobs?gh_jid=8319171) |
 | `2026-10-27` | **Xcel Energy** | Substation Design Engineering Intern (Fall/Winter) | Amarillo, TX, 79101 | [Apply ↗](https://xcelenergy.wd1.myworkdayjobs.com/en-US/External/job/Amarillo-TX-79101/Substation-Design-Engineering-Intern--Fall-Winter-_JR117357-1) |
-| `2026-10-26` | **Applied Materials** | 2027 Spring Data Scientist Co-op - Gloucester, MA | Gloucester,MA | [Apply ↗](https://amat.wd1.myworkdayjobs.com/en-US/External/job/GloucesterMA/XMLNAME-2027-Spring-Data-Scientist-Co-op---Gloucester--MA_R2632146) |
 | `2026-10-26` | **Applied Materials** | Data Scientist Co-op | Gloucester, MA | [Apply ↗](https://amat.wd1.myworkdayjobs.com/External/job/GloucesterMA/XMLNAME-2027-Spring-Data-Scientist-Co-op---Gloucester--MA_R2632146) |
 | `2026-10-26` | **Arizona State University** | Student Assistant Intern - Data Science | Scottsdale, AZ | [Apply ↗](https://asuep.wd5.myworkdayjobs.com/ASUEP/job/Scottsdale-AZ/Student-Assistant---Data-Science_R1568) |
 | `2026-10-26` | **Atlassian** | AI Researcher Intern | Seattle, WA, SF | [Apply ↗](https://campus-americas.icims.com/jobs/26246/ai-researcher-%28phd%29%2c-2027-graduate-u.s./job) |
@@ -1667,7 +1666,6 @@
 | `2026-09-29` | **Honeywell** | Spring 2027 Artificial Intelligence/Machine Learning Co-Op | United States | [Apply ↗](https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/Honeywell/job/158958) |
 | `2026-09-29` | **Honeywell** | Artificial Intelligence/Machine Learning Co-op | United States | [Apply ↗](https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/Honeywell/job/158958) |
 | `2026-09-29` | **Honeywell** | Software Engineering Co-op | United States | [Apply ↗](https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/Honeywell/job/158957) |
-| `2026-09-29` | **Iridium Communications** | Software Engineering Intern | Tempe, AZ, McLean, VA | [Apply ↗](https://careers-iridium.icims.com/jobs/5136/job?mobile=true&needsRedirect=false) |
 | `2026-09-29` | **Keysight Technologies** | EDA AI/ML Software Intern | Calabasas, CA | [Apply ↗](https://jobs.keysight.com/jobs/54582?icims=1) |
 | `2026-09-29` | **Keysight Technologies** | EDA AI/ML Layout Engineering Intern | Calabasas, CA | [Apply ↗](https://jobs.keysight.com/jobs/54606?icims=1) |
 | `2026-09-29` | **Keysight Technologies** | Research and Development Software Engineer Intern | Santa Rosa, CA | [Apply ↗](https://jobs.keysight.com/jobs/54414?icims=1) |
@@ -2697,6 +2695,7 @@
 | `2026-08-15` | **ByteDance** | Software Engineer Intern - Global Payment Infra and SRE | San Jose, CA | [Apply ↗](https://jobs.bytedance.com/en/position/7668315137242351925/detail) |
 | `2026-08-15` | **ByteDance** | Software Engineer Intern - Global Traffic Architecture | San Jose, CA | [Apply ↗](https://jobs.bytedance.com/en/position/7672557061679483189/detail) |
 | `2026-08-15` | **Dedalus Labs** | Infrastructure Engineer Intern | San Francisco | [Apply ↗](https://jobs.ashbyhq.com/dedalus-labs/fab1accf-2b21-453b-869f-a08759fa605c) |
+| `2026-08-15` | **Goldman Sachs** | Summer Analyst Intern - Americas - Engineering | Salt Lake City, UT | [Apply ↗](https://higher.gs.com/roles/171565?type=students) |
 | `2026-08-14` | **AARP** | Data Science and Advanced Analytics Intern | Washington, DC | [Apply ↗](https://careers.aarp.org/jobs/7437?icims=1) |
 | `2026-08-14` | **ByteDance** | Multi-Cloud CDN Scheduling Platform Engineer Intern - CDN Platform | San Jose, CA | [Apply ↗](https://jobs.bytedance.com/en/position/7673636205233490181/detail) |
 | `2026-08-14` | **Composio** | Fullstack Engineer Intern - Product Team | SF | [Apply ↗](https://jobs.ashbyhq.com/composio/eea3c0be-8589-4e3d-a684-de29a9eada0d/application?embed=true) |
@@ -3468,7 +3467,6 @@
 | `2026-10-12` | **LSEG** | Engineering Intern | Nottingham, UK | [Apply ↗](https://lseg.wd3.myworkdayjobs.com/Graduate_Careers/job/Nottingham-United-Kingdom/Engineering-Summer-Internship-Programme_R0124221) |
 | `2026-10-12` | **SailPoint** | Software Engineer Intern - Platform Engines | Remote (United Kingdom) | [Apply ↗](https://sailpoint.wd1.myworkdayjobs.com/en-US/SailPoint/job/Remote-United-Kingdom/Software-Engineer-Intern---Platform-Engines_R014164) |
 | `2026-10-12` | **TJX** | IT Engineer Intern | Watford, UK | [Apply ↗](https://tjx.wd1.myworkdayjobs.com/tjx_external/job/Watford-HER-WD17-1TX/IT-Engineer-Placement_REQ156551) |
-| `2026-10-09` | **Riverlane** | Software Engineering Intern | Cambridge, UK | [Apply ↗](https://www.riverlane.com/jobs?gh_jid=5000786101#vacancies) |
 | `2026-10-09` | **WTW** | Software Developer Intern | Reigate, UK | [Apply ↗](https://eedu.fa.em3.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1003/job/202605435) |
 | `2026-10-09` | **WTW** | 2027 Software Developer Internship – Reigate | Reigate, Surrey, United Kingdom | [Apply ↗](https://eedu.fa.em3.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1003/job/202605435) |
 | `2026-10-08` | **Cambridge Consultants** | Software Engineering Intern - Healthcare | United Kingdom | [Apply ↗](https://job-boards.eu.greenhouse.io/cambridgeconsultantslimited/jobs/4971704101) |
@@ -3534,6 +3532,7 @@
 | `2026-08-17` | **Google** | Software Engineering or Site Reliability Engineering PhD Intern | London, UK | [Apply ↗](https://www.google.com/about/careers/applications/jobs/results/80037545080955590) |
 | `2026-08-17` | **NXP Semiconductors** | AI and Software Engineer Intern - Automotive MPUs | Glasgow, UK | [Apply ↗](https://nxp.wd3.myworkdayjobs.com/en-US/careers/job/Glasgow/Intern-AI-and-Software-Engineer---Automotive-MPUs_R-10065882-1) |
 | `2026-08-17` | **Optiver** | Software Engineer Intern | London, UK | [Apply ↗](https://www.optiver.com/join-us/jobs/8713435002/?gh_jid=8713435002) |
+| `2026-08-15` | **Goldman Sachs** | Summer Analyst Intern - Engineering | London, UK | [Apply ↗](https://higher.gs.com/roles/170644?type=students) |
 | `2026-08-14` | **Jane Street** | Trading Desk Operations Engineer Intern | London, UK | [Apply ↗](https://www.janestreet.com/join-jane-street/apply/8700980002?gh_jid=8700980002) |
 | `2026-08-11` | **DV Trading** | Software Engineer Intern - DV Commodities | London, UK | [Apply ↗](https://job-boards.greenhouse.io/dvtrading/jobs/4719125005) |
 | `2026-08-07` | **Luminance** | AI Engineering Intern | Cambridge, UK | [Apply ↗](https://apply.workable.com/luminance-1/j/E045EF5A7A/apply) |
